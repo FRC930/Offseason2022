@@ -51,18 +51,18 @@ public final class Constants {
         public static final double angleKF = 0.0;
 
         /* Drive Motor PID Values */
-        public static final double driveKP = 2.7695;
+        public static final double driveKP = 0.1; //2.7695;
         public static final double driveKI = 0.0;
         public static final double driveKD = 0.0;
         public static final double driveKF = 0.0;
 
         /* Drive Motor Characterization Values */
-        public static final double driveKS = (0.66791 / 12); //divide by 12 to convert from volts to percent output for CTRE
-        public static final double driveKV = (2.1522 / 12);
-        public static final double driveKA = (0.23908 / 12);
+        public static final double driveKS = (0.667 / 12); //(0.66791 / 12); //divide by 12 to convert from volts to percent output for CTRE
+        public static final double driveKV = (2.44 / 12); //(2.1522 / 12);
+        public static final double driveKA = (0.27 / 12); //(0.23908 / 12);
 
         /* Swerve Profiling Values */
-        public static final double maxSpeed = 4.9; //meters per second
+        public static final double maxSpeed = 4.5; //4.9; //meters per second
         public static final double maxAngularVelocity = 11.5;
 
         /* Neutral Modes */

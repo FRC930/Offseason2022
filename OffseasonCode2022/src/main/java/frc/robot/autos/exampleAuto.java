@@ -28,7 +28,7 @@ public class exampleAuto extends SequentialCommandGroup {
                 .setKinematics(Constants.Swerve.swerveKinematics);
 
         // An example trajectory to follow.  All units in meters.
-        Trajectory exampleTrajectory = PathPlanner.loadPath("ShootMoveShoot", 0.5, 2.5);
+        Trajectory exampleTrajectory = PathPlanner.loadPath("TaxiTwoBall", 1, 2.5);
         /*
             TrajectoryGenerator.generateTrajectory(
                 // Start at the origin facing the +X direction
