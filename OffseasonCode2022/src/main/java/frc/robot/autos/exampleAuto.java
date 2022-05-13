@@ -5,6 +5,8 @@ import frc.robot.subsystems.Swerve;
 
 import java.util.List;
 
+import com.pathplanner.lib.PathPlanner;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -26,7 +28,8 @@ public class exampleAuto extends SequentialCommandGroup {
                 .setKinematics(Constants.Swerve.swerveKinematics);
 
         // An example trajectory to follow.  All units in meters.
-        Trajectory exampleTrajectory =
+        Trajectory exampleTrajectory = PathPlanner.loadPath("ShootMoveShoot", 0.5, 2.5);
+        /*
             TrajectoryGenerator.generateTrajectory(
                 // Start at the origin facing the +X direction
                 new Pose2d(0, 0, new Rotation2d(0)),
@@ -35,6 +38,7 @@ public class exampleAuto extends SequentialCommandGroup {
                 // End 3 meters straight ahead of where we started, facing forward
                 new Pose2d(3, 0, new Rotation2d(0)),
                 config);
+        */
 
         var thetaController =
             new ProfiledPIDController(

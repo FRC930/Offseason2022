@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 
 import frc.robot.SwerveModule;
@@ -19,12 +20,15 @@ public class Swerve extends SubsystemBase {
     public SwerveDriveOdometry swerveOdometry;
     public SwerveModule[] mSwerveMods;
     public PigeonIMU gyro;
+    public TalonSRX imuTalonSRX;
 
     public Swerve() {
 //TODO Use gyro with an TalonSRX
-        gyro = new PigeonIMU(Constants.Swerve.pigeonID);
+        imuTalonSRX = new TalonSRX(Constants.Swerve.pigeonID);
+        gyro = new PigeonIMU(imuTalonSRX);
         gyro.configFactoryDefault();
         zeroGyro();
+
         
         swerveOdometry = new SwerveDriveOdometry(Constants.Swerve.swerveKinematics, getYaw());
 
