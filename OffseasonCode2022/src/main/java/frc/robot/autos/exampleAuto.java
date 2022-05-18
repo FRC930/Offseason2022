@@ -6,6 +6,9 @@ import frc.robot.subsystems.Swerve;
 import java.util.List;
 
 import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.PathPlannerTrajectory.PathPlannerState;
+import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
@@ -28,7 +31,8 @@ public class exampleAuto extends SequentialCommandGroup {
                 .setKinematics(Constants.Swerve.swerveKinematics);
 
         // An example trajectory to follow.  All units in meters.
-        Trajectory exampleTrajectory = PathPlanner.loadPath("TaxiTwoBall", 1, 2.5);
+        PathPlannerTrajectory pathPlannerExample = PathPlanner.loadPath("TaxiTwoBall", 1, 2.5);
+        Trajectory exampleTrajectory = pathPlannerExample;
         /*
             TrajectoryGenerator.generateTrajectory(
                 // Start at the origin facing the +X direction
@@ -45,9 +49,9 @@ public class exampleAuto extends SequentialCommandGroup {
                 Constants.AutoConstants.kPThetaController, 0, 0, Constants.AutoConstants.kThetaControllerConstraints);
         thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
-        SwerveControllerCommand swerveControllerCommand =
-            new SwerveControllerCommand(
-                exampleTrajectory,
+        PPSwerveControllerCommand swerveControllerCommand = 
+            new PPSwerveControllerCommand(
+                pathPlannerExample,
                 s_Swerve::getPose,
                 Constants.Swerve.swerveKinematics,
                 new PIDController(Constants.AutoConstants.kPXController, 0, 0),
