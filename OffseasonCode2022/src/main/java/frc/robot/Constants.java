@@ -16,8 +16,8 @@ public final class Constants {
         public static final boolean invertGyro = false; // Always ensure Gyro is CCW+ CW-
 
         /* Drivetrain Constants */
-        public static final double trackWidth = Units.inchesToMeters(30);
-        public static final double wheelBase = Units.inchesToMeters(29.75);
+        public static final double trackWidth = Units.inchesToMeters(18.5);
+        public static final double wheelBase = Units.inchesToMeters(21.5);
         public static final double wheelDiameter = Units.inchesToMeters(4);
         public static final double wheelCircumference = wheelDiameter * Math.PI;
 
@@ -122,8 +122,8 @@ public final class Constants {
     public static final class AutoConstants {
         public static final double kMaxSpeedMetersPerSecond = 3;
         public static final double kMaxAccelerationMetersPerSecondSquared = 3;
-        public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
-        public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
+        public static final double kMaxAngularSpeedRadiansPerSecond = 180; //Math.PI;
+        public static final double kMaxAngularSpeedRadiansPerSecondSquared = 180; //Math.PI;
     
         public static final double kPXController = 1;
         public static final double kPYController = 1;
