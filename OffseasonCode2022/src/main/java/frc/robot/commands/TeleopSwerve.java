@@ -1,13 +1,17 @@
 package frc.robot.commands;
 
-import frc.robot.Constants;
 import frc.robot.subsystems.Swerve;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-
 public class TeleopSwerve extends CommandBase {
+
+    // ----- CONSTANTS -----\\
+
+    private double stickDeadband = 0.1;
+    public static final double maxAngularVelocity = 11.5;
+    public static final double maxSpeed = 4.5; //4.9; //meters per second
 
     private double rotation;
     private Translation2d translation;
@@ -42,12 +46,12 @@ public class TeleopSwerve extends CommandBase {
         double rAxis = controller.getRawAxis(rotationAxis);
         
         /* Deadbands */
-        yAxis = (Math.abs(yAxis) < Constants.stickDeadband) ? 0 : yAxis;
-        xAxis = (Math.abs(xAxis) < Constants.stickDeadband) ? 0 : xAxis;
-        rAxis = (Math.abs(rAxis) < Constants.stickDeadband) ? 0 : rAxis;
+        yAxis = (Math.abs(yAxis) < stickDeadband) ? 0 : yAxis;
+        xAxis = (Math.abs(xAxis) < stickDeadband) ? 0 : xAxis;
+        rAxis = (Math.abs(rAxis) < stickDeadband) ? 0 : rAxis;
 
-        translation = new Translation2d(yAxis * 0.5, xAxis * 0.5).times(Constants.Swerve.maxSpeed);
-        rotation = rAxis * 0.5 * Constants.Swerve.maxAngularVelocity;
+        translation = new Translation2d(yAxis * 0.5, xAxis * 0.5).times(maxSpeed);
+        rotation = rAxis * 0.5 * maxAngularVelocity;
         s_Swerve.drive(translation, rotation, fieldRelative, openLoop);
     }
 }
