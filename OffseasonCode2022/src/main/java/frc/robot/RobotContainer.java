@@ -33,6 +33,8 @@ public class RobotContainer {
 
   /* Driver Buttons */
   private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kY.value);
+  private final JoystickButton extendIntake = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
+  private final JoystickButton intakeRollers = new JoystickButton(driver, XboxController.Button.kRightBumper.value);
 
   /* Modules */
   public static final SwerveModuleConstants frontLeftModule = new SwerveModuleConstants(1, 5, 9, 188.251);
@@ -41,13 +43,24 @@ public class RobotContainer {
   public static final SwerveModuleConstants backRightModule = new SwerveModuleConstants(4, 8, 12, 135.077);
 
   /* Subsystems */
-  private final Swerve s_Swerve = new Swerve(frontLeftModule, frontRightModule, backLeftModule, backRightModule);
+  private final Swerve m_Swerve = new Swerve(frontLeftModule, frontRightModule, backLeftModule, backRightModule);
+  private final IntakeSubsystem m_IntakeSubsystem;
+
+  /* Commands */
+  private final ExtendIntakeCommand m_ExtendIntakeCommand;
+  private final RunIntakeRollersCommand m_RunIntakeRollersCommand;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+
+    // INTAKE INITS //
+    // These are random ID numbers for testing
+    m_IntakeSubsystem = new IntakeSubsystem(1, 2, 3);
+    m_RunIntakeRollersCommand = new RunIntakeRollersCommand(m_IntakeSubsystem);
+    m_ExtendIntakeCommand = new ExtendIntakeCommand(m_IntakeSubsystem);
     boolean fieldRelative = true;
     boolean openLoop = true;
-    s_Swerve.setDefaultCommand(new TeleopSwerve(s_Swerve, driver, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop));
+    m_Swerve.setDefaultCommand(new TeleopSwerve(m_Swerve, driver, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop));
 
     // Configure the button bindings
     configureButtonBindings();
@@ -61,7 +74,9 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     /* Driver Buttons */
-    zeroGyro.whenPressed(new InstantCommand(() -> s_Swerve.zeroGyro())); 
+    zeroGyro.whenPressed(new InstantCommand(() -> m_Swerve.zeroGyro()));
+    extendIntake.whileActiveOnce(m_ExtendIntakeCommand);
+    intakeRollers.whileActiveOnce(m_RunIntakeRollersCommand);
   }
 
   /**
@@ -71,6 +86,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new TaxiTwoBall(s_Swerve);
+    return new TaxiTwoBall(m_Swerve);
   }
 }
