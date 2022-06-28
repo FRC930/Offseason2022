@@ -61,7 +61,7 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     /* Driver Buttons */
-    zeroGyro.whenPressed(new InstantCommand(() -> s_Swerve.zeroGyro()));
+    zeroGyro.whenPressed(new InstantCommand(() -> s_Swerve.zeroGyro())); 
   }
 
   /**
@@ -71,6 +71,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new exampleAuto(s_Swerve);
+    return new TaxiTwoBall(s_Swerve);
   }
 }

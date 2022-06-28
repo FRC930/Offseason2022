@@ -38,8 +38,8 @@ public class Swerve extends SubsystemBase {
     
     public static final double kMaxSpeedMetersPerSecond = 3;
     public static final double kMaxAccelerationMetersPerSecondSquared = 3;
-    public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
-    public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
+    public static final double kMaxAngularSpeedRadiansPerSecond = 180; //Math.PI;
+    public static final double kMaxAngularSpeedRadiansPerSecondSquared = 180; // Math.PI;
             
     public static final double kPXController = 1;
     public static final double kPYController = 1;
@@ -159,7 +159,9 @@ public class Swerve extends SubsystemBase {
         for(SwerveModule mod : mSwerveMods){
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Cancoder", mod.getCanCoder().getDegrees());
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Integrated", mod.getState().angle.getDegrees());
-            SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Velocity", mod.getState().speedMetersPerSecond);    
+            SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Velocity", mod.getState().speedMetersPerSecond); 
         }
+        SmartDashboard.putNumber("X", swerveOdometry.getPoseMeters().getX());
+        SmartDashboard.putNumber("Y", swerveOdometry.getPoseMeters().getY());  
     }
 }
