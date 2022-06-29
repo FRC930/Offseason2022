@@ -5,7 +5,7 @@ import frc.robot.subsystems.IntakeSubsystem;
 
 public class RunIntakeRollersCommand extends CommandBase{
 
-    private final double ROLLER_SPEED = 1.0;
+    private final double ROLLER_SPEED = 0.5;
 
     private final IntakeSubsystem intakeSubsystem;
 
