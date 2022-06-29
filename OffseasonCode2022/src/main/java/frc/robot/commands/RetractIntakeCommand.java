@@ -5,7 +5,7 @@ import frc.robot.subsystems.IntakeSubsystem;
 
 public class RetractIntakeCommand extends CommandBase{
 
-    private final double EXTENSION_SPEED = 1.0;
+    private final double EXTENSION_SPEED = 0.5;
 
     private final IntakeSubsystem intakeSubsystem;
 

@@ -34,10 +34,10 @@ public class RobotContainer {
   private final int rotationAxis = XboxController.Axis.kRightX.value;
 
   /* Modules */
-  public static final SwerveModuleConstants frontLeftModule = new SwerveModuleConstants(1, 5, 9, 188.251);
-  public static final SwerveModuleConstants frontRightModule = new SwerveModuleConstants(3, 7, 11, 296.191);
-  public static final SwerveModuleConstants backLeftModule = new SwerveModuleConstants(2, 6, 10, 320.705);
-  public static final SwerveModuleConstants backRightModule = new SwerveModuleConstants(4, 8, 12, 135.077);
+  public static final SwerveModuleConstants frontLeftModule = new SwerveModuleConstants(8, 9, 9, 188.251);
+  public static final SwerveModuleConstants frontRightModule = new SwerveModuleConstants(11, 10, 11, 296.191);
+  public static final SwerveModuleConstants backLeftModule = new SwerveModuleConstants(1, 0, 10, 320.705);
+  public static final SwerveModuleConstants backRightModule = new SwerveModuleConstants(18, 19, 12, 135.077);
 
   /* Subsystems */
   private final Swerve m_Swerve = new Swerve(frontLeftModule, frontRightModule, backLeftModule, backRightModule);
