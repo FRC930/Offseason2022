@@ -5,11 +5,9 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import frc.robot.autos.*;
 import frc.robot.commands.*;
@@ -23,18 +21,17 @@ import frc.lib.util.SwerveModuleConstants;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
+
   /* Controllers */
-  private final Joystick driver = new Joystick(0);
+    // Driver Controller
+    private final ControllerManager m_driverController = new ControllerManager(0);
+    // Codriver Controller
+    private final ControllerManager m_codriverController = new ControllerManager(1);
 
   /* Drive Controls */
   private final int translationAxis = XboxController.Axis.kLeftY.value;
   private final int strafeAxis = XboxController.Axis.kLeftX.value;
   private final int rotationAxis = XboxController.Axis.kRightX.value;
-
-  /* Driver Buttons */
-  private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kY.value);
-  private final JoystickButton extendIntake = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
-  private final JoystickButton intakeRollers = new JoystickButton(driver, XboxController.Button.kRightBumper.value);
 
   /* Modules */
   public static final SwerveModuleConstants frontLeftModule = new SwerveModuleConstants(1, 5, 9, 188.251);
@@ -54,13 +51,12 @@ public class RobotContainer {
   public RobotContainer() {
 
     // INTAKE INITS //
-    // These are random ID numbers for testing
-    m_IntakeSubsystem = new IntakeSubsystem(1, 2, 3);
+    m_IntakeSubsystem = new IntakeSubsystem(2, 17, 3);
     m_RunIntakeRollersCommand = new RunIntakeRollersCommand(m_IntakeSubsystem);
     m_ExtendIntakeCommand = new ExtendIntakeCommand(m_IntakeSubsystem);
     boolean fieldRelative = true;
     boolean openLoop = true;
-    m_Swerve.setDefaultCommand(new TeleopSwerve(m_Swerve, driver, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop));
+    m_Swerve.setDefaultCommand(new TeleopSwerve(m_Swerve, m_driverController.getController(), translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop));
 
     // Configure the button bindings
     configureButtonBindings();
@@ -73,10 +69,22 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+
     /* Driver Buttons */
-    zeroGyro.whenPressed(new InstantCommand(() -> m_Swerve.zeroGyro()));
-    extendIntake.whileActiveOnce(m_ExtendIntakeCommand);
-    intakeRollers.whileActiveOnce(m_RunIntakeRollersCommand);
+
+    m_driverController.getYButton().whileActiveOnce(
+        new InstantCommand(() -> m_Swerve.zeroGyro())
+    );
+
+    //Engages motors for intake when left bumper is pressed
+    m_driverController.getLeftBumper().whileActiveOnce(
+        m_ExtendIntakeCommand
+    );
+
+    //Runs the intake motors when right bumper is pressed
+    m_driverController.getRightBumper().whileActiveOnce(
+      m_RunIntakeRollersCommand  
+    );
   }
 
   /**
