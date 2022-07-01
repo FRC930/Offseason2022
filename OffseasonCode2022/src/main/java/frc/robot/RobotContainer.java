@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-
+import frc.robot.AutoCommandManager.subNames;
 import frc.robot.autos.*;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
@@ -39,6 +39,9 @@ public class RobotContainer {
   public static final SwerveModuleConstants backLeftModule = new SwerveModuleConstants(1, 0, 10, 320.705);
   public static final SwerveModuleConstants backRightModule = new SwerveModuleConstants(18, 19, 12, 135.077);
 
+  /* Auto Command Manager */
+  private final AutoCommandManager m_autoManager;
+
   /* Subsystems */
   private final Swerve m_Swerve = new Swerve(frontLeftModule, frontRightModule, backLeftModule, backRightModule);
   private final IntakeSubsystem m_IntakeSubsystem;
@@ -49,6 +52,11 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+
+    //Auto Command Manager Stuff
+    m_autoManager = new AutoCommandManager();
+    m_autoManager.addSubsystem(subNames.Swerve, m_Swerve);
+    m_autoManager.initCommands();
 
     // INTAKE INITS //
     m_IntakeSubsystem = new IntakeSubsystem(2, 17, 3);
@@ -94,6 +102,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new DefensiveHangarCleanup(m_Swerve);
+    return m_autoManager.getAutonomousCommand();
   }
 }
