@@ -35,9 +35,9 @@ public class RobotContainer {
 
   /* Modules */
   public static final SwerveModuleConstants frontLeftModule = new SwerveModuleConstants(8, 9, 9, 188.251);
-  public static final SwerveModuleConstants frontRightModule = new SwerveModuleConstants(11, 10, 11, 296.191);
-  public static final SwerveModuleConstants backLeftModule = new SwerveModuleConstants(1, 0, 10, 320.705);
-  public static final SwerveModuleConstants backRightModule = new SwerveModuleConstants(18, 19, 12, 135.077);
+  public static final SwerveModuleConstants frontRightModule = new SwerveModuleConstants(11, 10, 10, 296.191);
+  public static final SwerveModuleConstants backLeftModule = new SwerveModuleConstants(1, 0, 0, 320.705);
+  public static final SwerveModuleConstants backRightModule = new SwerveModuleConstants(18, 19, 19, 135.077);
 
   /* Auto Command Manager */
   private final AutoCommandManager m_autoManager;
@@ -62,7 +62,7 @@ public class RobotContainer {
     m_IntakeSubsystem = new IntakeSubsystem(2, 17, 3);
     m_RunIntakeRollersCommand = new RunIntakeRollersCommand(m_IntakeSubsystem);
     m_ExtendIntakeCommand = new ExtendIntakeCommand(m_IntakeSubsystem);
-    boolean fieldRelative = true;
+    boolean fieldRelative = true;       
     boolean openLoop = true;
     m_Swerve.setDefaultCommand(new TeleopSwerve(m_Swerve, m_driverController.getController(), translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop));
 
