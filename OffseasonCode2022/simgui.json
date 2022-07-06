@@ -1,0 +1,44 @@
+{
+  "HALProvider": {
+    "Other Devices": {
+      "Talon FX[12]": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon FX[6]": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon FX[7]": {
+        "header": {
+          "open": true
+        }
+      }
+    }
+  },
+  "NTProvider": {
+    "types": {
+      "/FMSInfo": "FMSInfo",
+      "/LiveWindow/IndexerSubsystem": "Subsystem",
+      "/LiveWindow/IntakeSubsystem": "Subsystem",
+      "/LiveWindow/ShooterHoodSubsystem": "Subsystem",
+      "/LiveWindow/ShooterMotorSubsystem": "Subsystem",
+      "/LiveWindow/Swerve": "Subsystem",
+      "/LiveWindow/Ungrouped/PIDController[1]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[2]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[3]": "PIDController",
+      "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
+      "/LiveWindow/Ungrouped/Spark[15]": "Motor Controller",
+      "/LiveWindow/Ungrouped/Spark[16]": "Motor Controller",
+      "/LiveWindow/Ungrouped/Spark[4]": "Motor Controller",
+      "/LiveWindow/Ungrouped/Talon FX [12]": "Motor Controller",
+      "/LiveWindow/Ungrouped/Talon FX [2]": "Motor Controller",
+      "/LiveWindow/Ungrouped/Talon FX [6]": "Motor Controller",
+      "/LiveWindow/Ungrouped/Talon FX [7]": "Motor Controller",
+      "/Shuffleboard/Driver Tab/Auton Path Selector": "String Chooser",
+      "/Shuffleboard/Driver Tab/Pipeline Selector": "String Chooser"
+    }
+  }
+}
