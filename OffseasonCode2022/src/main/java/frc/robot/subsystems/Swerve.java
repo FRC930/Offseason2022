@@ -24,7 +24,7 @@ public class Swerve extends SubsystemBase {
 
     // ----- CONSTANTS -----\\
 
-    public static final int pigeonID = 17;
+    public static final int pigeonID = 1;
     public static final double trackWidth = Units.inchesToMeters(18.5);
     public static final double wheelBase = Units.inchesToMeters(21.5);
     public static final double maxSpeed = 4.5; //4.9; //meters per second
@@ -41,9 +41,10 @@ public class Swerve extends SubsystemBase {
     public static final double kMaxAngularSpeedRadiansPerSecond = 180; //Math.PI;
     public static final double kMaxAngularSpeedRadiansPerSecondSquared = 180; // Math.PI;
             
-    public static final double kPXController = 1;
-    public static final double kPYController = 1;
-    public static final double kPThetaController = 1;
+    public static final double kPXController = 0.21498;
+    public static final double kPYController = 0.21498;
+    public static final double kPThetaController = SwerveModule.angleKP;
+    public static final double kDThetaController = SwerveModule.angleKD;
             
     // Constraint for the motion profilied robot angle controller
     public static final TrapezoidProfile.Constraints kThetaControllerConstraints =
@@ -68,7 +69,7 @@ public class Swerve extends SubsystemBase {
         autoXController = new PIDController(kPXController, 0, 0);
         autoYController = new PIDController(kPYController, 0, 0);
         autoThetaController = new ProfiledPIDController(
-            kPThetaController, 0, 0, kThetaControllerConstraints);
+            0.33, 0, 0, kThetaControllerConstraints);
         
         swerveOdometry = new SwerveDriveOdometry(swerveKinematics, getYaw());
 
