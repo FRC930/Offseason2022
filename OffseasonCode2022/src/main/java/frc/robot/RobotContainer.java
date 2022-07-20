@@ -38,26 +38,26 @@ public class RobotContainer {
   private final int rotationAxis = XboxController.Axis.kRightX.value;
 
   /* Modules */
-  public static final SwerveModuleConstants frontLeftModule = new SwerveModuleConstants(8, 9, 9, 188.251);
-  public static final SwerveModuleConstants frontRightModule = new SwerveModuleConstants(11, 10, 10, 296.191);
-  public static final SwerveModuleConstants backLeftModule = new SwerveModuleConstants(1, 0, 0, 320.705);
-  public static final SwerveModuleConstants backRightModule = new SwerveModuleConstants(18, 19, 19, 135.077);
+  public static final SwerveModuleConstants frontLeftModule = new SwerveModuleConstants(8, 9, 9, 259.980);
+  public static final SwerveModuleConstants frontRightModule = new SwerveModuleConstants(11, 10, 10, 233.877);
+  public static final SwerveModuleConstants backLeftModule = new SwerveModuleConstants(1, 0, 0, 71.895);
+  public static final SwerveModuleConstants backRightModule = new SwerveModuleConstants(18, 19, 19, 143.965);
 
   /* Auto Command Manager */
   private final AutoCommandManager m_autoManager;
 
   /* Subsystems */
   private final Swerve m_Swerve = new Swerve(frontLeftModule, frontRightModule, backLeftModule, backRightModule);
-  private final IntakeSubsystem m_IntakeSubsystem;
-  private final ShooterMotorSubsystem m_ShooterMotorSubsystem;
-  private final ShooterHoodSubsystem m_ShooterHoodSubsystem;
-  private final IndexerSubsystem m_IndexerSubsystem;
+  //private final IntakeSubsystem m_IntakeSubsystem;
+  //private final ShooterMotorSubsystem m_ShooterMotorSubsystem;
+  //private final ShooterHoodSubsystem m_ShooterHoodSubsystem;
+  //private final IndexerSubsystem m_IndexerSubsystem;
 
   /* Commands */
-  private final ExtendIntakeCommand m_ExtendIntakeCommand;
-  private final RunIntakeRollersCommand m_RunIntakeRollersCommand;
-  private final ShooterCommand m_ShooterCommand;
-  private final AdjustHoodCommand m_ShooterHoodCommand;
+  //private final ExtendIntakeCommand m_ExtendIntakeCommand;
+  //private final RunIntakeRollersCommand m_RunIntakeRollersCommand;
+  //private final ShooterCommand m_ShooterCommand;
+  //private final AdjustHoodCommand m_ShooterHoodCommand;
  
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -69,19 +69,19 @@ public class RobotContainer {
     m_autoManager.initCommands();
 
     // INTAKE INITS //
-    m_IntakeSubsystem = new IntakeSubsystem(2, 17, 3);
-    m_RunIntakeRollersCommand = new RunIntakeRollersCommand(m_IntakeSubsystem);
-    m_ExtendIntakeCommand = new ExtendIntakeCommand(m_IntakeSubsystem);
+    //m_IntakeSubsystem = new IntakeSubsystem(2, 17, 3);
+    //m_RunIntakeRollersCommand = new RunIntakeRollersCommand(m_IntakeSubsystem);
+    //m_ExtendIntakeCommand = new ExtendIntakeCommand(m_IntakeSubsystem);
     boolean fieldRelative = true;       
     boolean openLoop = true;
     m_Swerve.setDefaultCommand(new TeleopSwerve(m_Swerve, m_driverController.getController(), translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop));
 
     //SHOOTER INITS //
-    m_ShooterMotorSubsystem = new ShooterMotorSubsystem(12, 7);
-    m_ShooterHoodSubsystem = new ShooterHoodSubsystem(6);
-    m_IndexerSubsystem = new IndexerSubsystem(15, 16, 4);
-    m_ShooterCommand  = new ShooterCommand(m_ShooterMotorSubsystem, m_IndexerSubsystem, 0.5);
-    m_ShooterHoodCommand = new AdjustHoodCommand(m_ShooterHoodSubsystem);
+    //m_ShooterMotorSubsystem = new ShooterMotorSubsystem(12, 7);
+    //m_ShooterHoodSubsystem = new ShooterHoodSubsystem(6);
+    //m_IndexerSubsystem = new IndexerSubsystem(15, 16, 4);
+    //m_ShooterCommand  = new ShooterCommand(m_ShooterMotorSubsystem, m_IndexerSubsystem, 0.5);
+    //m_ShooterHoodCommand = new AdjustHoodCommand(m_ShooterHoodSubsystem);
 
 
 
@@ -100,7 +100,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
 
     /* Driver Buttons */
-
+    /*
     m_driverController.getYButton().whileActiveOnce(
         new InstantCommand(() -> m_Swerve.zeroGyro())
     );
@@ -165,6 +165,7 @@ public class RobotContainer {
    m_driverController.getRightBumper().whileActiveOnce(
         m_ShooterCommand
     );
+    */
 
   }
 

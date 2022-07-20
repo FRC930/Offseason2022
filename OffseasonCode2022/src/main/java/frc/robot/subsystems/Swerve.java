@@ -1,7 +1,6 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.sensors.PigeonIMU;
+import com.ctre.phoenix.sensors.Pigeon2;
 
 import frc.lib.util.SwerveModuleConstants;
 import frc.robot.SwerveModule;
@@ -24,7 +23,7 @@ public class Swerve extends SubsystemBase {
 
     // ----- CONSTANTS -----\\
 
-    public static final int pigeonID = 1;
+    public static final int pigeonID = 13;
     public static final double trackWidth = Units.inchesToMeters(18.5);
     public static final double wheelBase = Units.inchesToMeters(21.5);
     public static final double maxSpeed = 4.5; //4.9; //meters per second
@@ -53,16 +52,14 @@ public class Swerve extends SubsystemBase {
 
     public SwerveDriveOdometry swerveOdometry;
     public SwerveModule[] mSwerveMods;
-    public PigeonIMU gyro;
-    public TalonSRX imuTalonSRX;
+    public Pigeon2 gyro;
     public PIDController autoXController;
     public PIDController autoYController;
     public ProfiledPIDController autoThetaController;
 
     public Swerve(SwerveModuleConstants frontLeftModuleConstants, SwerveModuleConstants frontRightModuleConstants, SwerveModuleConstants backLeftModuleConstants, SwerveModuleConstants backRightModuleConstants) {
-//TODO Use gyro with an TalonSRX
-        imuTalonSRX = new TalonSRX(pigeonID);
-        gyro = new PigeonIMU(imuTalonSRX);
+        gyro = new Pigeon2(pigeonID);
+        System.out.println(gyro.getTemp());
         gyro.configFactoryDefault();
         zeroGyro();
 
