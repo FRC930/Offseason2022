@@ -40,8 +40,8 @@ public class Swerve extends SubsystemBase {
     public static final double kMaxAngularSpeedRadiansPerSecond = 180; //Math.PI;
     public static final double kMaxAngularSpeedRadiansPerSecondSquared = 180; // Math.PI;
             
-    public static final double kPXController = 0.21498;
-    public static final double kPYController = 0.21498;
+    public static final double kPXController = 0.4; //0.076301;
+    public static final double kPYController = 0.4; //0.076301;
     public static final double kPThetaController = SwerveModule.angleKP;
     public static final double kDThetaController = SwerveModule.angleKD;
             
