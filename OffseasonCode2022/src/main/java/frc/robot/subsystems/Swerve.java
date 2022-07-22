@@ -24,8 +24,8 @@ public class Swerve extends SubsystemBase {
     // ----- CONSTANTS -----\\
 
     public static final int pigeonID = 13;
-    public static final double trackWidth = Units.inchesToMeters(18.5);
-    public static final double wheelBase = Units.inchesToMeters(21.5);
+    public static final double trackWidth = Units.inchesToMeters(23);
+    public static final double wheelBase = Units.inchesToMeters(23);
     public static final double maxSpeed = 4.5; //4.9; //meters per second
     public static final boolean invertGyro = false; // Always ensure Gyro is CCW+ CW-
 
