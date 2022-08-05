@@ -21,6 +21,7 @@
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
+      "/LiveWindow/EndgamePistonSubsystem": "Subsystem",
       "/LiveWindow/IndexerSubsystem": "Subsystem",
       "/LiveWindow/IntakeSubsystem": "Subsystem",
       "/LiveWindow/ShooterHoodSubsystem": "Subsystem",
@@ -39,6 +40,24 @@
       "/LiveWindow/Ungrouped/Talon FX [7]": "Motor Controller",
       "/Shuffleboard/Driver Tab/Auton Path Selector": "String Chooser",
       "/Shuffleboard/Driver Tab/Pipeline Selector": "String Chooser"
+    },
+    "windows": {
+      "/LiveWindow/EndgamePistonSubsystem": {
+        "window": {
+          "visible": true
+        }
+      }
+    }
+  },
+  "NetworkTables": {
+    "LiveWindow": {
+      "EndgamePistonSubsystem": {
+        "open": true
+      },
+      "open": true
+    },
+    "Shuffleboard": {
+      "open": true
     }
   }
 }

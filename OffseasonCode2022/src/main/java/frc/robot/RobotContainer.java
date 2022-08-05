@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -17,6 +18,7 @@ import frc.robot.commands.shooterCommands.ShooterCommand;
 import frc.robot.subsystems.*;
 import frc.robot.utilities.ShooterUtility;
 import frc.lib.util.SwerveModuleConstants;
+import edu.wpi.first.wpilibj.Compressor;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -24,7 +26,11 @@ import frc.lib.util.SwerveModuleConstants;
  * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
  * subsystems, commands, and button mappings) should be declared here.
  */
+
 public class RobotContainer {
+
+    
+private final Compressor compressor = new Compressor(PneumaticsModuleType.REVPH);
 
   /* Controllers */
     // Driver Controller
@@ -48,19 +54,15 @@ public class RobotContainer {
 
   /* Subsystems */
   private final Swerve m_Swerve = new Swerve(frontLeftModule, frontRightModule, backLeftModule, backRightModule);
+  private final EndgamePistonSubsystem m_EndgamePistonSubsystem = new EndgamePistonSubsystem(0);
   //private final IntakeSubsystem m_IntakeSubsystem;
   //private final ShooterMotorSubsystem m_ShooterMotorSubsystem;
   //private final ShooterHoodSubsystem m_ShooterHoodSubsystem;
   //private final IndexerSubsystem m_IndexerSubsystem;
 
-  /* Commands */
-  //private final ExtendIntakeCommand m_ExtendIntakeCommand;
-  //private final RunIntakeRollersCommand m_RunIntakeRollersCommand;
-  //private final ShooterCommand m_ShooterCommand;
-  //private final AdjustHoodCommand m_ShooterHoodCommand;
- 
-
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
+  private final EngageEndgamePistonCommand m_EngageEndgamePistonCommand;
+  private final DisengageEndgamePistonCommand m_DisengageEndgamePistonCommand;
   public RobotContainer() {
 
     //Auto Command Manager Stuff
@@ -83,9 +85,11 @@ public class RobotContainer {
     //m_ShooterCommand  = new ShooterCommand(m_ShooterMotorSubsystem, m_IndexerSubsystem, 0.5);
     //m_ShooterHoodCommand = new AdjustHoodCommand(m_ShooterHoodSubsystem);
 
-
-
     
+    m_EngageEndgamePistonCommand = new EngageEndgamePistonCommand(m_EndgamePistonSubsystem);
+    m_DisengageEndgamePistonCommand = new DisengageEndgamePistonCommand(m_EndgamePistonSubsystem);
+    
+    compressor.enableAnalog(100,115);
 
     // Configure the button bindings
     configureButtonBindings();
@@ -100,6 +104,14 @@ public class RobotContainer {
   private void configureButtonBindings() {
 
     /* Driver Buttons */
+    m_driverController.getPOVUpTrigger().whileActiveOnce(
+        m_EngageEndgamePistonCommand
+        );
+        
+    m_driverController.getPOVDownTrigger().whileActiveOnce(
+        m_DisengageEndgamePistonCommand
+        );
+    
     /*
     m_driverController.getYButton().whileActiveOnce(
         new InstantCommand(() -> m_Swerve.zeroGyro())

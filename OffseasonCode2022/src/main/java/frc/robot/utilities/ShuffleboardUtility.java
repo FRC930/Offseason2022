@@ -312,7 +312,9 @@ public class ShuffleboardUtility {
         PHOTON_READY("Photon Ready?"),
 
         AIMED("Is Aimed?"),
-        PHOTON_YAW("Photon Angle");
+        PHOTON_YAW("Photon Angle"),
+
+        PRESSURE("Pressure?");
 
         final String m_name;
 
