@@ -1,7 +1,8 @@
 //----- IMPORTS -----\\
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.motorcontrol.Spark;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -15,9 +16,9 @@ public class IndexerSubsystem extends SubsystemBase {
 
     //-------- VARIABLES --------\\
     
-    private final Spark m_loadedIndexer;
-    private final Spark m_stagedIndexer;
-    private final Spark m_ejectionIndexer;
+    private final CANSparkMax m_loadedIndexer;
+    private final CANSparkMax m_stagedIndexer;
+    private final CANSparkMax m_ejectionIndexer;
 
     // ----- CONSTRUCTOR -----\\
     /**
@@ -31,9 +32,9 @@ public class IndexerSubsystem extends SubsystemBase {
      */
     public IndexerSubsystem(int loadedID, int stagedID, int ejectionID) {
 
-        m_loadedIndexer = new Spark(loadedID);
-        m_stagedIndexer = new Spark(stagedID);
-        m_ejectionIndexer = new Spark(ejectionID);
+        m_loadedIndexer = new CANSparkMax(loadedID, MotorType.kBrushless);
+        m_stagedIndexer = new CANSparkMax(stagedID, MotorType.kBrushless);
+        m_ejectionIndexer = new CANSparkMax(ejectionID, MotorType.kBrushless);
 
     }
 

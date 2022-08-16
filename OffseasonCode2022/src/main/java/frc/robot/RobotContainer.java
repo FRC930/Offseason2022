@@ -19,6 +19,7 @@ import frc.robot.subsystems.*;
 import frc.robot.utilities.ShooterUtility;
 import frc.lib.util.SwerveModuleConstants;
 import edu.wpi.first.wpilibj.Compressor;
+import frc.lib.util.IndexerSensorUtility;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -58,7 +59,16 @@ private final Compressor compressor = new Compressor(PneumaticsModuleType.REVPH)
   //private final IntakeSubsystem m_IntakeSubsystem;
   //private final ShooterMotorSubsystem m_ShooterMotorSubsystem;
   //private final ShooterHoodSubsystem m_ShooterHoodSubsystem;
-  //private final IndexerSubsystem m_IndexerSubsystem;
+  //private final IntakeSubsystem m_IntakeSubsystem;
+  private final IndexerSubsystem m_IndexerSubsystem;
+
+  /* Commands */
+  //private final ExtendIntakeCommand m_ExtendIntakeCommand;
+  //private final RunIntakeRollersCommand m_RunIntakeRollersCommand;
+  private final IndexerCommand m_IndexerCommand;
+
+  /* Utilities */
+  private final IndexerSensorUtility m_IndexerSensorUtility;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   private final EngageEndgamePistonCommand m_EngageEndgamePistonCommand;
@@ -90,6 +100,11 @@ private final Compressor compressor = new Compressor(PneumaticsModuleType.REVPH)
     m_DisengageEndgamePistonCommand = new DisengageEndgamePistonCommand(m_EndgamePistonSubsystem);
     
     compressor.enableAnalog(100,115);
+    
+    // INDEXER INITS //
+    m_IndexerSubsystem = new IndexerSubsystem(14, 13, 99);
+    m_IndexerSensorUtility = new IndexerSensorUtility();
+    m_IndexerCommand = new IndexerCommand(m_IndexerSubsystem, m_IndexerSensorUtility, 0.5);
 
     // Configure the button bindings
     configureButtonBindings();
@@ -98,7 +113,8 @@ private final Compressor compressor = new Compressor(PneumaticsModuleType.REVPH)
   /**
    * Use this method to define your button->command mappings. Buttons can be created by
    * instantiating a {@link GenericHID} or one of its subclasses ({@link
-   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
+   * edu.wpi.first.wpilibj.Joystick
+   * } or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {

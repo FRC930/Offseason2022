@@ -12,6 +12,13 @@
         }
       },
       "Talon FX[7]": {
+    "DIO": {
+      "window": {
+        "visible": true
+      }
+    },
+    "Other Devices": {
+      "SPARK MAX [99]": {
         "header": {
           "open": true
         }
@@ -27,6 +34,10 @@
       "/LiveWindow/ShooterHoodSubsystem": "Subsystem",
       "/LiveWindow/ShooterMotorSubsystem": "Subsystem",
       "/LiveWindow/Swerve": "Subsystem",
+      "/LiveWindow/Ungrouped/DigitalInput[15]": "Digital Input",
+      "/LiveWindow/Ungrouped/DigitalInput[16]": "Digital Input",
+      "/LiveWindow/Ungrouped/DigitalInput[3]": "Digital Input",
+      "/LiveWindow/Ungrouped/DigitalInput[4]": "Digital Input",
       "/LiveWindow/Ungrouped/PIDController[1]": "PIDController",
       "/LiveWindow/Ungrouped/PIDController[2]": "PIDController",
       "/LiveWindow/Ungrouped/PIDController[3]": "PIDController",
@@ -57,7 +68,12 @@
       "open": true
     },
     "Shuffleboard": {
-      "open": true
+      "open": true,
+      "/LiveWindow/Ungrouped/Talon FX [2]": "Motor Controller",
+      "/Shuffleboard/Driver Tab/Auton Path Selector": "String Chooser",
+      "/Shuffleboard/Driver Tab/Pipeline Selector": "String Chooser"
+    }
+  }
     }
   }
 }
