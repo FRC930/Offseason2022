@@ -17,7 +17,6 @@ public class DefensiveThreeBall extends SequentialCommandGroup {
         PathPlannerTrajectory path1 = PathPlanner.loadPath("DefensiveThreeBall1", 1, 2.5, true);
         Trajectory path1Trajectory = path1;
         PathPlannerTrajectory path2 = PathPlanner.loadPath("DefensiveThreeBall2", 1, 2.5, false);
-        Trajectory path2Trajectory = path2;
 
         var thetaController = s_Swerve.getAutoThetaController();
         thetaController.enableContinuousInput(-180.0, 180.0); //-Math.PI, Math.PI);

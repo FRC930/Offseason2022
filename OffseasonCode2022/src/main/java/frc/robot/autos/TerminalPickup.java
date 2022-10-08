@@ -17,9 +17,7 @@ public class TerminalPickup extends SequentialCommandGroup {
         PathPlannerTrajectory path1 = PathPlanner.loadPath("TerminalPickup1", 1, 2.5, true);
         Trajectory path1Trajectory = path1;
         PathPlannerTrajectory path2 = PathPlanner.loadPath("TerminalPickup2", 1, 2.5, true);
-        Trajectory path2Trajectory = path2;
         PathPlannerTrajectory path3 = PathPlanner.loadPath("TerminalPickup3", 1, 2.5, false);
-        Trajectory path3Trajectory = path3;
 
         var thetaController = s_Swerve.getAutoThetaController();
         thetaController.enableContinuousInput(-180.0, 180.0); //-Math.PI, Math.PI);

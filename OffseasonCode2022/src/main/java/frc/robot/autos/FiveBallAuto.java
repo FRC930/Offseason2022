@@ -17,13 +17,9 @@ public class FiveBallAuto extends SequentialCommandGroup {
         PathPlannerTrajectory path1 = PathPlanner.loadPath("FiveBallAuto1", 1, 2.5, false);
         Trajectory path1Trajectory = path1;
         PathPlannerTrajectory path2 = PathPlanner.loadPath("FiveBallAuto2", 1, 2.5, true);
-        Trajectory path2Trajectory = path2;
         PathPlannerTrajectory path3 = PathPlanner.loadPath("FiveBallAuto3", 1, 2.5, true);
-        Trajectory path3Trajectory = path3;
         PathPlannerTrajectory path4 = PathPlanner.loadPath("FiveBallAuto4", 1, 2.5, true);
-        Trajectory path4Trajectory = path4;
         PathPlannerTrajectory path5 = PathPlanner.loadPath("FiveBallAuto5", 1, 2.5, false);
-        Trajectory path5Trajectory = path5;
 
         var thetaController = s_Swerve.getAutoThetaController();
         thetaController.enableContinuousInput(-180.0, 180.0); //-Math.PI, Math.PI);

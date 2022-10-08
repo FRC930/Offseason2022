@@ -1,7 +1,6 @@
 package frc.robot.autos;
 
 import frc.robot.subsystems.Swerve;
-import frc.robot.subsystems.Swerve;
 
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;

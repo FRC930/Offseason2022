@@ -1,18 +1,11 @@
 package frc.lib.util;
 
 import edu.wpi.first.wpilibj.DigitalInput;
-import com.playingwithfusion.TimeOfFlight;
 import frc.robot.Robot;
 
 public class IndexerSensorUtility {
     
     //-------- CONSTANTS --------\\
-
-    private static final int INTAKE_ID = 16;
-    private static final int LOADED_ID = 15;
-    private static final int STAGED_ID = 3;
-    private static final int EJECTION_ID = 4;
-    
     //-------- VARIABLES --------\\
     
     private DigitalInput intakeSensor;
@@ -26,14 +19,14 @@ public class IndexerSensorUtility {
      * 
      * Creates and returns sensor values the endgame sensors
      */
-    public IndexerSensorUtility() {
+    public IndexerSensorUtility(int Intake_ID, int Loaded_ID, int Staged_ID, int Ejection_ID) {
         if (Robot.isReal()) {
 
         } else {
-            intakeSensor = new DigitalInput(INTAKE_ID);
-            loadedSensor = new DigitalInput(LOADED_ID);
-            stagedSensor = new DigitalInput(STAGED_ID);
-            ejectionSensor = new DigitalInput(EJECTION_ID);
+            intakeSensor = new DigitalInput(Intake_ID);
+            loadedSensor = new DigitalInput(Loaded_ID);
+            stagedSensor = new DigitalInput(Staged_ID);
+            ejectionSensor = new DigitalInput(Ejection_ID);
         }
     }
 

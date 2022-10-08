@@ -17,9 +17,7 @@ public class DefensiveHangarCleanup extends SequentialCommandGroup {
         PathPlannerTrajectory path1 = PathPlanner.loadPath("DefensiveHangarCleanup1", 1, 2.5, true);
         Trajectory path1Trajectory = path1;
         PathPlannerTrajectory path2 = PathPlanner.loadPath("DefensiveHangarCleanup2", 1, 2.5, false);
-        Trajectory path2Trajectory = path2;
         PathPlannerTrajectory path3 = PathPlanner.loadPath("DefensiveHangarCleanup3", 1, 2.5, true);
-        Trajectory path3Trajectory = path3;
 
         var thetaController = s_Swerve.getAutoThetaController();
         thetaController.enableContinuousInput(-180.0, 180.0); //-Math.PI, Math.PI);
