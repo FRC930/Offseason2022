@@ -11,8 +11,6 @@ public class IndexerCommand extends CommandBase {
     private final IndexerSubsystem indexerSubsystem;
     private final IndexerSensorUtility indexerSensorUtility;
 
-    private int cargoCount; // Basic counter to decide what steps to take with motors
-
     /**
      * <h3>IndexerCommand</h3>
      * 
@@ -26,70 +24,34 @@ public class IndexerCommand extends CommandBase {
         indexerSubsystem = m_indexerSubsystem;
         indexerSensorUtility = m_indexerSensor;
         motorSpeed = speed;
+
+        this.addRequirements(m_indexerSubsystem);
     }
 
     @Override
     public void execute() {
-
-
-        if (indexerSensorUtility.intakeIsTouching() == true) { // TODO: Remove if statement, redundant because command is only run whenever the intake sensor is touching
-
-            cargoCount = 0; // Resets counter
-
-            if (indexerSensorUtility.loadedIsTouching() == true) { // Add one to the counter if sensor is touching
-                cargoCount++;
-            }
-    
-            if (indexerSensorUtility.stagedIsTouching() == true) { // Add one to the counter if sensor is touching
-                cargoCount++;
-            }
-    
-            if (cargoCount >= 2) { // failsafe
-                cargoCount = 2;
-            }
-    
-    
-            switch (cargoCount) { // Decides where cargo should be moved
-    
-                case 0: // If there is no cargo in the robot already, moves new cargo to loaded sensor
-                    while (indexerSensorUtility.loadedIsTouching() == false) {
-                        indexerSubsystem.setLoadedMotorSpeed(motorSpeed); // Loaded motor CW
-                        indexerSubsystem.setStagedMotorSpeed(-motorSpeed); // Staged motor CCW
-                        indexerSubsystem.setEjectionMotorSpeed(-motorSpeed); // Ejection motor CW
-                    }
-                    indexerSubsystem.stopMotors(); // stops all motors
-                    break;
-    
-                case 1: // If there is 1 cargo in the robot already, moves new cargo to staged sensor
-                    while (indexerSensorUtility.stagedIsTouching() == false) {
-                        indexerSubsystem.setLoadedMotorSpeed(motorSpeed); // Loaded motor CW
-                        indexerSubsystem.setStagedMotorSpeed(-motorSpeed); // Staged motor CCW
-                    }
-                    indexerSubsystem.stopMotors(); // stops all motors
-                    break;
-
-                default: // If there is 2 cargo in the robot already, moves staged cargo to ejection sensor and new cargo to staged sensor
-                    while (indexerSensorUtility.ejectionIsTouching() == false) {
-                        indexerSubsystem.setStagedMotorSpeed(-motorSpeed); // Staged motor CCW
-                        indexerSubsystem.setEjectionMotorSpeed(motorSpeed); // Ejection motor CW
-                    }
-                    
-                    indexerSubsystem.setEjectionMotorSpeed(0.0); // Stops ejection motor
-                    while (indexerSensorUtility.stagedIsTouching() == false) {
-                        indexerSubsystem.setStagedMotorSpeed(-motorSpeed); // Staged motor CCW
-                        indexerSubsystem.setEjectionMotorSpeed(motorSpeed); // Ejection motor CW
-                    }
-                    indexerSubsystem.stopMotors(); // stops all motors
-                    break;
-    
-            }
+        if(indexerSensorUtility.loadedIsTouching() == false) { // No loaded cargo
+            indexerSubsystem.setLoadedMotorSpeed(motorSpeed); // Loaded motor CW
+            indexerSubsystem.setStagedMotorSpeed(-motorSpeed); // Staged motor CCW
+            indexerSubsystem.setEjectionMotorSpeed(-motorSpeed); // Ejection motor CCW
+        } else if(indexerSensorUtility.stagedIsTouching() == false && indexerSensorUtility.loadedIsTouching() == true) { // Loaded cargo, but No staged cargo
+            indexerSubsystem.setLoadedMotorSpeed(motorSpeed); // Loaded motor CW
+            indexerSubsystem.setStagedMotorSpeed(-motorSpeed); // Staged motor CCW
+            indexerSubsystem.setEjectionMotorSpeed(0.0); // Ejection motor CCW
+        } else { // Loaded cargo and staged cargo
+            indexerSubsystem.setLoadedMotorSpeed(0.0); // Loaded motor CW
+            indexerSubsystem.setStagedMotorSpeed(0.0); // Staged motor CCW
+            indexerSubsystem.setEjectionMotorSpeed(0.0); // Ejection motor CCW
         }
-    
 
     }
 
     @Override
     public boolean isFinished() { // when true, ends command
+        if (indexerSensorUtility.stagedIsTouching() && indexerSensorUtility.loadedIsTouching()) {
+            indexerSubsystem.stopMotors();
+            return true;
+        }
         return false;
     }
 

@@ -306,6 +306,9 @@ public class ShuffleboardUtility {
         RIGHT_SPEED("Speed of right drivetrain"),
         DRIVETRAIN_SHIFTED("Drivetrain shifted"),
 
+        // INDEXER
+        BALL_COUNT("Amount of cargo in the system"),
+
         // MISCELLANEOUS
         CAMERA_STREAM("Camera stream"),
         DISTANCE_FROM_GOAL("Distance from goal"),
