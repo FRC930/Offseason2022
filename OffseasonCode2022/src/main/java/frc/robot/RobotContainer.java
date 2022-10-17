@@ -46,14 +46,14 @@ public class RobotContainer {
     /* Utilities */
     private final IndexerSensorUtility m_IndexerSensorUtility = new IndexerSensorUtility(16, 15, 3, 4);
 
+    /* Auto Command Manager */
+    private final AutoCommandManager m_autoManager = new AutoCommandManager() ;
+
     /* Modules */
     public static final SwerveModuleConstants frontLeftModule = new SwerveModuleConstants(8, 9, 9, 259.980);
     public static final SwerveModuleConstants frontRightModule = new SwerveModuleConstants(11, 10, 10, 233.877);
     public static final SwerveModuleConstants backLeftModule = new SwerveModuleConstants(1, 0, 0, 71.895);
     public static final SwerveModuleConstants backRightModule = new SwerveModuleConstants(18, 19, 19, 143.965);
-
-    /* Auto Command Manager */
-    private final AutoCommandManager m_autoManager = new AutoCommandManager() ;
 
     /* Subsystems */
     private final Swerve m_Swerve = new Swerve(frontLeftModule, frontRightModule, backLeftModule, backRightModule);
