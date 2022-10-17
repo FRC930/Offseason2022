@@ -93,13 +93,22 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
 
+    //--------------------------------------------------------------------------
     /* Driver Buttons */
     m_driverController.getPOVUpTrigger().whileActiveOnce(
         new EngageEndgamePistonCommand(m_EndgamePistonSubsystem)
     );
 
     m_driverController.getPOVDownTrigger().whileActiveOnce(
+        new EngageEndgamePistonCommand(m_EndgamePistonSubsystem)
+    );
+        
+    m_driverController.getPOVDownTrigger().whileActiveOnce(
         new DisengageEndgamePistonCommand(m_EndgamePistonSubsystem)
+    );
+
+    m_driverController.getRightBumper().whileActiveOnce(
+        new ShooterCommand(m_ShooterMotorSubsystem, m_IndexerSubsystem, 0.5)
     );
 
     m_driverController.getYButton().whileActiveOnce(
@@ -108,12 +117,29 @@ public class RobotContainer {
 
     //Engages motors for intake when left bumper is pressed
     m_driverController.getLeftBumper().whileActiveOnce(
-        new ExtendIntakeCommand(m_IntakeSubsystem)
+        new ParallelCommandGroup(
+            new ExtendIntakeCommand(m_IntakeSubsystem),
+            new RunIntakeRollersCommand(m_IntakeSubsystem)
+        )
     );
 
-    //Runs the intake motors when right bumper is pressed
+    //  shooter controls
     m_driverController.getRightBumper().whileActiveOnce(
-        new RunIntakeRollersCommand(m_IntakeSubsystem)  
+        new ShooterCommand(m_ShooterMotorSubsystem, m_IndexerSubsystem, 0.5)
+    );
+
+    //--------------------------------------------------------------------------------
+    /* Co-Driver Buttons */
+    m_codriverController.getLeftBumper().whileActiveOnce(
+        new ParallelCommandGroup(
+            new IndexerCommand(m_IndexerSubsystem, m_IndexerSensorUtility, 0.5),
+            new RunIntakeRollersCommand(m_IntakeSubsystem),
+            new ExtendIntakeCommand(m_IntakeSubsystem)
+        )
+    );
+
+    m_codriverController.getBButton().whileActiveOnce(
+        new IndexerEjectCommand(m_IndexerSubsystem, 0.5)
     );
 
     // Tarmac
@@ -163,12 +189,6 @@ public class RobotContainer {
             )
         ).withTimeout(0.1)
     );
-
-    //  shooter controls
-    m_driverController.getRightBumper().whileActiveOnce(
-        new ShooterCommand(m_ShooterMotorSubsystem, m_IndexerSubsystem, 0.5)
-    );
-
   }
 
   /**

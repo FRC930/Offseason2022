@@ -1,17 +1,28 @@
 package frc.lib.util;
 
+import com.playingwithfusion.TimeOfFlight;
+import com.playingwithfusion.TimeOfFlight.RangingMode;
+
 import edu.wpi.first.wpilibj.DigitalInput;
 import frc.robot.Robot;
 
 public class IndexerSensorUtility {
-    
+
     //-------- CONSTANTS --------\\
+
+    private final int TRIGGER_DISTANCE = 200;
+    
     //-------- VARIABLES --------\\
     
-    private DigitalInput intakeSensor;
-    private DigitalInput loadedSensor;
-    private DigitalInput stagedSensor;
-    private DigitalInput ejectionSensor;
+    private DigitalInput intakeSensorSim;
+    private DigitalInput loadedSensorSim;
+    private DigitalInput stagedSensorSim;
+    private DigitalInput ejectionSensorSim;
+
+    private TimeOfFlight intakeSensor;
+    private TimeOfFlight loadedSensor;
+    private TimeOfFlight stagedSensor;
+    private TimeOfFlight ejectionSensor;
 
     //-------- CONSTRUCTOR --------\\
     /**
@@ -19,14 +30,21 @@ public class IndexerSensorUtility {
      * 
      * Creates and returns sensor values the endgame sensors
      */
-    public IndexerSensorUtility(int Intake_ID, int Loaded_ID, int Staged_ID, int Ejection_ID) {
+    public IndexerSensorUtility(int intakeId, int loadedId, int stagedId, int ejectionId) {
         if (Robot.isReal()) {
-
+            intakeSensor = new TimeOfFlight(intakeId);
+            loadedSensor = new TimeOfFlight(loadedId);
+            stagedSensor = new TimeOfFlight(stagedId);
+            ejectionSensor = new TimeOfFlight(ejectionId);
+            intakeSensor.setRangingMode(RangingMode.Short, 25);
+            loadedSensor.setRangingMode(RangingMode.Short, 25);
+            stagedSensor.setRangingMode(RangingMode.Short, 25);
+            ejectionSensor.setRangingMode(RangingMode.Short, 25);
         } else {
-            intakeSensor = new DigitalInput(Intake_ID);
-            loadedSensor = new DigitalInput(Loaded_ID);
-            stagedSensor = new DigitalInput(Staged_ID);
-            ejectionSensor = new DigitalInput(Ejection_ID);
+            intakeSensorSim = new DigitalInput(intakeId);
+            loadedSensorSim = new DigitalInput(loadedId);
+            stagedSensorSim = new DigitalInput(stagedId);
+            ejectionSensorSim = new DigitalInput(ejectionId);
         }
     }
 
@@ -45,7 +63,11 @@ public class IndexerSensorUtility {
      * @return the value of the sensor
      */
     public boolean intakeIsTouching() {
-        return !intakeSensor.get();
+        if (Robot.isReal()) {
+            return intakeSensor.getRange() < TRIGGER_DISTANCE;
+        } else {
+            return intakeSensorSim.get();
+        }
     }
 
     /**
@@ -56,7 +78,11 @@ public class IndexerSensorUtility {
      * @return the value of the sensor
      */
     public boolean loadedIsTouching() {
-        return !loadedSensor.get();
+        if (Robot.isReal()) {
+            return loadedSensor.getRange() < TRIGGER_DISTANCE;
+        } else {
+            return loadedSensorSim.get();
+        }
     }
 
     /**
@@ -67,7 +93,11 @@ public class IndexerSensorUtility {
      * @return the value of the sensor
      */
     public boolean stagedIsTouching() {
-        return !stagedSensor.get();
+        if (Robot.isReal()) {
+            return stagedSensor.getRange() < TRIGGER_DISTANCE;
+        } else {
+            return stagedSensorSim.get();
+        }
     }
 
     /**
@@ -78,7 +108,11 @@ public class IndexerSensorUtility {
      * @return the value of the sensor
      */
     public boolean ejectionIsTouching() {
-        return !ejectionSensor.get();
+        if (Robot.isReal()) {
+            return ejectionSensor.getRange() < TRIGGER_DISTANCE;
+        } else {
+            return ejectionSensorSim.get();
+        }
     }
 
 } // End of class IndexerSensorUtility

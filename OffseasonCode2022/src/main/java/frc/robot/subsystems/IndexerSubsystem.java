@@ -5,6 +5,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.utilities.SparkMaxWrapper;
 
 //----- CLASS -----\\
 /**
@@ -16,9 +17,9 @@ public class IndexerSubsystem extends SubsystemBase {
 
     //-------- VARIABLES --------\\
     
-    private final CANSparkMax m_loadedIndexer;
-    private final CANSparkMax m_stagedIndexer;
-    private final CANSparkMax m_ejectionIndexer;
+    private final SparkMaxWrapper m_loadedIndexer;
+    private final SparkMaxWrapper m_stagedIndexer;
+    private final SparkMaxWrapper m_ejectionIndexer;
 
     // ----- CONSTRUCTOR -----\\
     /**
@@ -32,9 +33,9 @@ public class IndexerSubsystem extends SubsystemBase {
      */
     public IndexerSubsystem(int loadedID, int stagedID, int ejectionID) {
 
-        m_loadedIndexer = new CANSparkMax(loadedID, MotorType.kBrushless);
-        m_stagedIndexer = new CANSparkMax(stagedID, MotorType.kBrushless);
-        m_ejectionIndexer = new CANSparkMax(ejectionID, MotorType.kBrushless);
+        m_loadedIndexer = new SparkMaxWrapper(loadedID, MotorType.kBrushless);
+        m_stagedIndexer = new SparkMaxWrapper(stagedID, MotorType.kBrushless);
+        m_ejectionIndexer = new SparkMaxWrapper(ejectionID, MotorType.kBrushless);
 
     }
 
@@ -65,7 +66,7 @@ public class IndexerSubsystem extends SubsystemBase {
     /**
      * <h3>setEjectionMotorSpeed</h3>
      * 
-     * Sets the staged ejection motor speed.
+     * Sets the staged ejection motor speed
      * 
      * @param speed the speed to set the motor
      */
@@ -84,8 +85,5 @@ public class IndexerSubsystem extends SubsystemBase {
         m_loadedIndexer.stopMotor();
         m_ejectionIndexer.stopMotor();
         // Need to set voltages to zero because stop motor doesn't actually stop them?
-        m_stagedIndexer.setVoltage(0.0);
-        m_loadedIndexer.setVoltage(0.0);
-        m_ejectionIndexer.setVoltage(0.0);
     }
 }
