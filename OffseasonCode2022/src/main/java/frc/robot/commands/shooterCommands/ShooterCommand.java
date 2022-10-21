@@ -107,8 +107,8 @@ public class ShooterCommand extends CommandBase {
         // Waits for delay before activating indexer system
         if (counter == INDEXER_DELAY) {
             
-            indexerSubsystem.setStagedMotorSpeed(1.0);
-            indexerSubsystem.setLoadedMotorSpeed(1.0);
+            indexerSubsystem.setStagedMotorSpeed(0.25); //TODO 1.0);
+            indexerSubsystem.setLoadedMotorSpeed(0.25); //TODO 1.0);
         }
     }
 

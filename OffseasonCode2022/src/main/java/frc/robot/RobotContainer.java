@@ -18,204 +18,213 @@ import frc.robot.commands.shooterCommands.ShooterCommand;
 import frc.robot.subsystems.*;
 import frc.robot.utilities.ShooterUtility;
 import frc.lib.util.SwerveModuleConstants;
+import edu.wpi.first.util.net.PortForwarder;
 import edu.wpi.first.wpilibj.Compressor;
 import frc.lib.util.IndexerSensorUtility;
 
 /**
- * This class is where the bulk of the robot should be declared. Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
+ * This class is where the bulk of the robot should be declared. Since
+ * Command-based is a
+ * "declarative" paradigm, very little robot logic should actually be handled in
+ * the {@link Robot}
+ * periodic methods (other than the scheduler calls). Instead, the structure of
+ * the robot (including
  * subsystems, commands, and button mappings) should be declared here.
  */
 
 public class RobotContainer {
 
-    
-private final Compressor compressor = new Compressor(PneumaticsModuleType.REVPH);
+    private final Compressor compressor = new Compressor(PneumaticsModuleType.REVPH);
 
-  /* Controllers */
+    /* Constants */
+    double IndexerMotorSpeed = 0.25; //TODO 0.5;
+
+    /* Controllers */
     // Driver Controller
     private final ControllerManager m_driverController = new ControllerManager(0);
     // Codriver Controller
     private final ControllerManager m_codriverController = new ControllerManager(1);
 
-  /* Drive Controls */
-  private final int translationAxis = XboxController.Axis.kLeftY.value;
-  private final int strafeAxis = XboxController.Axis.kLeftX.value;
-  private final int rotationAxis = XboxController.Axis.kRightX.value;
+    /* Drive Controls */
+    private final int translationAxis = XboxController.Axis.kLeftY.value;
+    private final int strafeAxis = XboxController.Axis.kLeftX.value;
+    private final int rotationAxis = XboxController.Axis.kRightX.value;
 
-  /* Modules */
-  public static final SwerveModuleConstants frontLeftModule = new SwerveModuleConstants(8, 9, 9, 259.980);
-  public static final SwerveModuleConstants frontRightModule = new SwerveModuleConstants(11, 10, 10, 233.877);
-  public static final SwerveModuleConstants backLeftModule = new SwerveModuleConstants(1, 0, 0, 71.895);
-  public static final SwerveModuleConstants backRightModule = new SwerveModuleConstants(18, 19, 19, 143.965);
+    /* Modules */
+    public static final SwerveModuleConstants frontLeftModule = new SwerveModuleConstants(8, 9, 9, 259.980);
+    public static final SwerveModuleConstants frontRightModule = new SwerveModuleConstants(11, 10, 10, 233.877);
+    public static final SwerveModuleConstants backLeftModule = new SwerveModuleConstants(1, 0, 0, 71.895);
+    public static final SwerveModuleConstants backRightModule = new SwerveModuleConstants(18, 19, 19, 143.965);
 
-  /* Auto Command Manager */
-  private final AutoCommandManager m_autoManager;
+    /* Auto Command Manager */
+    private final AutoCommandManager m_autoManager;
 
-  /* Subsystems */
-  private final Swerve m_Swerve = new Swerve(frontLeftModule, frontRightModule, backLeftModule, backRightModule);
-  private final EndgamePistonSubsystem m_EndgamePistonSubsystem = new EndgamePistonSubsystem(0);
-  private final IntakeSubsystem m_IntakeSubsystem;
-  private final ShooterMotorSubsystem m_ShooterMotorSubsystem;
-  private final ShooterHoodSubsystem m_ShooterHoodSubsystem;
-  private final IndexerSubsystem m_IndexerSubsystem;
+    /* Subsystems */
+    private final Swerve m_Swerve = new Swerve(frontLeftModule, frontRightModule, backLeftModule, backRightModule);
+    private final EndgamePistonSubsystem m_EndgamePistonSubsystem = new EndgamePistonSubsystem(0);
+    private final IntakeSubsystem m_IntakeSubsystem;
+    private final ShooterMotorSubsystem m_ShooterMotorSubsystem;
+    private final ShooterHoodSubsystem m_ShooterHoodSubsystem;
+    private final IndexerSubsystem m_IndexerSubsystem;
 
-  /* Commands */
-  private final ExtendIntakeCommand m_ExtendIntakeCommand;
-  private final RunIntakeRollersCommand m_RunIntakeRollersCommand;
-  private final IndexerCommand m_IndexerCommand;
-  private final IndexerEjectCommand m_IndexerEjectCommand;
-  private final ShooterCommand m_ShooterCommand;
-  private final AdjustHoodCommand m_ShooterHoodCommand;
+    /* Commands */
+    private final ExtendIntakeCommand m_ExtendIntakeCommand;
+    private final RunIntakeRollersCommand m_RunIntakeRollersCommand;
+    private final IndexerCommand m_IndexerCommand;
+    private final IndexerEjectCommand m_IndexerEjectCommand;
+    private final ShooterCommand m_ShooterCommand;
+    private final AdjustHoodCommand m_ShooterHoodCommand;
 
-  /* Utilities */
-  private final IndexerSensorUtility m_IndexerSensorUtility;
+    /* Utilities */
+    private final IndexerSensorUtility m_IndexerSensorUtility;
 
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
-  private final EngageEndgamePistonCommand m_EngageEndgamePistonCommand;
-  private final DisengageEndgamePistonCommand m_DisengageEndgamePistonCommand;
-  public RobotContainer() {
-    
-    //Auto Command Manager Stuff
-    m_autoManager = new AutoCommandManager();
-    m_autoManager.addSubsystem(subNames.Swerve, m_Swerve);
-    m_autoManager.initCommands();
-    
-    // INDEXER INITS //
-    m_IndexerSubsystem = new IndexerSubsystem(14, 13, 99);
-    m_IndexerSensorUtility = new IndexerSensorUtility(16, 15, 3, 4);
-    m_IndexerCommand = new IndexerCommand(m_IndexerSubsystem, m_IndexerSensorUtility, 0.5);
-    m_IndexerEjectCommand = new IndexerEjectCommand(m_IndexerSubsystem, 0.5);
+    /**
+     * The container for the robot. Contains subsystems, OI devices, and commands.
+     */
+    private final EngageEndgamePistonCommand m_EngageEndgamePistonCommand;
+    private final DisengageEndgamePistonCommand m_DisengageEndgamePistonCommand;
 
-    // INTAKE INITS //
-    
-    m_IntakeSubsystem = new IntakeSubsystem(2, 17, 3);
-    m_RunIntakeRollersCommand = new RunIntakeRollersCommand(m_IntakeSubsystem);
-    m_ExtendIntakeCommand = new ExtendIntakeCommand(m_IntakeSubsystem);
+    public RobotContainer() {
 
-    boolean fieldRelative = true;       
-    boolean openLoop = true;
-    m_Swerve.setDefaultCommand(new TeleopSwerve(m_Swerve, m_driverController.getController(), translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop));
-   
+        // PORT FORWARDING //
+        PortForwarder.add(5800, "10.99.30.25", 5800);
+        PortForwarder.add(1181, "10.99.30.25", 1181);
+        PortForwarder.add(1182, "10.99.30.25", 1182);
+        PortForwarder.add(1183, "10.99.30.25", 1183);
+        PortForwarder.add(1184, "10.99.30.25", 1184);
 
-    //SHOOTER INITS //
-    m_ShooterMotorSubsystem = new ShooterMotorSubsystem(12, 7);
-    m_ShooterHoodSubsystem = new ShooterHoodSubsystem(6);
-    m_ShooterCommand  = new ShooterCommand(m_ShooterMotorSubsystem, m_IndexerSubsystem, 0.5);
-    m_ShooterHoodCommand = new AdjustHoodCommand(m_ShooterHoodSubsystem);
+        // Auto Command Manager Stuff
+        m_autoManager = new AutoCommandManager();
+        m_autoManager.addSubsystem(subNames.Swerve, m_Swerve);
+        m_autoManager.initCommands();
 
-    
-    m_EngageEndgamePistonCommand = new EngageEndgamePistonCommand(m_EndgamePistonSubsystem);
-    m_DisengageEndgamePistonCommand = new DisengageEndgamePistonCommand(m_EndgamePistonSubsystem);
-    
-    compressor.enableAnalog(100,115);
-    
-    
+        // INDEXER INITS //
+        m_IndexerSubsystem = new IndexerSubsystem(14, 13, 99);
+        m_IndexerSensorUtility = new IndexerSensorUtility(3, 15, 16, 4);
+        m_IndexerCommand = new IndexerCommand(m_IndexerSubsystem, m_IndexerSensorUtility, IndexerMotorSpeed);
+        m_IndexerEjectCommand = new IndexerEjectCommand(m_IndexerSubsystem, IndexerMotorSpeed);
 
-    // Configure the button bindings
-    configureButtonBindings();
-  }
+        // MOTORS //
+        NeoMotorSubsystem m_stagedMotor = new NeoMotorSubsystem(16);
+        NeoMotorSubsystem m_ejectionMotor = new NeoMotorSubsystem(4);
+        NeoMotorSubsystem m_cargoCenteringMotor = new NeoMotorSubsystem(3);
+        NeoMotorSubsystem m_intakeRollerMotor = new NeoMotorSubsystem(17);
 
-  /**
-   * Use this method to define your button->command mappings. Buttons can be created by
-   * instantiating a {@link GenericHID} or one of its subclasses ({@link
-   * edu.wpi.first.wpilibj.Joystick
-   * } or {@link XboxController}), and then passing it to a {@link
-   * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
-   */
-  private void configureButtonBindings() {
+        // MOTOR COMMANDS //
+        NeoIndividualMotorCommand m_stagedMotorPositive = new NeoIndividualMotorCommand(m_stagedMotor, false);
+        NeoIndividualMotorCommand m_stagedMotorNegative = new NeoIndividualMotorCommand(m_stagedMotor, true);
+        NeoIndividualMotorCommand m_ejectionMotorPositive = new NeoIndividualMotorCommand(m_ejectionMotor, false);
+        NeoIndividualMotorCommand m_ejectionMotorNegative = new NeoIndividualMotorCommand(m_ejectionMotor, true);
+        NeoIndividualMotorCommand m_cargoCenteringMotorPositive = new NeoIndividualMotorCommand(m_cargoCenteringMotor, false);
+        NeoIndividualMotorCommand m_cargoCenteringMotorNegative = new NeoIndividualMotorCommand(m_cargoCenteringMotor, true);
+        NeoIndividualMotorCommand m_intakeRollerMotorPositive = new NeoIndividualMotorCommand(m_intakeRollerMotor, false);
+        NeoIndividualMotorCommand m_intakeRollerMotorNegative = new NeoIndividualMotorCommand(m_intakeRollerMotor, true);
 
-    /* Driver Buttons */
-    m_driverController.getPOVUpTrigger().whileActiveOnce(
-        m_EngageEndgamePistonCommand
-    );
+        // INTAKE INITS //
+        m_IntakeSubsystem = new IntakeSubsystem(2, 17, 3);
+        m_RunIntakeRollersCommand = new RunIntakeRollersCommand(m_IntakeSubsystem);
+        m_ExtendIntakeCommand = new ExtendIntakeCommand(m_IntakeSubsystem);
+
+        boolean fieldRelative = true;
+        boolean openLoop = true;
+        m_Swerve.setDefaultCommand(new TeleopSwerve(m_Swerve, m_driverController.getController(), translationAxis,
+                strafeAxis, rotationAxis, fieldRelative, openLoop));
+
+        // SHOOTER INITS //
+        m_ShooterMotorSubsystem = new ShooterMotorSubsystem(12, 7);
+        m_ShooterHoodSubsystem = new ShooterHoodSubsystem(6);
+        m_ShooterCommand = new ShooterCommand(m_ShooterMotorSubsystem, m_IndexerSubsystem, 0.5);
+        m_ShooterHoodCommand = new AdjustHoodCommand(m_ShooterHoodSubsystem);
+
+        m_EngageEndgamePistonCommand = new EngageEndgamePistonCommand(m_EndgamePistonSubsystem);
+        m_DisengageEndgamePistonCommand = new DisengageEndgamePistonCommand(m_EndgamePistonSubsystem);
+
+        compressor.enableAnalog(100, 115);
+
+        // Configure the button bindings
+        configureButtonBindings();
+    }
+
+    /**
+     * Use this method to define your button->command mappings. Buttons can be
+     * created by
+     * instantiating a {@link GenericHID} or one of its subclasses ({@link
+     * edu.wpi.first.wpilibj.Joystick
+     * } or {@link XboxController}), and then passing it to a {@link
+     * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
+     */
+    private void configureButtonBindings() {
+
+        /* Driver Buttons */
+        m_driverController.getPOVUpTrigger().whileActiveOnce(
+                m_EngageEndgamePistonCommand);
+
+        m_driverController.getPOVDownTrigger().whileActiveOnce(
+                m_DisengageEndgamePistonCommand);
+
+        m_driverController.getRightBumper().whileActiveOnce(
+                m_ShooterCommand);
+
+        m_driverController.getYButton().whileActiveOnce(
+                new InstantCommand(() -> m_Swerve.zeroGyro()));
+
         
-    m_driverController.getPOVDownTrigger().whileActiveOnce(
-        m_DisengageEndgamePistonCommand
-    );
+        /* Co-Driver Buttons */
 
-    m_driverController.getRightBumper().whileActiveOnce(
-        m_ShooterCommand
-    );
+        m_codriverController.getLeftBumper().whileActiveOnce(
+                new ParallelCommandGroup(
+                        m_IndexerCommand,
+                        m_RunIntakeRollersCommand,
+                        m_ExtendIntakeCommand));
 
-    m_driverController.getYButton().whileActiveOnce(
-        new InstantCommand(() -> m_Swerve.zeroGyro())
-    );
+        m_codriverController.getBButton().whileActiveOnce(
+                m_IndexerEjectCommand);
 
-    /* Co-Driver Buttons */
+        // Tarmac
+        m_codriverController.getPOVLeftTrigger().whileActiveOnce(
+                new ParallelCommandGroup(
+                        new AdjustHoodCommand(
+                                m_ShooterHoodSubsystem,
+                                ShooterUtility.calculateHoodPos(9)),
+                        new ShooterCommand(
+                                m_ShooterMotorSubsystem,
+                                m_IndexerSubsystem,
+                                ShooterUtility.calculateTopSpeed(9),
+                                ShooterUtility.calculateBottomSpeed(9))).withTimeout(0.1));
 
-    m_codriverController.getLeftBumper().whileActiveOnce(
-        new ParallelCommandGroup(
-            m_IndexerCommand,
-            m_RunIntakeRollersCommand,
-            m_ExtendIntakeCommand
-        )
-    );
+        // Launchpad
+        m_codriverController.getPOVUpTrigger().whileActiveOnce(
+                new ParallelCommandGroup(
+                        new AdjustHoodCommand(
+                                m_ShooterHoodSubsystem,
+                                ShooterUtility.calculateHoodPos(14.5)),
+                        new ShooterCommand(
+                                m_ShooterMotorSubsystem,
+                                m_IndexerSubsystem,
+                                ShooterUtility.calculateTopSpeed(14.5),
+                                ShooterUtility.calculateBottomSpeed(14.5))).withTimeout(0.1));
 
-    m_codriverController.getBButton().whileActiveOnce(
-        m_IndexerEjectCommand
-    );
+        // Fender shot
+        m_codriverController.getPOVDownTrigger().whileActiveOnce(
+                new ParallelCommandGroup(
+                        new AdjustHoodCommand(
+                                m_ShooterHoodSubsystem,
+                                ShooterUtility.calculateHoodPos(19 / 12)),
+                        new ShooterCommand(
+                                m_ShooterMotorSubsystem,
+                                m_IndexerSubsystem,
+                                ShooterUtility.calculateTopSpeed(19 / 12),
+                                ShooterUtility.calculateBottomSpeed(19 / 12))).withTimeout(0.1));
 
-    // Tarmac
-    m_codriverController.getPOVLeftTrigger().whileActiveOnce(
-        new ParallelCommandGroup(
-            new AdjustHoodCommand(
-                m_ShooterHoodSubsystem,
-                ShooterUtility.calculateHoodPos(9)
-            ),
-            new ShooterCommand(
-                m_ShooterMotorSubsystem, 
-                m_IndexerSubsystem,
-                ShooterUtility.calculateTopSpeed(9),
-                ShooterUtility.calculateBottomSpeed(9)
-            )
-        ).withTimeout(0.1)
-    );
+    }
 
-    // Launchpad
-    m_codriverController.getPOVUpTrigger().whileActiveOnce(
-        new ParallelCommandGroup(
-            new AdjustHoodCommand(
-                m_ShooterHoodSubsystem,
-                ShooterUtility.calculateHoodPos(14.5)
-            ),
-            new ShooterCommand(
-                m_ShooterMotorSubsystem, 
-                m_IndexerSubsystem,
-                ShooterUtility.calculateTopSpeed(14.5),
-                ShooterUtility.calculateBottomSpeed(14.5)
-            )
-        ).withTimeout(0.1)
-    );
-
-    // Fender shot
-    m_codriverController.getPOVDownTrigger().whileActiveOnce(
-        new ParallelCommandGroup(
-            new AdjustHoodCommand(
-                m_ShooterHoodSubsystem,
-                ShooterUtility.calculateHoodPos(19 / 12)
-            ),
-            new ShooterCommand(
-                m_ShooterMotorSubsystem, 
-                m_IndexerSubsystem,
-                ShooterUtility.calculateTopSpeed(19 / 12),
-                ShooterUtility.calculateBottomSpeed(19 / 12)
-            )
-        ).withTimeout(0.1)
-    );
-
-
-
-  }
-
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
-  public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
-    return m_autoManager.getAutonomousCommand();
-  }
+    /**
+     * Use this to pass the autonomous command to the main {@link Robot} class.
+     *
+     * @return the command to run in autonomous
+     */
+    public Command getAutonomousCommand() {
+        // An ExampleCommand will run in autonomous
+        return m_autoManager.getAutonomousCommand();
+    }
 }

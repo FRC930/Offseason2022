@@ -5,7 +5,7 @@ import frc.robot.subsystems.IntakeSubsystem;
 
 public class ExtendIntakeCommand extends CommandBase {
     
-    private final double EXTENSION_SPEED = 0.5;
+    private final double EXTENSION_SPEED = 0.25; //TODO 0.5;
 
     private final IntakeSubsystem intakeSubsystem;
 
@@ -15,7 +15,7 @@ public class ExtendIntakeCommand extends CommandBase {
 
     @Override
     public void initialize() {
-        intakeSubsystem.setExtensionMotorSpeed(EXTENSION_SPEED);
+        //TODO look at ShooterHoodSubsystem(setHoodPosition) intakeSubsystem.setExtensionMotorSpeed(EXTENSION_SPEED);
     }
 
     @Override
