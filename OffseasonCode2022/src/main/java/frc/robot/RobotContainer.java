@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.AutoCommandManager.subNames;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import frc.robot.autos.*;
 import frc.robot.commands.*;
 import frc.robot.commands.shooterCommands.AdjustHoodCommand;
@@ -147,14 +148,11 @@ public class RobotContainer {
         m_stagedMotorReversedCommand = new NeoIndividualMotorCommand(m_stagedMotor, true);
         m_ejectionMotorCommand = new NeoIndividualMotorCommand(m_ejectionMotor, false);
         m_ejectionMotorReversedCommand = new NeoIndividualMotorCommand(m_ejectionMotor, true);
-        m_cargoCenteringMotorCommand = new NeoIndividualMotorCommand(m_cargoCenteringMotor, false);
         m_cargoCenteringMotorReversedCommand = new NeoIndividualMotorCommand(m_cargoCenteringMotor, true);
         m_intakeRollerMotorCommand = new NeoIndividualMotorCommand(m_intakeRollerMotor, false);
-        m_intakeRollerMotorReversedCommand = new NeoIndividualMotorCommand(m_intakeRollerMotor, true);
-        m_loadedMotorCommand = new NeoIndividualMotorCommand(m_loadedMotor, false);
         m_loadedMotorReversedCommand = new NeoIndividualMotorCommand(m_loadedMotor, true);
 
-        m_shootMotorCommandLeft = new TalonIndividualMotorCommand(m_shooterMotorLeft, false);//12 and 7
+        m_shootMotorCommandLeft = new TalonIndividualMotorCommand(m_shooterMotorLeft, false);
         m_shootMotorCommandRight = new TalonIndividualMotorCommand(m_shooterMotorRight, true);
 
         // // INTAKE INITS //
@@ -195,39 +193,55 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
         
-        /* Driver Buttons */
-        // Put back in after testing
+        /* Test Buttons */
 
-        // m_driverController.getRightBumper().whileActiveOnce(
-        //         m_ShooterCommand);
-
+        /* Test Driver Buttons */
         m_driverController.getYButton().whileActiveOnce(
                 new InstantCommand(() -> m_Swerve.zeroGyro()));
-        
-                
-        // m_driverController.getYButton().whileActiveOnce(
-        //         m_stagedMotorCommand);
-                  
-        // m_driverController.getAButton().whileActiveOnce(
-        //         m_stagedMotorReversedCommand);
-         
-        // m_driverController.getXButton().whileActiveOnce(
-        //         m_ejectionMotorCommand);
-                 
+             
         m_driverController.getBButton().whileActiveOnce(
                 m_ejectionMotorReversedCommand);
+
+        m_driverController.getAButton().whileActiveOnce(
+                m_ejectionMotorCommand);
 
         m_driverController.getRightBumper().whileActiveOnce(
                 m_cargoCenteringMotorReversedCommand);
 
         m_driverController.getYButton().whileActiveOnce(
                 m_intakeRollerMotorCommand);
+
         m_driverController.getPOVUpTrigger().whileActiveOnce(
-            m_loadedMotorReversedCommand);
+                m_loadedMotorReversedCommand);
+
         m_driverController.getLeftBumper().whileActiveOnce(
-            m_shootMotorCommandLeft);
-        m_driverController.getLeftBumper().whileActiveOnce(
-            m_shootMotorCommandRight);
+          new ParallelRaceGroup(
+                m_shootMotorCommandLeft, 
+                m_shootMotorCommandRight));
+
+        // Full shoot path for testing
+        m_driverController.getStartButton().whileActiveOnce(
+          new ParallelRaceGroup(
+            m_intakeRollerMotorCommand,
+            m_cargoCenteringMotorReversedCommand,
+            m_ejectionMotorReversedCommand,
+            m_loadedMotorReversedCommand,
+            m_shootMotorCommandLeft, 
+            m_shootMotorCommandRight
+          )
+        );
+        /* Test Co-Driver Buttons */
+
+
+
+        /* Actual Buttons */
+
+        /* Driver Buttons */
+        // Put back in after testing
+
+        // m_driverController.getRightBumper().whileActiveOnce(
+        //         m_ShooterCommand);
+
         /* Co-Driver Buttons */
 
         // m_codriverController.getLeftBumper().whileActiveOnce(
