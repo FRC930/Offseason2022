@@ -14,15 +14,11 @@ public class IndexerSensorUtility {
     
     //-------- VARIABLES --------\\
     
-    private DigitalInput intakeSensorSim;
     private DigitalInput loadedSensorSim;
     private DigitalInput stagedSensorSim;
-    private DigitalInput ejectionSensorSim;
 
-    private TimeOfFlight intakeSensor;
     private TimeOfFlight loadedSensor;
     private TimeOfFlight stagedSensor;
-    private TimeOfFlight ejectionSensor;
 
     //-------- CONSTRUCTOR --------\\
     /**
@@ -30,21 +26,15 @@ public class IndexerSensorUtility {
      * 
      * Creates and returns sensor values the endgame sensors
      */
-    public IndexerSensorUtility(int intakeId, int loadedId, int stagedId, int ejectionId) {
+    public IndexerSensorUtility(int loadedId, int stagedId) {
         if (Robot.isReal()) {
-            intakeSensor = new TimeOfFlight(intakeId);
             loadedSensor = new TimeOfFlight(loadedId);
             stagedSensor = new TimeOfFlight(stagedId);
-            ejectionSensor = new TimeOfFlight(ejectionId);
-            intakeSensor.setRangingMode(RangingMode.Short, 25);
             loadedSensor.setRangingMode(RangingMode.Short, 25);
             stagedSensor.setRangingMode(RangingMode.Short, 25);
-            ejectionSensor.setRangingMode(RangingMode.Short, 25);
         } else {
-            intakeSensorSim = new DigitalInput(intakeId);
             loadedSensorSim = new DigitalInput(loadedId);
             stagedSensorSim = new DigitalInput(stagedId);
-            ejectionSensorSim = new DigitalInput(ejectionId);
         }
     }
 
@@ -54,21 +44,6 @@ public class IndexerSensorUtility {
      * NOTE: DIO is opposite of sensor contact
      * DIO is 0 when sensor is activated(touching metal)
      */
-
-    /**
-     * <h3>intakeIsTouching</h3>
-     * 
-     * This method returns the intake sensor's value
-     * 
-     * @return the value of the sensor
-     */
-    public boolean intakeIsTouching() {
-        if (Robot.isReal()) {
-            return intakeSensor.getRange() < TRIGGER_DISTANCE;
-        } else {
-            return intakeSensorSim.get();
-        }
-    }
 
     /**
      * <h3>loadedIsTouching</h3>
@@ -97,21 +72,6 @@ public class IndexerSensorUtility {
             return stagedSensor.getRange() < TRIGGER_DISTANCE;
         } else {
             return stagedSensorSim.get();
-        }
-    }
-
-    /**
-     * <h3>ejectionIsTouching</h3>
-     * 
-     * This method returns the ejection sensor's value
-     * 
-     * @return the value of the sensor
-     */
-    public boolean ejectionIsTouching() {
-        if (Robot.isReal()) {
-            return ejectionSensor.getRange() < TRIGGER_DISTANCE;
-        } else {
-            return ejectionSensorSim.get();
         }
     }
 

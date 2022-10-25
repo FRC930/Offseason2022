@@ -30,6 +30,7 @@ public class ShooterMotorSubsystem extends SubsystemBase {
     // motor controllers for the shooter wheels
     private final WPI_TalonFX RightShooterMaster;
     private final WPI_TalonFX LeftShooterFollower;
+    private final WPI_TalonFX Loaded;
 
     // -------- CONSTRUCTOR --------\\
     /**
@@ -41,19 +42,22 @@ public class ShooterMotorSubsystem extends SubsystemBase {
      * 
      */
     public ShooterMotorSubsystem(int RightShooterMasterID,
-            int LeftShooterFollowerID) {
+            int LeftShooterFollowerID, int LoadedID) {
 
         // Motor declaration
         RightShooterMaster = new WPI_TalonFX(RightShooterMasterID);
         LeftShooterFollower = new WPI_TalonFX(LeftShooterFollowerID);
+        Loaded = new WPI_TalonFX(LoadedID);
 
         // Reset motors
         RightShooterMaster.configFactoryDefault();
         LeftShooterFollower.configFactoryDefault();
+        Loaded.configFactoryDefault();
 
         // Sets motors to coast so that they can move freely when neutral
         RightShooterMaster.setNeutralMode(NeutralMode.Coast);
         LeftShooterFollower.setNeutralMode(NeutralMode.Coast);
+        Loaded.setNeutralMode(NeutralMode.Coast);
 
         // All motors are not inverted
         refollowShooterMotors();
@@ -68,7 +72,7 @@ public class ShooterMotorSubsystem extends SubsystemBase {
      */
     public void refollowShooterMotors() {
         LeftShooterFollower.follow(RightShooterMaster, FollowerType.PercentOutput);
-        LeftShooterFollower.setInverted(InvertType.FollowMaster);
+        LeftShooterFollower.setInverted(true);
     }
 
     // -------- METHODS --------\\
@@ -78,9 +82,10 @@ public class ShooterMotorSubsystem extends SubsystemBase {
      *
      * @param speed speed of the bottom wheel in percent output
      */
-    public void setRightSpeed(double speed) {
+    public void setRightSpeed(double rightShooterSpeed, double loadedSpeed) {
         // Sets speed to 0 if speed argument is less than 0
-        RightShooterMaster.set(ControlMode.PercentOutput, Math.max(0.0, speed));
+        RightShooterMaster.set(ControlMode.PercentOutput, Math.max(0.0, rightShooterSpeed));
+        Loaded.set(ControlMode.PercentOutput, Math.max(0.0, loadedSpeed));
     }
 
 
@@ -90,6 +95,7 @@ public class ShooterMotorSubsystem extends SubsystemBase {
      */
     public void stopMotors() {
         RightShooterMaster.stopMotor();
+        Loaded.stopMotor();
     }
 
     /**

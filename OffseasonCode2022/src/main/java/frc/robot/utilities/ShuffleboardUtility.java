@@ -280,8 +280,8 @@ public class ShuffleboardUtility {
     public static enum ShuffleboardKeys {
 
         // SHOOTER MANAGEMENT
-        SHOOTER_TOP_SPEED("Shooter Top Speed"),
-        SHOOTER_BOTTOM_SPEED("Shooter Bottom Speed"),
+        SHOOTER_SPEED("Shooter Speed"),
+        SHOOTER_LOADED_SPEED("Shooter Loaded Speed"),
         SHOOTER_HOOD_POSITION("Hood Position"),
 
         // BALL MANAGEMENT

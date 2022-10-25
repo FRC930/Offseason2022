@@ -90,6 +90,11 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().cancelAll();
   }
 
+  @Override
+  public void testExit(){
+      m_robotContainer.testExit();
+  }
+
   /** This function is called periodically during test mode. */
   @Override
   public void testPeriodic() {}

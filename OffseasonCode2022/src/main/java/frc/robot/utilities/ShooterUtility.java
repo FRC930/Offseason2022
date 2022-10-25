@@ -34,10 +34,10 @@ public class ShooterUtility {
     public static void setValuesToShuffleboard(double distance) {
         // Applies each calculation to the shuffleboard
         ShuffleboardUtility.getInstance().putToShuffleboard(ShuffleboardUtility.driverTab,
-                ShuffleboardKeys.SHOOTER_BOTTOM_SPEED,
+                ShuffleboardKeys.SHOOTER_LOADED_SPEED,
                 new ShuffleBoardData<Double>(calculateBottomSpeed(distance)));
         ShuffleboardUtility.getInstance().putToShuffleboard(ShuffleboardUtility.driverTab,
-                ShuffleboardKeys.SHOOTER_TOP_SPEED,
+                ShuffleboardKeys.SHOOTER_SPEED,
                 new ShuffleBoardData<Double>(calculateTopSpeed(distance)));
         ShuffleboardUtility.getInstance().putToShuffleboard(ShuffleboardUtility.driverTab,
                 ShuffleboardKeys.SHOOTER_HOOD_POSITION,
