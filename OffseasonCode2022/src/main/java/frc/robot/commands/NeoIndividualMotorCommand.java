@@ -11,10 +11,10 @@ public class NeoIndividualMotorCommand extends CommandBase {
 
     public NeoIndividualMotorCommand(NeoMotorSubsystem neoMotor, boolean isBackwards){
         if(isBackwards){
-            MOTOR_SPEED = 0.25;
+            MOTOR_SPEED = 0.5;
         }
         else{
-            MOTOR_SPEED = -0.25;
+            MOTOR_SPEED = -0.5;
         }
 
         neoMotorSubsystem = neoMotor;

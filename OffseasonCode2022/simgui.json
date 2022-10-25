@@ -60,11 +60,6 @@
           "open": true
         }
       },
-      "SPARK MAX [14]": {
-        "header": {
-          "open": true
-        }
-      },
       "SPARK MAX [99]": {
         "header": {
           "open": true
@@ -112,6 +107,9 @@
               "open": true
             }
           }
+        },
+        "header": {
+          "open": true
         }
       }
     }

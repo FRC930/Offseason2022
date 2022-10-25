@@ -61,23 +61,28 @@ public class RobotContainer {
 
     /* Subsystems */
     private final Swerve m_Swerve = new Swerve(frontLeftModule, frontRightModule, backLeftModule, backRightModule);
-    private final IntakeSubsystem m_IntakeSubsystem;
-    private final ShooterMotorSubsystem m_ShooterMotorSubsystem;
-    private final ShooterHoodSubsystem m_ShooterHoodSubsystem;
-    private final IndexerSubsystem m_IndexerSubsystem;
+    // private final IntakeSubsystem m_IntakeSubsystem;
+    // private final ShooterMotorSubsystem m_ShooterMotorSubsystem;
+    // private final ShooterHoodSubsystem m_ShooterHoodSubsystem;
+    // private final IndexerSubsystem m_IndexerSubsystem;
 
     NeoMotorSubsystem m_stagedMotor;
     NeoMotorSubsystem m_ejectionMotor;
     NeoMotorSubsystem m_cargoCenteringMotor;
     NeoMotorSubsystem m_intakeRollerMotor;
+    NeoMotorSubsystem m_loadedMotor;
+
+    TalonMotorSubsystem m_shooterMotorLeft;
+    TalonMotorSubsystem m_shooterMotorRight;
+    
 
     /* Commands */
-    private final ExtendIntakeCommand m_ExtendIntakeCommand;
-    private final RunIntakeRollersCommand m_RunIntakeRollersCommand;
-    private final IndexerCommand m_IndexerCommand;
-    private final IndexerEjectCommand m_IndexerEjectCommand;
-    private final ShooterCommand m_ShooterCommand;
-    private final AdjustHoodCommand m_ShooterHoodCommand;
+    // private final ExtendIntakeCommand m_ExtendIntakeCommand;
+    // private final RunIntakeRollersCommand m_RunIntakeRollersCommand;
+    // private final IndexerCommand m_IndexerCommand;
+    // private final IndexerEjectCommand m_IndexerEjectCommand;
+    // private final ShooterCommand m_ShooterCommand;
+    // private final AdjustHoodCommand m_ShooterHoodCommand;
 
     NeoIndividualMotorCommand m_stagedMotorCommand;
     NeoIndividualMotorCommand m_stagedMotorReversedCommand;
@@ -87,9 +92,14 @@ public class RobotContainer {
     NeoIndividualMotorCommand m_cargoCenteringMotorReversedCommand;
     NeoIndividualMotorCommand m_intakeRollerMotorCommand;
     NeoIndividualMotorCommand m_intakeRollerMotorReversedCommand;
+    NeoIndividualMotorCommand m_loadedMotorCommand;
+    NeoIndividualMotorCommand m_loadedMotorReversedCommand;
+
+    TalonIndividualMotorCommand m_shootMotorCommandLeft;
+    TalonIndividualMotorCommand m_shootMotorCommandRight;
 
     /* Utilities */
-    private final IndexerSensorUtility m_IndexerSensorUtility;
+    //private final IndexerSensorUtility m_IndexerSensorUtility;
 
     
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -116,38 +126,53 @@ public class RobotContainer {
         m_autoManager.addSubsystem(subNames.Swerve, m_Swerve);
         m_autoManager.initCommands();
 
-        // // MOTORS //
-        // m_stagedMotor = new NeoMotorSubsystem(16);
-        // m_ejectionMotor = new NeoMotorSubsystem(4);
-        // m_cargoCenteringMotor = new NeoMotorSubsystem(3);
-        // m_intakeRollerMotor = new NeoMotorSubsystem(17);
-
-        // // MOTOR COMMANDS //
-        // m_stagedMotorCommand = new NeoIndividualMotorCommand(m_stagedMotor, false);
-        // m_stagedMotorReversedCommand = new NeoIndividualMotorCommand(m_stagedMotor, true);
-        // m_ejectionMotorCommand = new NeoIndividualMotorCommand(m_ejectionMotor, false);
-        // m_ejectionMotorReversedCommand = new NeoIndividualMotorCommand(m_ejectionMotor, true);
-        // m_cargoCenteringMotorCommand = new NeoIndividualMotorCommand(m_cargoCenteringMotor, false);
-        // m_cargoCenteringMotorReversedCommand = new NeoIndividualMotorCommand(m_cargoCenteringMotor, true);
-        // m_intakeRollerMotorCommand = new NeoIndividualMotorCommand(m_intakeRollerMotor, false);
-        // m_intakeRollerMotorReversedCommand = new NeoIndividualMotorCommand(m_intakeRollerMotor, true);
-
-        // INTAKE INITS //
-        m_IntakeSubsystem = new IntakeSubsystem(2, 17, 3);
-        m_RunIntakeRollersCommand = new RunIntakeRollersCommand(m_IntakeSubsystem);
-        m_ExtendIntakeCommand = new ExtendIntakeCommand(m_IntakeSubsystem);
-        
         // INDEXER INITS //
-        m_IndexerSubsystem = new IndexerSubsystem(16, 4);
-        m_IndexerSensorUtility = new IndexerSensorUtility(15, 16);
-        m_IndexerCommand = new IndexerCommand(m_IndexerSubsystem, m_IndexerSensorUtility, 0.5);
-        m_IndexerEjectCommand = new IndexerEjectCommand(m_IndexerSubsystem, 0.5);
+        // m_IndexerSubsystem = new IndexerSubsystem(14, 13, 99);
+        // m_IndexerSensorUtility = new IndexerSensorUtility(3, 15, 16, 4);
+        // m_IndexerCommand = new IndexerCommand(m_IndexerSubsystem, m_IndexerSensorUtility, IndexerMotorSpeed);
+        // m_IndexerEjectCommand = new IndexerEjectCommand(m_IndexerSubsystem, IndexerMotorSpeed);
 
-        //SHOOTER INITS //
-        m_ShooterMotorSubsystem = new ShooterMotorSubsystem(12, 7, 15);
-        m_ShooterHoodSubsystem = new ShooterHoodSubsystem(6);
-        m_ShooterCommand  = new ShooterCommand(m_ShooterMotorSubsystem, m_IndexerSubsystem, 0.5);
-        m_ShooterHoodCommand = new AdjustHoodCommand(m_ShooterHoodSubsystem);
+        // MOTORS //
+        m_stagedMotor = new NeoMotorSubsystem(16);
+        m_ejectionMotor = new NeoMotorSubsystem(4);
+        m_cargoCenteringMotor = new NeoMotorSubsystem(3);
+        m_intakeRollerMotor = new NeoMotorSubsystem(17);
+        m_loadedMotor = new NeoMotorSubsystem(15);
+
+        m_shooterMotorLeft = new TalonMotorSubsystem(7);
+        m_shooterMotorRight = new TalonMotorSubsystem(12);
+
+        // MOTOR COMMANDS //
+        m_stagedMotorCommand = new NeoIndividualMotorCommand(m_stagedMotor, false);
+        m_stagedMotorReversedCommand = new NeoIndividualMotorCommand(m_stagedMotor, true);
+        m_ejectionMotorCommand = new NeoIndividualMotorCommand(m_ejectionMotor, false);
+        m_ejectionMotorReversedCommand = new NeoIndividualMotorCommand(m_ejectionMotor, true);
+        m_cargoCenteringMotorCommand = new NeoIndividualMotorCommand(m_cargoCenteringMotor, false);
+        m_cargoCenteringMotorReversedCommand = new NeoIndividualMotorCommand(m_cargoCenteringMotor, true);
+        m_intakeRollerMotorCommand = new NeoIndividualMotorCommand(m_intakeRollerMotor, false);
+        m_intakeRollerMotorReversedCommand = new NeoIndividualMotorCommand(m_intakeRollerMotor, true);
+        m_loadedMotorCommand = new NeoIndividualMotorCommand(m_loadedMotor, false);
+        m_loadedMotorReversedCommand = new NeoIndividualMotorCommand(m_loadedMotor, true);
+
+        m_shootMotorCommandLeft = new TalonIndividualMotorCommand(m_shooterMotorLeft, false);//12 and 7
+        m_shootMotorCommandRight = new TalonIndividualMotorCommand(m_shooterMotorRight, true);
+
+        // // INTAKE INITS //
+        // m_IntakeSubsystem = new IntakeSubsystem(2, 17, 3);
+        // m_RunIntakeRollersCommand = new RunIntakeRollersCommand(m_IntakeSubsystem);
+        // m_ExtendIntakeCommand = new ExtendIntakeCommand(m_IntakeSubsystem);
+        
+        // // INDEXER INITS //
+        // m_IndexerSubsystem = new IndexerSubsystem(16, 4);
+        // m_IndexerSensorUtility = new IndexerSensorUtility(15, 16);
+        // m_IndexerCommand = new IndexerCommand(m_IndexerSubsystem, m_IndexerSensorUtility, 0.5);
+        // m_IndexerEjectCommand = new IndexerEjectCommand(m_IndexerSubsystem, 0.5);
+
+        // //SHOOTER INITS //
+        // m_ShooterMotorSubsystem = new ShooterMotorSubsystem(12, 7, 15);
+        // m_ShooterHoodSubsystem = new ShooterHoodSubsystem(6);
+        // m_ShooterCommand  = new ShooterCommand(m_ShooterMotorSubsystem, m_IndexerSubsystem, 0.5);
+        // m_ShooterHoodCommand = new AdjustHoodCommand(m_ShooterHoodSubsystem);
 
         boolean fieldRelative = true;
         boolean openLoop = true;
@@ -173,8 +198,8 @@ public class RobotContainer {
         /* Driver Buttons */
         // Put back in after testing
 
-        m_driverController.getRightBumper().whileActiveOnce(
-                m_ShooterCommand);
+        // m_driverController.getRightBumper().whileActiveOnce(
+        //         m_ShooterCommand);
 
         m_driverController.getYButton().whileActiveOnce(
                 new InstantCommand(() -> m_Swerve.zeroGyro()));
@@ -189,72 +214,71 @@ public class RobotContainer {
         // m_driverController.getXButton().whileActiveOnce(
         //         m_ejectionMotorCommand);
                  
-        // m_driverController.getBButton().whileActiveOnce(
-        //         m_ejectionMotorReversedCommand);
-         
-        // m_driverController.getPOVUpTrigger().whileActiveOnce(
-        //         m_cargoCenteringMotorCommand);
+        m_driverController.getBButton().whileActiveOnce(
+                m_ejectionMotorReversedCommand);
 
-        // m_driverController.getPOVDownTrigger().whileActiveOnce(
-        //         m_cargoCenteringMotorReversedCommand);
+        m_driverController.getRightBumper().whileActiveOnce(
+                m_cargoCenteringMotorReversedCommand);
 
-        // m_driverController.getPOVLeftTrigger().whileActiveOnce(
-        //         m_intakeRollerMotorCommand);
-        
-        // m_driverController.getPOVRightTrigger().whileActiveOnce(
-        //         m_intakeRollerMotorReversedCommand);
-         
+        m_driverController.getYButton().whileActiveOnce(
+                m_intakeRollerMotorCommand);
+        m_driverController.getPOVUpTrigger().whileActiveOnce(
+            m_loadedMotorReversedCommand);
+        m_driverController.getLeftBumper().whileActiveOnce(
+            m_shootMotorCommandLeft);
+        m_driverController.getLeftBumper().whileActiveOnce(
+            m_shootMotorCommandRight);
         /* Co-Driver Buttons */
 
-        m_codriverController.getLeftBumper().whileActiveOnce(
-                new ParallelCommandGroup(
-                        m_IndexerCommand,
-                        m_RunIntakeRollersCommand,
-                        m_ExtendIntakeCommand));
+        // m_codriverController.getLeftBumper().whileActiveOnce(
+        //         new ParallelCommandGroup(
+        //                 m_IndexerCommand,
+        //                 m_RunIntakeRollersCommand,
+        //                 m_ExtendIntakeCommand));
 
-        m_codriverController.getBButton().whileActiveOnce(
-                m_IndexerEjectCommand);
+        // m_codriverController.getBButton().whileActiveOnce(
+        //         m_IndexerEjectCommand);
 
         // Tarmac
-        m_codriverController.getPOVLeftTrigger().whileActiveOnce(
-                new ParallelCommandGroup(
-                        new AdjustHoodCommand(
-                                m_ShooterHoodSubsystem,
-                                ShooterUtility.calculateHoodPos(9)),
-                        new ShooterCommand(
-                                m_ShooterMotorSubsystem,
-                                m_IndexerSubsystem,
-                                ShooterUtility.calculateTopSpeed(9),
-                                ShooterUtility.calculateBottomSpeed(9))).withTimeout(0.1));
+//         m_codriverController.getPOVLeftTrigger().whileActiveOnce(
+//                 new ParallelCommandGroup(
+//                         new AdjustHoodCommand(
+//                                 m_ShooterHoodSubsystem,
+//                                 ShooterUtility.calculateHoodPos(9)),
+//                         new ShooterCommand(
+//                                 m_ShooterMotorSubsystem,
+//                                 m_IndexerSubsystem,
+//                                 ShooterUtility.calculateTopSpeed(9),
+//                                 ShooterUtility.calculateBottomSpeed(9))).withTimeout(0.1));
 
-        // Launchpad
-        m_codriverController.getPOVUpTrigger().whileActiveOnce(
-                new ParallelCommandGroup(
-                        new AdjustHoodCommand(
-                                m_ShooterHoodSubsystem,
-                                ShooterUtility.calculateHoodPos(14.5)),
-                        new ShooterCommand(
-                                m_ShooterMotorSubsystem,
-                                m_IndexerSubsystem,
-                                ShooterUtility.calculateTopSpeed(14.5),
-                                ShooterUtility.calculateBottomSpeed(14.5))).withTimeout(0.1));
+//         // Launchpad
+//         m_codriverController.getPOVUpTrigger().whileActiveOnce(
+//                 new ParallelCommandGroup(
+//                         new AdjustHoodCommand(
+//                                 m_ShooterHoodSubsystem,
+//                                 ShooterUtility.calculateHoodPos(14.5)),
+//                         new ShooterCommand(
+//                                 m_ShooterMotorSubsystem,
+//                                 m_IndexerSubsystem,
+//                                 ShooterUtility.calculateTopSpeed(14.5),
+//                                 ShooterUtility.calculateBottomSpeed(14.5))).withTimeout(0.1));
 
-        // Fender shot
-        m_codriverController.getPOVDownTrigger().whileActiveOnce(
-                new ParallelCommandGroup(
-                        new AdjustHoodCommand(
-                                m_ShooterHoodSubsystem,
-                                ShooterUtility.calculateHoodPos(19 / 12)),
-                        new ShooterCommand(
-                                m_ShooterMotorSubsystem,
-                                m_IndexerSubsystem,
-                                ShooterUtility.calculateTopSpeed(19 / 12),
-                                ShooterUtility.calculateBottomSpeed(19 / 12))).withTimeout(0.1));
+//         // Fender shot
+//         m_codriverController.getPOVDownTrigger().whileActiveOnce(
+//                 new ParallelCommandGroup(
+//                         new AdjustHoodCommand(
+//                                 m_ShooterHoodSubsystem,
+//                                 ShooterUtility.calculateHoodPos(19 / 12)),
+//                         new ShooterCommand(
+//                                 m_ShooterMotorSubsystem,
+//                                 m_IndexerSubsystem,
+//                                 ShooterUtility.calculateTopSpeed(19 / 12),
+//                                 ShooterUtility.calculateBottomSpeed(19 / 12))).withTimeout(0.1));
 
     }
 
   public void testExit() {
-    m_ShooterMotorSubsystem.refollowShooterMotors(); // TODO: Uncomment
+    //m_ShooterMotorSubsystem.refollowShooterMotors(); // TODO: Uncomment
   }
 
   /**
