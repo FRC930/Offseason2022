@@ -70,6 +70,26 @@
           "open": true
         }
       },
+      "SparkMax[16]": {
+        "header": {
+          "open": true
+        }
+      },
+      "SparkMax[17]": {
+        "header": {
+          "open": true
+        }
+      },
+      "SparkMax[3]": {
+        "header": {
+          "open": true
+        }
+      },
+      "SparkMax[4]": {
+        "header": {
+          "open": true
+        }
+      },
       "Talon FX[12]": {
         "header": {
           "open": true
