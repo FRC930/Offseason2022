@@ -31,10 +31,10 @@ public class IndexerCommand extends CommandBase {
     @Override
     public void execute() {
         if(indexerSensorUtility.loadedIsTouching() == false) { // No loaded cargo
-            indexerSubsystem.setStagedMotorSpeed(-motorSpeed); // Staged motor CCW
+            indexerSubsystem.setStagedMotorSpeed(motorSpeed); // Staged motor CCW
             indexerSubsystem.setEjectionMotorSpeed(-motorSpeed); // Ejection motor CCW
         } else if(indexerSensorUtility.stagedIsTouching() == false && indexerSensorUtility.loadedIsTouching() == true) { // Loaded cargo, but No staged cargo
-            indexerSubsystem.setStagedMotorSpeed(-motorSpeed); // Staged motor CCW
+            indexerSubsystem.setStagedMotorSpeed(motorSpeed); // Staged motor CCW
             indexerSubsystem.setEjectionMotorSpeed(0.0); // Ejection motor CCW
         } else { // Loaded cargo and staged cargo
             indexerSubsystem.setStagedMotorSpeed(0.0); // Staged motor CCW
