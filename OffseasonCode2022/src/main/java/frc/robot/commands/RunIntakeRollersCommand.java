@@ -5,7 +5,7 @@ import frc.robot.subsystems.IntakeSubsystem;
 
 public class RunIntakeRollersCommand extends CommandBase{
 
-    private final double ROLLER_SPEED = 0.25; //TODO 0.5;
+    private final double ROLLER_SPEED = -0.5; //TODO 0.5;
 
     private final IntakeSubsystem intakeSubsystem;
 
@@ -15,7 +15,7 @@ public class RunIntakeRollersCommand extends CommandBase{
 
     @Override
     public void initialize() {
-        //TODO look at ShooterHoodSubsystem(setHoodPosition) intakeSubsystem.setRollerMotorSpeed(ROLLER_SPEED);
+        intakeSubsystem.setRollerMotorSpeed(ROLLER_SPEED);
     }
 
     @Override

@@ -60,7 +60,8 @@ public class RobotContainer {
 
         /* Subsystems */
         private final Swerve m_Swerve = new Swerve(frontLeftModule, frontRightModule, backLeftModule, backRightModule);
-        private final IntakeSubsystem  m_IntakeSubsystem = new IntakeSubsystem(2, 17, 3);
+        private final IntakeExtensionSubsystem m_IntakeExtention = new IntakeExtensionSubsystem(2);
+        private final IntakeSubsystem  m_IntakeSubsystem = new IntakeSubsystem(17, 3);
         private final ShooterMotorSubsystem m_ShooterMotorSubsystem = new ShooterMotorSubsystem(12, 7, 15);
         private final ShooterHoodSubsystem m_ShooterHoodSubsystem = new ShooterHoodSubsystem(6);
         private final IndexerSubsystem  m_IndexerSubsystem = new IndexerSubsystem(16, 4);
@@ -129,7 +130,7 @@ public class RobotContainer {
                  m_IndexerSensorUtility, IndexerMotorSpeed);
                  //m_IndexerEjectCommand = new IndexerEjectCommand(m_IndexerSubsystem,
                  //IndexerMotorSpeed);
-
+                
                 // MOTORS //
                 /*
                 m_stagedMotor = new NeoMotorSubsystem(16);
@@ -162,8 +163,7 @@ public class RobotContainer {
                 m_shootMotorCommandRight = new TalonIndividualMotorCommand(m_shooterMotorRight, true);
 
                 // // INTAKE INITS //
-                //m_RunIntakeRollersCommand = new RunIntakeRollersCommand(m_IntakeSubsystem);
-                //m_ExtendIntakeCommand = new ExtendIntakeCommand(m_IntakeSubsystem);
+
 
                 // // INDEXER INITS //
 
@@ -223,18 +223,18 @@ public class RobotContainer {
                                                 m_shootMotorCommandRight));
                 */
                 // Full shoot path for testing
-                /*
-                 * m_driverController.getStartButton().whileActiveOnce(
-                 * new ParallelRaceGroup(
-                 * m_intakeRollerMotorCommand,
-                 * m_cargoCenteringMotorReversedCommand,
-                 * m_ejectionMotorReversedCommand,
-                 * m_loadedMotorReversedCommand,
-                 * m_shootMotorCommandLeft,
-                 * m_shootMotorCommandRight
-                 * )
-                 * );
-                 */
+                
+                  // m_driverController.getStartButton().whileActiveOnce(
+                  // new ParallelRaceGroup(
+                  // m_intakeRollerMotorCommand,
+                  // m_cargoCenteringMotorReversedCommand,
+                  // m_ejectionMotorReversedCommand,
+                  // m_loadedMotorReversedCommand,
+                  // m_shootMotorCommandLeft,
+                  // m_shootMotorCommandRight
+                  // )
+                  // );
+                 
                 /* Test Co-Driver Buttons */
 
                 /* Actual Buttons */
@@ -242,7 +242,12 @@ public class RobotContainer {
                 /* Driver Buttons */
                 // Put back in after testing
 
+                // TODO: make these both into a parrallel command group
                  m_driverController.getRightBumper().whileActiveOnce(m_IndexerCommand);
+                 //m_driverController.getRightBumper().whileActiveOnce(new RunIntakeRollersCommand(m_IntakeSubsystem));
+                 //m_driverController.getRightBumper().whileActiveOnce(new ExtendIntakeCommand(m_IntakeExtention));
+
+                 //m_driverController.get
                  //m_ShooterCommand);
 
                 /* Co-Driver Buttons */

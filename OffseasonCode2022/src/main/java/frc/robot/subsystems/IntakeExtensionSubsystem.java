@@ -21,9 +21,9 @@ public class IntakeExtensionSubsystem extends SubsystemBase{
     // Position when the intake is extended
     private static final double EXTENDED_POSITION = 0.0;
     // Position when the intake is retracted
-    private static final double RETRACTED_POSITION = -3000.0;
+    private static final double RETRACTED_POSITION = -4950.0;
     // PID values
-    private static final double MOTOR_KP = 1;
+    private static final double MOTOR_KP = 1.2;
     private static final double MOTOR_KD = 15;
 
     // -------- DECLARATIONS --------\\
@@ -58,7 +58,6 @@ public class IntakeExtensionSubsystem extends SubsystemBase{
         config.statorCurrLimit.enable = true;
 
         config.voltageCompSaturation = 9.0;
-        // hoodMotor.configVoltageCompSaturation(9.0);
 
         // Sets encoder limits so the intake can't break itself by going too far
        // config.forwardSoftLimitThreshold = ((EXTENDED_POSITION / 360.0) * TALON_CPR / GEAR_RATIO);
@@ -84,13 +83,13 @@ public class IntakeExtensionSubsystem extends SubsystemBase{
     public void extendIntake() {
          // Converts degrees into encoder ticks
          intakeMotor.set(ControlMode.Position, EXTENDED_POSITION,
-         DemandType.ArbitraryFeedForward, 0.06);
+         DemandType.ArbitraryFeedForward, 0.6);
     }
 
     public void retractIntake() {
          // Converts degrees into encoder ticks
          intakeMotor.set(ControlMode.Position, RETRACTED_POSITION,
-         DemandType.ArbitraryFeedForward, 0.06);
+         DemandType.ArbitraryFeedForward, 0.6);
     }
 
 }

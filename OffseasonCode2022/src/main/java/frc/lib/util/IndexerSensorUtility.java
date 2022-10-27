@@ -3,6 +3,8 @@ package frc.lib.util;
 import com.playingwithfusion.TimeOfFlight;
 import com.playingwithfusion.TimeOfFlight.RangingMode;
 
+import edu.wpi.first.math.filter.Debouncer;
+import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.wpilibj.DigitalInput;
 import frc.robot.Robot;
 import frc.robot.utilities.ShuffleboardUtility;
@@ -23,6 +25,8 @@ public class IndexerSensorUtility {
     private TimeOfFlight loadedSensor;
     private TimeOfFlight stagedSensor;
 
+    private Debouncer m_Debouncer;
+
     //-------- CONSTRUCTOR --------\\
     /**
      * <h3>EndgameSensorUtility</h3>
@@ -30,11 +34,12 @@ public class IndexerSensorUtility {
      * Creates and returns sensor values the endgame sensors
      */
     public IndexerSensorUtility(int loadedId, int stagedId) {
+        m_Debouncer = new Debouncer(0.35);
         if (Robot.isReal()) {
             loadedSensor = new TimeOfFlight(loadedId);
             stagedSensor = new TimeOfFlight(stagedId);
-            loadedSensor.setRangingMode(RangingMode.Medium, 10);
-            stagedSensor.setRangingMode(RangingMode.Medium, 10);
+            loadedSensor.setRangingMode(RangingMode.Medium, 20);
+            stagedSensor.setRangingMode(RangingMode.Medium, 20);
         } else {
             loadedSensorSim = new DigitalInput(loadedId);
             stagedSensorSim = new DigitalInput(stagedId);
@@ -60,7 +65,7 @@ public class IndexerSensorUtility {
             ShuffleboardUtility.getInstance().putToShuffleboard(ShuffleboardUtility.driverTab, 
                                                                 ShuffleboardKeys.LOADED_SENSOR, 
                                                                 new ShuffleBoardData<Double>(loadedSensor.getRange()));
-            return loadedSensor.getRange() < TRIGGER_DISTANCE;
+            return m_Debouncer.calculate(loadedSensor.getRange() < TRIGGER_DISTANCE);
         } else {
             return loadedSensorSim.get();
         }
@@ -78,7 +83,7 @@ public class IndexerSensorUtility {
             ShuffleboardUtility.getInstance().putToShuffleboard(ShuffleboardUtility.driverTab, 
                                                                 ShuffleboardKeys.STAGED_SENSOR, 
                                                                 new ShuffleBoardData<Double>(stagedSensor.getRange()));
-            return stagedSensor.getRange() < TRIGGER_DISTANCE;
+            return m_Debouncer.calculate(stagedSensor.getRange() < TRIGGER_DISTANCE);
         } else {
             return stagedSensorSim.get();
         }

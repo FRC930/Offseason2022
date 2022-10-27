@@ -85,6 +85,11 @@
           "open": true
         }
       },
+      "Talon FX[2]": {
+        "header": {
+          "open": true
+        }
+      },
       "Talon FX[7]": {
         "DIO": {
           "window": {
@@ -106,6 +111,7 @@
       "/FMSInfo": "FMSInfo",
       "/LiveWindow/EndgamePistonSubsystem": "Subsystem",
       "/LiveWindow/IndexerSubsystem": "Subsystem",
+      "/LiveWindow/IntakeExtensionSubsystem": "Subsystem",
       "/LiveWindow/IntakeSubsystem": "Subsystem",
       "/LiveWindow/ShooterHoodSubsystem": "Subsystem",
       "/LiveWindow/ShooterMotorSubsystem": "Subsystem",
