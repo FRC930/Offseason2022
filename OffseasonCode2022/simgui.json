@@ -85,16 +85,6 @@
           "open": true
         }
       },
-      "Talon FX[12]": {
-        "header": {
-          "open": true
-        }
-      },
-      "Talon FX[6]": {
-        "header": {
-          "open": true
-        }
-      },
       "Talon FX[7]": {
         "DIO": {
           "window": {
@@ -107,9 +97,6 @@
               "open": true
             }
           }
-        },
-        "header": {
-          "open": true
         }
       }
     }
@@ -132,6 +119,7 @@
       "/LiveWindow/Ungrouped/PIDController[3]": "PIDController",
       "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
       "/LiveWindow/Ungrouped/Talon FX [12]": "Motor Controller",
+      "/LiveWindow/Ungrouped/Talon FX [15]": "Motor Controller",
       "/LiveWindow/Ungrouped/Talon FX [2]": "Motor Controller",
       "/LiveWindow/Ungrouped/Talon FX [6]": "Motor Controller",
       "/LiveWindow/Ungrouped/Talon FX [7]": "Motor Controller",

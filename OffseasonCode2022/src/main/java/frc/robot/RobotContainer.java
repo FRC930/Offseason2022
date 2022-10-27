@@ -20,7 +20,6 @@ import frc.robot.subsystems.*;
 import frc.robot.utilities.ShooterUtility;
 import frc.lib.util.SwerveModuleConstants;
 import edu.wpi.first.util.net.PortForwarder;
-import edu.wpi.first.wpilibj.Compressor;
 import frc.lib.util.IndexerSensorUtility;
 
 /**
@@ -35,10 +34,9 @@ import frc.lib.util.IndexerSensorUtility;
 
 public class RobotContainer {
 
-        private final Compressor compressor = new Compressor(PneumaticsModuleType.REVPH);
 
         /* Constants */
-        double IndexerMotorSpeed = 0.25; // TODO 0.5;
+        double IndexerMotorSpeed = 0.5; // TODO 0.5;
 
         /* Controllers */
         // Driver Controller
@@ -64,7 +62,7 @@ public class RobotContainer {
         private final Swerve m_Swerve = new Swerve(frontLeftModule, frontRightModule, backLeftModule, backRightModule);
         private final IntakeSubsystem  m_IntakeSubsystem = new IntakeSubsystem(2, 17, 3);
         private final ShooterMotorSubsystem m_ShooterMotorSubsystem = new ShooterMotorSubsystem(12, 7, 15);
-         private final ShooterHoodSubsystem m_ShooterHoodSubsystem = new ShooterHoodSubsystem(6);
+        private final ShooterHoodSubsystem m_ShooterHoodSubsystem = new ShooterHoodSubsystem(6);
         private final IndexerSubsystem  m_IndexerSubsystem = new IndexerSubsystem(16, 4);
 
         NeoMotorSubsystem m_stagedMotor;
@@ -118,7 +116,7 @@ public class RobotContainer {
                  * The container for the robot. Contains subsystems, OI devices, and commands.
                  */
 
-                // compressor.enableAnalog(100,115);
+
 
                 // Auto Command Manager Stuff
                 m_autoManager = new AutoCommandManager();
@@ -183,8 +181,6 @@ public class RobotContainer {
                 m_Swerve.setDefaultCommand(new TeleopSwerve(m_Swerve, m_driverController.getController(), translationAxis,
                                                 strafeAxis, rotationAxis, fieldRelative, openLoop));
 
-                // compressor.enableAnalog(100, 115);
-
                 // Configure the button bindings
                 configureButtonBindings();
         }
@@ -246,7 +242,7 @@ public class RobotContainer {
                 /* Driver Buttons */
                 // Put back in after testing
 
-                 m_driverController.getRightBumper().whileActiveOnce( m_IndexerCommand);
+                 m_driverController.getRightBumper().whileActiveOnce(m_IndexerCommand);
                  //m_ShooterCommand);
 
                 /* Co-Driver Buttons */

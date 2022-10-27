@@ -286,6 +286,7 @@ public class ShuffleboardUtility {
 
         // BALL MANAGEMENT
         LOADED_SENSOR("Loaded Sensor"),
+        STAGED_SENSOR("Staged Sensor"),
         ALLIANCE_COLOR("Alliance Color"),
         LED_PATTERNS("LED Patterns"),
         AUTONOMOUS_PATH("Autonomous Paths"),

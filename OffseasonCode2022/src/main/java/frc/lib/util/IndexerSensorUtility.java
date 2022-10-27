@@ -5,6 +5,9 @@ import com.playingwithfusion.TimeOfFlight.RangingMode;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import frc.robot.Robot;
+import frc.robot.utilities.ShuffleboardUtility;
+import frc.robot.utilities.ShuffleboardUtility.ShuffleBoardData;
+import frc.robot.utilities.ShuffleboardUtility.ShuffleboardKeys;
 
 public class IndexerSensorUtility {
 
@@ -30,8 +33,8 @@ public class IndexerSensorUtility {
         if (Robot.isReal()) {
             loadedSensor = new TimeOfFlight(loadedId);
             stagedSensor = new TimeOfFlight(stagedId);
-            loadedSensor.setRangingMode(RangingMode.Short, 25);
-            stagedSensor.setRangingMode(RangingMode.Short, 25);
+            loadedSensor.setRangingMode(RangingMode.Medium, 10);
+            stagedSensor.setRangingMode(RangingMode.Medium, 10);
         } else {
             loadedSensorSim = new DigitalInput(loadedId);
             stagedSensorSim = new DigitalInput(stagedId);
@@ -54,6 +57,9 @@ public class IndexerSensorUtility {
      */
     public boolean loadedIsTouching() {
         if (Robot.isReal()) {
+            ShuffleboardUtility.getInstance().putToShuffleboard(ShuffleboardUtility.driverTab, 
+                                                                ShuffleboardKeys.LOADED_SENSOR, 
+                                                                new ShuffleBoardData<Double>(loadedSensor.getRange()));
             return loadedSensor.getRange() < TRIGGER_DISTANCE;
         } else {
             return loadedSensorSim.get();
@@ -69,6 +75,9 @@ public class IndexerSensorUtility {
      */
     public boolean stagedIsTouching() {
         if (Robot.isReal()) {
+            ShuffleboardUtility.getInstance().putToShuffleboard(ShuffleboardUtility.driverTab, 
+                                                                ShuffleboardKeys.STAGED_SENSOR, 
+                                                                new ShuffleBoardData<Double>(stagedSensor.getRange()));
             return stagedSensor.getRange() < TRIGGER_DISTANCE;
         } else {
             return stagedSensorSim.get();
