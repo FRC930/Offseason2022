@@ -1,21 +1,19 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.IntakeExtensionSubsystem;
 
 public class ExtendIntakeCommand extends CommandBase {
-    
-    private final double EXTENSION_SPEED = 0.25; //TODO 0.5;
 
-    private final IntakeSubsystem intakeSubsystem;
+    private final IntakeExtensionSubsystem intakeEncoderSubsystem;
 
-    public ExtendIntakeCommand(IntakeSubsystem m_extensionMotor) {
-        intakeSubsystem = m_extensionMotor;
+    public ExtendIntakeCommand(IntakeExtensionSubsystem m_extensionMotor) {
+        intakeEncoderSubsystem = m_extensionMotor;
     }
 
     @Override
     public void initialize() {
-        //TODO look at ShooterHoodSubsystem(setHoodPosition) intakeSubsystem.setExtensionMotorSpeed(EXTENSION_SPEED);
+        intakeEncoderSubsystem.extendIntake();
     }
 
     @Override
@@ -25,6 +23,6 @@ public class ExtendIntakeCommand extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        intakeSubsystem.stopExtensionMotor(0);
+        intakeEncoderSubsystem.retractIntake();
     }
 }
