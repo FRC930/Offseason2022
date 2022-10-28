@@ -76,8 +76,8 @@ public class RobotContainer {
         TalonMotorSubsystem m_shooterMotorRight;
 
         /* Commands */
-        //private  ExtendIntakeCommand m_ExtendIntakeCommand;
-        //private  RunIntakeRollersCommand m_RunIntakeRollersCommand;
+        private  ExtendIntakeCommand m_ExtendIntakeCommand;
+        private  RunIntakeRollersCommand m_RunIntakeRollersCommand;
         private  IndexerCommand m_IndexerCommand;
         //private final IndexerEjectCommand m_IndexerEjectCommand;
         // private final ShooterCommand m_ShooterCommand;
@@ -244,7 +244,7 @@ public class RobotContainer {
 
                 // TODO: make these both into a parrallel command group
                  m_driverController.getRightBumper().whileActiveOnce(m_IndexerCommand);
-                 //m_driverController.getRightBumper().whileActiveOnce(new RunIntakeRollersCommand(m_IntakeSubsystem));
+                 m_driverController.getRightBumper().whileActiveOnce(new RunIntakeRollersCommand(m_IntakeSubsystem));
                  //m_driverController.getRightBumper().whileActiveOnce(new ExtendIntakeCommand(m_IntakeExtention));
 
                  //m_driverController.get
@@ -301,6 +301,7 @@ public class RobotContainer {
 
         public void testExit() {
                 // m_ShooterMotorSubsystem.refollowShooterMotors(); // TODO: Uncomment
+                m_IntakeSubsystem.followIntakeMotors();
         }
 
         /**
