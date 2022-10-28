@@ -25,8 +25,8 @@ public class IndexerSensorUtility {
     private TimeOfFlight loadedSensor;
     private TimeOfFlight stagedSensor;
 
-    private Debouncer m_Debouncer1;
-    private Debouncer m_Debouncer2;
+    private Debouncer m_DebouncerLoaded;
+    private Debouncer m_DebouncerStaged;
 
     //-------- CONSTRUCTOR --------\\
     /**
@@ -35,8 +35,8 @@ public class IndexerSensorUtility {
      * Creates and returns sensor values the endgame sensors
      */
     public IndexerSensorUtility(int loadedId, int stagedId) {
-        m_Debouncer1 = new Debouncer(0.5);
-        m_Debouncer2 = new Debouncer(0.35);
+        m_DebouncerLoaded = new Debouncer(0.5);
+        m_DebouncerStaged = new Debouncer(0.35);
         if (Robot.isReal()) {
             loadedSensor = new TimeOfFlight(loadedId);
             stagedSensor = new TimeOfFlight(stagedId);
@@ -67,7 +67,7 @@ public class IndexerSensorUtility {
             ShuffleboardUtility.getInstance().putToShuffleboard(ShuffleboardUtility.driverTab, 
                                                                 ShuffleboardKeys.LOADED_SENSOR, 
                                                                 new ShuffleBoardData<Double>(loadedSensor.getRange()));
-            return m_Debouncer1.calculate(loadedSensor.getRange() < TRIGGER_DISTANCE);
+            return m_DebouncerLoaded.calculate(loadedSensor.getRange() < TRIGGER_DISTANCE);
         } else {
             return loadedSensorSim.get();
         }
@@ -85,7 +85,7 @@ public class IndexerSensorUtility {
             ShuffleboardUtility.getInstance().putToShuffleboard(ShuffleboardUtility.driverTab, 
                                                                 ShuffleboardKeys.STAGED_SENSOR, 
                                                                 new ShuffleBoardData<Double>(stagedSensor.getRange()));
-            return m_Debouncer2.calculate(stagedSensor.getRange() < TRIGGER_DISTANCE);
+            return m_DebouncerStaged.calculate(stagedSensor.getRange() < TRIGGER_DISTANCE);
         } else {
             return stagedSensorSim.get();
         }
