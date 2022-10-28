@@ -11,7 +11,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class IntakeExtensionSubsystem extends SubsystemBase{
+public class IntakeVoltageSubsystem extends SubsystemBase{
     
     // -------- CONSTANTS --------\\
     // Clicks of the TalonFX encoder per rotation of motor shaft
@@ -31,12 +31,12 @@ public class IntakeExtensionSubsystem extends SubsystemBase{
 
     // -------- CONSTRUCTOR --------\\
     /**
-     * <h3>IntakeEncoderSubsystem</h3>
+     * <h3>IntakeVoltageSubsystem</h3>
      * Creates a subsystem class to manage the intake motor.
      * 
      * @param intakeMotorID ID of the intake motor
      */
-    public IntakeExtensionSubsystem(int intakeMotorID) {
+    public IntakeVoltageSubsystem(int intakeMotorID) {
 
         // Motor declaration
         intakeMotor = new WPI_TalonFX(intakeMotorID);
@@ -44,30 +44,12 @@ public class IntakeExtensionSubsystem extends SubsystemBase{
         // Config object for all config values
         TalonFXConfiguration config = new TalonFXConfiguration();
 
-        // Set PID values
-        config.slot0.kP = MOTOR_KP;
-        config.slot0.kD = MOTOR_KD;
-
-
-        // Allow encoder deadband to prevent oscillation
-        config.slot0.allowableClosedloopError = 25;
-
-
         // Set current and voltage control for brake mode
         config.statorCurrLimit = new StatorCurrentLimitConfiguration(true, 40, 40, 0.2);
         config.statorCurrLimit.enable = true;
 
-        config.voltageCompSaturation = 11.0;
-
-        // Sets encoder limits so the intake can't break itself by going too far
-       // config.forwardSoftLimitThreshold = ((EXTENDED_POSITION / 360.0) * TALON_CPR / GEAR_RATIO);
-       // config.reverseSoftLimitThreshold = ((RETRACTED_POSITION / 360.0) * TALON_CPR / GEAR_RATIO);
-       // config.forwardSoftLimitEnable = true;
-       // config.reverseSoftLimitEnable = true;
-
-
         // Sets motor so it can't be manually moved when neutral
-        intakeMotor.setNeutralMode(NeutralMode.Brake);
+        intakeMotor.setNeutralMode(NeutralMode.Coast);
 
         // Motor is not inverted
         intakeMotor.setInverted(InvertType.None);
@@ -80,18 +62,16 @@ public class IntakeExtensionSubsystem extends SubsystemBase{
         } while (error != ErrorCode.OK);
     }
 
-    public void extendIntake() {
-         // Converts degrees into encoder ticks
-         intakeMotor.set(ControlMode.Position, EXTENDED_POSITION,
-         DemandType.ArbitraryFeedForward, 0.7);
+    public void setSpeed(double speed) {
+
+         intakeMotor.set(ControlMode.PercentOutput, speed / 12.0);
     }
 
-    public void retractIntake() {
-         // Converts degrees into encoder ticks
-         intakeMotor.set(ControlMode.Position, RETRACTED_POSITION,
-         DemandType.ArbitraryFeedForward, 0.8);
+    public double getCurrent() {
+
+        return intakeMotor.getStatorCurrent();
     }
 
 }
-// end of class IntakeEncoderSubsystem
+// end of class IntakeVoltageSubsystem
 
