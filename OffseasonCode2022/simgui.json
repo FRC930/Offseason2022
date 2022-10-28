@@ -60,6 +60,16 @@
           "open": true
         }
       },
+      "SPARK MAX [16]": {
+        "header": {
+          "open": true
+        }
+      },
+      "SPARK MAX [4]": {
+        "header": {
+          "open": true
+        }
+      },
       "SPARK MAX [99]": {
         "header": {
           "open": true
@@ -85,7 +95,12 @@
           "open": true
         }
       },
-      "Talon FX[2]": {
+      "Talon FX[12]": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon FX[12]/Integrated Sensor": {
         "header": {
           "open": true
         }
@@ -103,6 +118,11 @@
             }
           }
         }
+      },
+      "Talon FX[7]/Integrated Sensor": {
+        "header": {
+          "open": true
+        }
       }
     }
   },
@@ -113,16 +133,19 @@
       "/LiveWindow/IndexerSubsystem": "Subsystem",
       "/LiveWindow/IntakeExtensionSubsystem": "Subsystem",
       "/LiveWindow/IntakeSubsystem": "Subsystem",
+      "/LiveWindow/IntakeVoltageSubsystem": "Subsystem",
       "/LiveWindow/ShooterHoodSubsystem": "Subsystem",
       "/LiveWindow/ShooterMotorSubsystem": "Subsystem",
       "/LiveWindow/Swerve": "Subsystem",
       "/LiveWindow/Ungrouped/DigitalInput[15]": "Digital Input",
       "/LiveWindow/Ungrouped/DigitalInput[16]": "Digital Input",
+      "/LiveWindow/Ungrouped/DigitalInput[25]": "Digital Input",
       "/LiveWindow/Ungrouped/DigitalInput[3]": "Digital Input",
       "/LiveWindow/Ungrouped/DigitalInput[4]": "Digital Input",
       "/LiveWindow/Ungrouped/PIDController[1]": "PIDController",
       "/LiveWindow/Ungrouped/PIDController[2]": "PIDController",
       "/LiveWindow/Ungrouped/PIDController[3]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[4]": "PIDController",
       "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
       "/LiveWindow/Ungrouped/Talon FX [12]": "Motor Controller",
       "/LiveWindow/Ungrouped/Talon FX [15]": "Motor Controller",

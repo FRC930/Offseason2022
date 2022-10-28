@@ -29,7 +29,6 @@ public class ShooterCommand extends CommandBase {
 
     // -----VARIABLES----\\
     private final ShooterMotorSubsystem shooterSubsystem;
-    private final IndexerSubsystem indexerSubsystem;
     private boolean usingShuffleboard;
     private double loadedSpeed;
     private double speed;
@@ -42,12 +41,11 @@ public class ShooterCommand extends CommandBase {
      * @param shooter The ShooterSubsystem to use
      * @param indexer The IndexerMotorSubsystem to use
      */
-    public ShooterCommand(ShooterMotorSubsystem shooter, IndexerSubsystem indexer) {
+    public ShooterCommand(ShooterMotorSubsystem shooter) {
         // ---CANNOT USE this() BECAUSE OF BOOLEAN FLAG---\\
         shooterSubsystem = shooter;
-        indexerSubsystem = indexer;
         usingShuffleboard = true;
-        addRequirements(shooterSubsystem, indexerSubsystem);
+        addRequirements(shooterSubsystem);
     }
 
     /**
@@ -57,9 +55,9 @@ public class ShooterCommand extends CommandBase {
      * @param indexer The IndexerMotorSubsystem to use
      * @param speed   The speed(in PercentOutput) you want both wheels to spin at
      */
-    public ShooterCommand(ShooterMotorSubsystem shooter, IndexerSubsystem indexer, double speed) {
+    public ShooterCommand(ShooterMotorSubsystem shooter,  double speed) {
         // Applies speed to both motors
-        this(shooter, indexer, speed, speed);
+        this(shooter, speed, speed);
     }
 
     /**
@@ -72,14 +70,12 @@ public class ShooterCommand extends CommandBase {
      * @param laodedSpeed The speed(in PercentOutput) you want the loaded wheel to
      *                    spin at
      */
-    public ShooterCommand(ShooterMotorSubsystem shooter, IndexerSubsystem indexer, double speed,
-            double loadedSpeed) {
+    public ShooterCommand(ShooterMotorSubsystem shooter, double speed, double loadedSpeed) {
         shooterSubsystem = shooter;
-        indexerSubsystem = indexer;
         usingShuffleboard = false;
         this.speed = speed;
         this.loadedSpeed = loadedSpeed;
-        addRequirements(shooterSubsystem, indexerSubsystem);
+        addRequirements(shooterSubsystem);
     }
 
     @Override
@@ -103,13 +99,7 @@ public class ShooterCommand extends CommandBase {
 
     @Override
     public void execute() { // TODO: Pull out indexer and see how we did it on last year's bot
-        counter++;
-        // Waits for delay before activating indexer system
-        if (counter == INDEXER_DELAY) {
-            
-            indexerSubsystem.setStagedMotorSpeed(0.25); //TODO 1.0);
-            indexerSubsystem.setEjectionMotorSpeed(-0.25); //TODO -1.0);
-        }
+      
     }
 
     @Override
@@ -123,6 +113,5 @@ public class ShooterCommand extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         shooterSubsystem.stopMotors();
-        indexerSubsystem.stopMotors();
     }
 } // End of CLass

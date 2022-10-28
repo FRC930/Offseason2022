@@ -12,8 +12,10 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.AutoCommandManager.subNames;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.autos.*;
 import frc.robot.commands.*;
+import frc.robot.commands.autovisioncommands.PhotonAimCommand;
 import frc.robot.commands.shooterCommands.AdjustHoodCommand;
 import frc.robot.commands.shooterCommands.ShooterCommand;
 import frc.robot.subsystems.*;
@@ -67,6 +69,7 @@ public class RobotContainer {
         private final ShooterHoodSubsystem m_ShooterHoodSubsystem = new ShooterHoodSubsystem(6);
         private final IndexerSubsystem  m_IndexerSubsystem = new IndexerSubsystem(16, 4);
 
+
         NeoMotorSubsystem m_stagedMotor;
         NeoMotorSubsystem m_ejectionMotor;
         NeoMotorSubsystem m_cargoCenteringMotor;
@@ -80,9 +83,11 @@ public class RobotContainer {
         private  ExtendIntakeCommand m_ExtendIntakeCommand;
         private  RunIntakeRollersCommand m_RunIntakeRollersCommand;
         private  IndexerCommand m_IndexerCommand;
-        //private final IndexerEjectCommand m_IndexerEjectCommand;
-        // private final ShooterCommand m_ShooterCommand;
-        // private final AdjustHoodCommand m_ShooterHoodCommand;
+        private PhotonAimCommand m_PhotonAimCommand;
+        private final IndexerEjectCommand m_IndexerEjectCommand;
+         private final ShooterCommand m_ShooterCommand;
+         private final AdjustHoodCommand m_ShooterHoodCommand;
+         private final RunIndexerCommand m_RunIndexerCommand;
 
         /*
          * NeoIndividualMotorCommand m_stagedMotorCommand;
@@ -129,9 +134,9 @@ public class RobotContainer {
                 m_IndexerSensorUtility = new IndexerSensorUtility(15, 16);
                  m_IndexerCommand = new IndexerCommand(m_IndexerSubsystem,
                  m_IndexerSensorUtility, IndexerMotorSpeed);
-                 //m_IndexerEjectCommand = new IndexerEjectCommand(m_IndexerSubsystem,
-                 //IndexerMotorSpeed);
-                
+                 m_IndexerEjectCommand = new IndexerEjectCommand(m_IndexerSubsystem,
+                 IndexerMotorSpeed);
+
                 // MOTORS //
                 /*
                 m_stagedMotor = new NeoMotorSubsystem(16);
@@ -171,11 +176,12 @@ public class RobotContainer {
                 // m_IndexerCommand = new IndexerCommand(m_IndexerSubsystem,
                 // m_IndexerSensorUtility, 0.5);
                 // m_IndexerEjectCommand = new IndexerEjectCommand(m_IndexerSubsystem, 0.5);
+                m_RunIndexerCommand = new RunIndexerCommand(m_IndexerSubsystem, 0.5);
 
                 // //SHOOTER INITS //
-                // m_ShooterCommand = new ShooterCommand(m_ShooterMotorSubsystem,
-                // m_IndexerSubsystem, 0.5);
-                // m_ShooterHoodCommand = new AdjustHoodCommand(m_ShooterHoodSubsystem);
+                 m_ShooterCommand = new ShooterCommand(m_ShooterMotorSubsystem, 0.5);
+                m_ShooterHoodCommand = new AdjustHoodCommand(m_ShooterHoodSubsystem);
+                m_PhotonAimCommand = new PhotonAimCommand(m_Swerve, m_driverController.getController(),  m_codriverController.getController());
 
                 boolean fieldRelative = true;
                 boolean openLoop = true;
@@ -253,6 +259,15 @@ public class RobotContainer {
 
                  //m_driverController.get
                  //m_ShooterCommand);
+                 m_driverController.getLeftBumper().whileActiveOnce(           
+                        new ParallelCommandGroup(
+                                new SequentialCommandGroup(
+                                       // m_PhotonAimCommand, 
+                                        m_ShooterCommand),
+                                 m_RunIndexerCommand 
+                                )
+                               
+                        );
 
                 /* Co-Driver Buttons */
 
