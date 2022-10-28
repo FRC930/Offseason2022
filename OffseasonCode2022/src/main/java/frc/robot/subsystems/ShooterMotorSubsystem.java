@@ -11,12 +11,14 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utilities.ShooterUtility;
+import frc.robot.utilities.SparkMaxWrapper;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FollowerType;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 //-------- SUBSYSTEM CLASS --------\\
 
@@ -30,7 +32,7 @@ public class ShooterMotorSubsystem extends SubsystemBase {
     // motor controllers for the shooter wheels
     private final WPI_TalonFX RightShooterMaster;
     private final WPI_TalonFX LeftShooterFollower;
-    private final WPI_TalonFX Loaded;
+    private final SparkMaxWrapper Loaded;
 
     // -------- CONSTRUCTOR --------\\
     /**
@@ -47,17 +49,17 @@ public class ShooterMotorSubsystem extends SubsystemBase {
         // Motor declaration
         RightShooterMaster = new WPI_TalonFX(RightShooterMasterID);
         LeftShooterFollower = new WPI_TalonFX(LeftShooterFollowerID);
-        Loaded = new WPI_TalonFX(LoadedID);
+        Loaded = new SparkMaxWrapper(LoadedID, MotorType.kBrushless);
 
         // Reset motors
         RightShooterMaster.configFactoryDefault();
         LeftShooterFollower.configFactoryDefault();
-        Loaded.configFactoryDefault();
+        Loaded.restoreFactoryDefaults();
 
         // Sets motors to coast so that they can move freely when neutral
         RightShooterMaster.setNeutralMode(NeutralMode.Coast);
         LeftShooterFollower.setNeutralMode(NeutralMode.Coast);
-        Loaded.setNeutralMode(NeutralMode.Coast);
+        // TODO determine how on sparkmaxLoaded.setNeutralMode(NeutralMode.Coast);
 
         // All motors are not inverted
         refollowShooterMotors();
@@ -85,7 +87,7 @@ public class ShooterMotorSubsystem extends SubsystemBase {
     public void setRightSpeed(double rightShooterSpeed, double loadedSpeed) {
         // Sets speed to 0 if speed argument is less than 0
         RightShooterMaster.set(ControlMode.PercentOutput, Math.max(0.0, rightShooterSpeed));
-        Loaded.set(ControlMode.PercentOutput, Math.max(0.0, loadedSpeed));
+        Loaded.set(Math.max(0.0, loadedSpeed));
     }
 
 
