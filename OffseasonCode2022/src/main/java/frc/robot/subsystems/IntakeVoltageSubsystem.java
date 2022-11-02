@@ -10,6 +10,9 @@ import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.utilities.ShuffleboardUtility;
+import frc.robot.utilities.ShuffleboardUtility.ShuffleBoardData;
+import frc.robot.utilities.ShuffleboardUtility.ShuffleboardKeys;
 
 public class IntakeVoltageSubsystem extends SubsystemBase{
     
@@ -70,6 +73,13 @@ public class IntakeVoltageSubsystem extends SubsystemBase{
     public double getCurrent() {
 
         return intakeMotor.getStatorCurrent();
+    }
+
+    @Override
+    public void periodic() {
+        ShuffleboardUtility.getInstance().putToShuffleboard(ShuffleboardUtility.driverTab, 
+                                                                ShuffleboardKeys.INTAKE_POSITIONING, 
+                                                                new ShuffleBoardData<Double>(getCurrent()));
     }
 
 }

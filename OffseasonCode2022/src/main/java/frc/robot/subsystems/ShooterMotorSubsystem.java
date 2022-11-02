@@ -32,7 +32,6 @@ public class ShooterMotorSubsystem extends SubsystemBase {
     // motor controllers for the shooter wheels
     private final WPI_TalonFX RightShooterMaster;
     private final WPI_TalonFX LeftShooterFollower;
-    private final SparkMaxWrapper Loaded;
 
     // -------- CONSTRUCTOR --------\\
     /**
@@ -44,17 +43,15 @@ public class ShooterMotorSubsystem extends SubsystemBase {
      * 
      */
     public ShooterMotorSubsystem(int RightShooterMasterID,
-            int LeftShooterFollowerID, int LoadedID) {
+            int LeftShooterFollowerID) {
 
         // Motor declaration
         RightShooterMaster = new WPI_TalonFX(RightShooterMasterID);
         LeftShooterFollower = new WPI_TalonFX(LeftShooterFollowerID);
-        Loaded = new SparkMaxWrapper(LoadedID, MotorType.kBrushless);
 
         // Reset motors
         RightShooterMaster.configFactoryDefault();
         LeftShooterFollower.configFactoryDefault();
-        Loaded.restoreFactoryDefaults();
 
         // Sets motors to coast so that they can move freely when neutral
         RightShooterMaster.setNeutralMode(NeutralMode.Coast);
@@ -87,7 +84,6 @@ public class ShooterMotorSubsystem extends SubsystemBase {
     public void setRightSpeed(double rightShooterSpeed, double loadedSpeed) {
         // Sets speed to 0 if speed argument is less than 0
         RightShooterMaster.set(ControlMode.PercentOutput, Math.max(0.0, rightShooterSpeed));
-        Loaded.set(Math.max(0.0, loadedSpeed));
     }
 
 
@@ -97,7 +93,6 @@ public class ShooterMotorSubsystem extends SubsystemBase {
      */
     public void stopMotors() {
         RightShooterMaster.stopMotor();
-        Loaded.stopMotor();
     }
 
     /**

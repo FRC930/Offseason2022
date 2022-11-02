@@ -36,7 +36,7 @@ public class IndexerSensorUtility {
      */
     public IndexerSensorUtility(int loadedId, int stagedId) {
         m_DebouncerLoaded = new Debouncer(0.5);
-        m_DebouncerStaged = new Debouncer(0.35);
+        m_DebouncerStaged = new Debouncer(0.1);
         if (Robot.isReal()) {
             loadedSensor = new TimeOfFlight(loadedId);
             stagedSensor = new TimeOfFlight(stagedId);

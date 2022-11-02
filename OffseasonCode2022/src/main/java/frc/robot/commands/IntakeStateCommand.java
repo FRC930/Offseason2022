@@ -19,7 +19,7 @@ public class IntakeStateCommand extends CommandBase{
     @Override
     public void execute() {
         double speed = (m_retract)?-1.0:1.0;
-        if(m_intakeVoltageSubsystem.getCurrent() > 60){
+        if(m_intakeVoltageSubsystem.getCurrent() > 40){
             //TODO check speeds, commented ones are Citrus' speeds
             //TODO put shuffleboard values
             speed *= 0.5; //1.2;

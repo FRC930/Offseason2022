@@ -65,9 +65,10 @@ public class RobotContainer {
         //private final IntakeExtensionSubsystem m_IntakeExtention = new IntakeExtensionSubsystem(2);
         private final IntakeVoltageSubsystem m_IntakeVoltage = new IntakeVoltageSubsystem(2);
         private final IntakeSubsystem  m_IntakeSubsystem = new IntakeSubsystem(17, 3);
-        private final ShooterMotorSubsystem m_ShooterMotorSubsystem = new ShooterMotorSubsystem(12, 7, 15);
+        private final ShooterMotorSubsystem m_ShooterMotorSubsystem = new ShooterMotorSubsystem(12, 7);
         private final ShooterHoodSubsystem m_ShooterHoodSubsystem = new ShooterHoodSubsystem(6);
         private final IndexerSubsystem  m_IndexerSubsystem = new IndexerSubsystem(16, 4);
+        private final LoadedMotorSubsystem m_LoadedMotorSubsystem = new LoadedMotorSubsystem(15);
 
 
         NeoMotorSubsystem m_stagedMotor;
@@ -82,12 +83,10 @@ public class RobotContainer {
         /* Commands */
         private  ExtendIntakeCommand m_ExtendIntakeCommand;
         private  RunIntakeRollersCommand m_RunIntakeRollersCommand;
-        private  IndexerCommand m_IndexerCommand;
         private PhotonAimCommand m_PhotonAimCommand;
         private final IndexerEjectCommand m_IndexerEjectCommand;
          private final ShooterCommand m_ShooterCommand;
          private final AdjustHoodCommand m_ShooterHoodCommand;
-         private final RunIndexerCommand m_RunIndexerCommand;
 
         /*
          * NeoIndividualMotorCommand m_stagedMotorCommand;
@@ -132,10 +131,7 @@ public class RobotContainer {
 
                 // INDEXER INITS //
                 m_IndexerSensorUtility = new IndexerSensorUtility(15, 16);
-                 m_IndexerCommand = new IndexerCommand(m_IndexerSubsystem,
-                 m_IndexerSensorUtility, IndexerMotorSpeed);
-                 m_IndexerEjectCommand = new IndexerEjectCommand(m_IndexerSubsystem,
-                 IndexerMotorSpeed);
+                m_IndexerEjectCommand = new IndexerEjectCommand(m_IndexerSubsystem, IndexerMotorSpeed);
 
                 // MOTORS //
                 /*
@@ -176,7 +172,6 @@ public class RobotContainer {
                 // m_IndexerCommand = new IndexerCommand(m_IndexerSubsystem,
                 // m_IndexerSensorUtility, 0.5);
                 // m_IndexerEjectCommand = new IndexerEjectCommand(m_IndexerSubsystem, 0.5);
-                m_RunIndexerCommand = new RunIndexerCommand(m_IndexerSubsystem, 0.5);
 
                 // //SHOOTER INITS //
                  m_ShooterCommand = new ShooterCommand(m_ShooterMotorSubsystem, 0.5);
@@ -187,7 +182,7 @@ public class RobotContainer {
                 boolean openLoop = true;
                 m_Swerve.setDefaultCommand(new TeleopSwerve(m_Swerve, m_driverController.getController(), translationAxis,
                                                 strafeAxis, rotationAxis, fieldRelative, openLoop));
-                m_IntakeVoltage.setDefaultCommand(new IntakeStateCommand(m_IntakeVoltage, true));
+                //m_IntakeVoltage.setDefaultCommand(new IntakeStateCommand(m_IntakeVoltage, true));
         
 
                 // Configure the button bindings
@@ -252,22 +247,23 @@ public class RobotContainer {
                 // Put back in after testing
 
                 // TODO: make these both into a parrallel command group
-                 m_driverController.getRightBumper().whileActiveOnce(m_IndexerCommand);
+                 m_driverController.getRightBumper().whileActiveOnce(new IndexerCommand(m_IndexerSubsystem,
+                 m_IndexerSensorUtility, m_LoadedMotorSubsystem, IndexerMotorSpeed));
                  m_driverController.getRightBumper().whileActiveOnce(new RunIntakeRollersCommand(m_IntakeSubsystem));
-                 //m_driverController.getRightBumper().whileActiveOnce(new ExtendIntakeCommand(m_IntakeExtention));
-                 m_driverController.getRightBumper().whileActiveOnce(new IntakeStateCommand(m_IntakeVoltage, false));
+                //  m_driverController.getRightBumper().whileActiveOnce(new ExtendIntakeCommand(m_IntakeExtention));
+                //  m_driverController.getRightBumper().whileActiveOnce(new IntakeStateCommand(m_IntakeVoltage, false));
 
                  //m_driverController.get
                  //m_ShooterCommand);
                  m_driverController.getLeftBumper().whileActiveOnce(           
                         new ParallelCommandGroup(
                                 new SequentialCommandGroup(
-                                       // m_PhotonAimCommand, 
+                                        m_PhotonAimCommand, 
                                         m_ShooterCommand),
-                                 m_RunIndexerCommand 
-                                )
-                               
-                        );
+                                new RunIndexerCommand(m_IndexerSubsystem, m_LoadedMotorSubsystem, 0.25) 
+                        )
+                        
+                );
 
                 /* Co-Driver Buttons */
 
@@ -277,8 +273,8 @@ public class RobotContainer {
                                                 m_RunIntakeRollersCommand,
                                                 m_ExtendIntakeCommand));
                 */
-                // m_codriverController.getBButton().whileActiveOnce(
-                // m_IndexerEjectCommand);
+                m_codriverController.getBButton().whileActiveOnce(
+                m_IndexerEjectCommand);
 
                 // Tarmac
                 // m_codriverController.getPOVLeftTrigger().whileActiveOnce(

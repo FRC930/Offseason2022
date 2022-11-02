@@ -2,6 +2,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.IndexerSubsystem;
+import frc.robot.subsystems.LoadedMotorSubsystem;
 import frc.lib.util.IndexerSensorUtility;
 
 public class RunIndexerCommand extends CommandBase {
@@ -12,6 +13,7 @@ public class RunIndexerCommand extends CommandBase {
     private int counter;
 
     private final IndexerSubsystem indexerSubsystem;
+    private final LoadedMotorSubsystem loadedMotor;
 
     /**
      * <h3>RunIndexerCommand</h3>
@@ -22,9 +24,10 @@ public class RunIndexerCommand extends CommandBase {
      * @param m_indexerSensor Sensor Utility for indexer system
      * @param speed the speed to set the motor
      */
-    public RunIndexerCommand(IndexerSubsystem m_indexerSubsystem,  double speed) {
+    public RunIndexerCommand(IndexerSubsystem m_indexerSubsystem,  LoadedMotorSubsystem m_loadedMotor, double speed) {
         counter = 0;
         indexerSubsystem = m_indexerSubsystem;
+        loadedMotor = m_loadedMotor;
         motorSpeed = speed;
 
         this.addRequirements(m_indexerSubsystem);
@@ -35,9 +38,9 @@ public class RunIndexerCommand extends CommandBase {
         counter++;
         // Waits for delay before activating indexer system
         if (counter >= INDEXER_DELAY) {
-            
-            indexerSubsystem.setStagedMotorSpeed(0.25); //TODO 1.0);
-            indexerSubsystem.setEjectionMotorSpeed(-0.25); //TODO -1.0);
+            loadedMotor.setSpeed(motorSpeed);
+            indexerSubsystem.setStagedMotorSpeed(motorSpeed); //TODO 1.0);
+            indexerSubsystem.setEjectionMotorSpeed(-motorSpeed); //TODO -1.0);
         }
 
     }
@@ -51,6 +54,7 @@ public class RunIndexerCommand extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         indexerSubsystem.stopMotors();
+        loadedMotor.setSpeed(0.0);
         counter = 0;
     }
 
