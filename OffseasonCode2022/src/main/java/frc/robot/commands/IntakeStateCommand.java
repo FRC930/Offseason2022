@@ -29,7 +29,7 @@ public class IntakeStateCommand extends CommandBase{
     @Override
     public void execute() {
         double speed = (m_retract)?-1.0:1.0;
-        double lowSpeed = speed * 0.9;
+        double lowSpeed = speed * 1.0;
         double highSpeed = speed * 4.0;
 
         if(m_hold){

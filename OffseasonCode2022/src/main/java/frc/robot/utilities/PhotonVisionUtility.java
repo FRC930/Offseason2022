@@ -34,7 +34,7 @@ public class PhotonVisionUtility {
      */
     private PhotonVisionUtility() {
         // Construction the pipeline
-        hubTracking = new PhotonCamera("Milwaukee");
+        hubTracking = new PhotonCamera("PiCamera");
         hubTracking.setPipelineIndex(PI_CAMERA_INDEX);
         // Set the banner to show the driver that photon isn't ready yet
         ShuffleboardUtility.getInstance().putToShuffleboard(ShuffleboardUtility.driverTab,

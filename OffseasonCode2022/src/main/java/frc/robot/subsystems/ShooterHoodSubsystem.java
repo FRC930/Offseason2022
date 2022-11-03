@@ -114,7 +114,7 @@ public class ShooterHoodSubsystem extends SubsystemBase {
             angle = HOOD_MAX_POSITION;
         }
         // Converts degrees into encoder ticks
-        hoodMotor.set(ControlMode.Position, (angle / 360.0) * TALON_CPR / GEAR_RATIO,
+        hoodMotor.set(ControlMode.Position, (-angle / 360.0) * TALON_CPR / GEAR_RATIO,
                 DemandType.ArbitraryFeedForward, 0.06);
     }
 

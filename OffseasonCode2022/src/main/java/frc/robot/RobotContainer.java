@@ -19,6 +19,7 @@ import frc.robot.commands.autovisioncommands.PhotonAimCommand;
 import frc.robot.commands.shooterCommands.AdjustHoodCommand;
 import frc.robot.commands.shooterCommands.ShooterCommand;
 import frc.robot.subsystems.*;
+import frc.robot.utilities.PhotonVisionUtility;
 import frc.robot.utilities.ShooterUtility;
 import frc.lib.util.SwerveModuleConstants;
 import edu.wpi.first.util.net.PortForwarder;
@@ -105,6 +106,8 @@ public class RobotContainer {
 
         /* Utilities */
         private final IndexerSensorUtility m_IndexerSensorUtility;
+
+        private final PhotonVisionUtility m_PhotonVisionUtility = PhotonVisionUtility.getInstance();
 
         /**
          * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -260,7 +263,7 @@ public class RobotContainer {
                                         m_PhotonAimCommand, 
                                         m_ShooterHoodCommand,
                                         m_ShooterCommand),
-                                new RunIndexerCommand(m_IndexerSubsystem, m_LoadedMotorSubsystem, 0.25) 
+                                new RunIndexerCommand(m_IndexerSubsystem, m_LoadedMotorSubsystem, IndexerMotorSpeed) 
                         )
                         
                 );
@@ -277,40 +280,34 @@ public class RobotContainer {
                 m_IndexerEjectCommand);
 
                 // Tarmac
-                // m_codriverController.getPOVLeftTrigger().whileActiveOnce(
-                // new ParallelCommandGroup(
-                // new AdjustHoodCommand(
-                // m_ShooterHoodSubsystem,
-                // ShooterUtility.calculateHoodPos(9)),
-                // new ShooterCommand(
-                // m_ShooterMotorSubsystem,
-                // m_IndexerSubsystem,
-                // ShooterUtility.calculateTopSpeed(9),
-                // ShooterUtility.calculateBottomSpeed(9))).withTimeout(0.1));
+                m_codriverController.getPOVLeftTrigger().whileActiveOnce(
+                new ParallelCommandGroup(
+                new AdjustHoodCommand(
+                m_ShooterHoodSubsystem,
+                ShooterUtility.calculateHoodPos(9)),
+                new ShooterCommand(
+                m_ShooterMotorSubsystem,
+                ShooterUtility.calculateTopSpeed(9),
+                IndexerMotorSpeed
+                )).withTimeout(0.1));
 
                 // // Launchpad
-                // m_codriverController.getPOVUpTrigger().whileActiveOnce(
-                // new ParallelCommandGroup(
-                // new AdjustHoodCommand(
-                // m_ShooterHoodSubsystem,
-                // ShooterUtility.calculateHoodPos(14.5)),
-                // new ShooterCommand(
-                // m_ShooterMotorSubsystem,
-                // m_IndexerSubsystem,
-                // ShooterUtility.calculateTopSpeed(14.5),
-                // ShooterUtility.calculateBottomSpeed(14.5))).withTimeout(0.1));
+                m_codriverController.getPOVUpTrigger().whileActiveOnce(
+                        new AdjustHoodCommand(
+                                m_ShooterHoodSubsystem,
+                                ShooterUtility.calculateHoodPos(14.5)).withTimeout(0.1));
 
                 // // Fender shot
-                // m_codriverController.getPOVDownTrigger().whileActiveOnce(
-                // new ParallelCommandGroup(
-                // new AdjustHoodCommand(
-                // m_ShooterHoodSubsystem,
-                // ShooterUtility.calculateHoodPos(19 / 12)),
-                // new ShooterCommand(
-                // m_ShooterMotorSubsystem,
-                // m_IndexerSubsystem,
-                // ShooterUtility.calculateTopSpeed(19 / 12),
-                // ShooterUtility.calculateBottomSpeed(19 / 12))).withTimeout(0.1));
+                m_codriverController.getPOVDownTrigger().whileActiveOnce(
+                new ParallelCommandGroup(
+                new AdjustHoodCommand(
+                m_ShooterHoodSubsystem,
+                ShooterUtility.calculateHoodPos(19 / 12)),
+                new ShooterCommand(
+                m_ShooterMotorSubsystem,
+                ShooterUtility.calculateTopSpeed(19 / 12),
+                IndexerMotorSpeed
+                )).withTimeout(0.1));
 
         }
 
