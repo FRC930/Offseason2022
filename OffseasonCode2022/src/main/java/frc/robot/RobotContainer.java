@@ -258,6 +258,7 @@ public class RobotContainer {
                         new ParallelCommandGroup(
                                 new SequentialCommandGroup(
                                         m_PhotonAimCommand, 
+                                        m_ShooterHoodCommand,
                                         m_ShooterCommand),
                                 new RunIndexerCommand(m_IndexerSubsystem, m_LoadedMotorSubsystem, 0.25) 
                         )
