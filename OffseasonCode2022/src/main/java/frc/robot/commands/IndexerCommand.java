@@ -38,7 +38,7 @@ public class IndexerCommand extends CommandBase {
         if(indexerSensorUtility.loadedIsTouching() == false) { // No loaded cargo
             indexerSubsystem.setStagedMotorSpeed(motorSpeed); // Staged motor CCW
             indexerSubsystem.setEjectionMotorSpeed(-motorSpeed); // Ejection motor CCW
-            loadedMotor.setSpeed(motorSpeed);
+            loadedMotor.setSpeed(0.25);
         } else if(indexerSensorUtility.stagedIsTouching() == false && indexerSensorUtility.loadedIsTouching() == true) { // Loaded cargo, but No staged cargo
             indexerSubsystem.setStagedMotorSpeed(motorSpeed); // Staged motor CCW
             indexerSubsystem.setEjectionMotorSpeed(0.0); // Ejection motor CCW

@@ -68,6 +68,7 @@ public class IntakeVoltageSubsystem extends SubsystemBase{
     public void setSpeed(double speed) {
 
          intakeMotor.set(ControlMode.PercentOutput, speed / 12.0);
+        //  System.out.println("Speed: " + speed);
     }
 
     public double getCurrent() {
@@ -80,6 +81,7 @@ public class IntakeVoltageSubsystem extends SubsystemBase{
         ShuffleboardUtility.getInstance().putToShuffleboard(ShuffleboardUtility.driverTab, 
                                                                 ShuffleboardKeys.INTAKE_POSITIONING, 
                                                                 new ShuffleBoardData<Double>(getCurrent()));
+        // System.out.println(getCurrent());
     }
 
 }

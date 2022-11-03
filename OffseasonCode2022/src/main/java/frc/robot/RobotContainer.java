@@ -182,7 +182,7 @@ public class RobotContainer {
                 boolean openLoop = true;
                 m_Swerve.setDefaultCommand(new TeleopSwerve(m_Swerve, m_driverController.getController(), translationAxis,
                                                 strafeAxis, rotationAxis, fieldRelative, openLoop));
-                //m_IntakeVoltage.setDefaultCommand(new IntakeStateCommand(m_IntakeVoltage, true));
+                m_IntakeVoltage.setDefaultCommand(new IntakeStateCommand(m_IntakeVoltage, true));
         
 
                 // Configure the button bindings
@@ -247,11 +247,10 @@ public class RobotContainer {
                 // Put back in after testing
 
                 // TODO: make these both into a parrallel command group
-                 m_driverController.getRightBumper().whileActiveOnce(new IndexerCommand(m_IndexerSubsystem,
-                 m_IndexerSensorUtility, m_LoadedMotorSubsystem, IndexerMotorSpeed));
+                 m_driverController.getRightBumper().whileActiveOnce(new IndexerCommand(m_IndexerSubsystem, m_IndexerSensorUtility, m_LoadedMotorSubsystem, IndexerMotorSpeed));
                  m_driverController.getRightBumper().whileActiveOnce(new RunIntakeRollersCommand(m_IntakeSubsystem));
                 //  m_driverController.getRightBumper().whileActiveOnce(new ExtendIntakeCommand(m_IntakeExtention));
-                //  m_driverController.getRightBumper().whileActiveOnce(new IntakeStateCommand(m_IntakeVoltage, false));
+                 m_driverController.getRightBumper().whileActiveOnce(new IntakeStateCommand(m_IntakeVoltage, false));
 
                  //m_driverController.get
                  //m_ShooterCommand);

@@ -74,28 +74,28 @@ public class ShuffleboardUtility {
             // Check to make sure that the file exists
             if (currentPipeline.exists()) {
                 // Start reading the file
-                try (Scanner reader = new Scanner(currentPipeline)) {
-                    String pipelineName = reader.nextLine();
-                    int pipelineIndex = Integer.parseInt(reader.nextLine());
+                // try (Scanner reader = new Scanner(currentPipeline)) {
+                //     String pipelineName = reader.nextLine();
+                //     int pipelineIndex = Integer.parseInt(reader.nextLine());
                     // Set the default options for the pipeline chooser
-                    pipelineChooser.setDefaultOption(pipelineName, pipelineIndex);
-                } catch (IOException e) {
-                    System.out.println("****** COULDN\'T FIND CURRENT PIPELINE FILE ******");
-                }
-            } else {
-                try {
-                    // Create a new file to write data
-                    currentPipeline.createNewFile();
+                    pipelineChooser.setDefaultOption("Milwaukee", 0);
+            //     } catch (IOException e) {
+            //         System.out.println("****** COULDN\'T FIND CURRENT PIPELINE FILE ******");
+            //     }
+            // } else {
+            //     try {
+            //         // Create a new file to write data
+            //         currentPipeline.createNewFile();
 
-                    // Write the default settings
-                    FileWriter writer = new FileWriter(currentPipeline);
-                    writer.write("(Default)\n");
-                    writer.write("0");
-                    writer.close();
-                } catch (IOException e) {
-                }
+            //         // Write the default settings
+            //         FileWriter writer = new FileWriter(currentPipeline);
+            //         writer.write("(Default)\n");
+            //         writer.write("0");
+            //         writer.close();
+            //     } catch (IOException e) {
+            //     }
 
-                pipelineChooser.setDefaultOption("(Default)", 0);
+            //    pipelineChooser.setDefaultOption("(Default)", 0);
             }
         }
 
