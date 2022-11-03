@@ -32,7 +32,7 @@ public class ShooterHoodSubsystem extends SubsystemBase {
     // Clicks of the TalonFX encoder per rotation of motor shaft
     private static final double TALON_CPR = 2048.0;
     // Gear ratio from motor to the hood(if the hood were a full circle)
-    private static final double GEAR_RATIO = (16.0 / 36.0) * (15.0 / 235.0);
+    private static final double GEAR_RATIO = (16.0 / 54.0) * (15.0 / 237.0);
     // Maxiumum travel of hood in degrees
     private static final double HOOD_MAX_POSITION = 30.0;
     // PID values
