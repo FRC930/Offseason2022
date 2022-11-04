@@ -76,7 +76,7 @@ public class IntakeExtensionSubsystem extends SubsystemBase{
         ErrorCode error = ErrorCode.CAN_INVALID_PARAM;
         do {
             error = intakeMotor.configAllSettings(config, 500);
-            System.out.println("Trying!");
+            //System.out.println("Trying!");
         } while (error != ErrorCode.OK);
     }
 

@@ -39,10 +39,10 @@ public class IntakeStateCommand extends CommandBase{
             if(m_Debouncer.calculate(m_intakeVoltageSubsystem.getCurrent() > 40.0)){
                 speed = lowSpeed;
                 m_hold = true;
-                System.out.println("Slowed down  Speed: " + speed + "Current:" + m_intakeVoltageSubsystem.getCurrent());
+                //System.out.println("Slowed down  Speed: " + speed + "Current:" + m_intakeVoltageSubsystem.getCurrent());
             } else {
                 speed = highSpeed;
-                System.out.println("Speed: "+ speed + "Current:" + m_intakeVoltageSubsystem.getCurrent());
+                //System.out.println("Speed: "+ speed + "Current:" + m_intakeVoltageSubsystem.getCurrent());
             }
             m_intakeVoltageSubsystem.setSpeed(speed);
         }

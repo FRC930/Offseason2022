@@ -104,7 +104,7 @@ public class ShooterHoodSubsystem extends SubsystemBase {
         ErrorCode error = ErrorCode.CAN_INVALID_PARAM;
         do {
             error = hoodMotor.configAllSettings(config, 500);
-            System.out.println("Trying!");
+            //System.out.println("Trying!");
         } while (error != ErrorCode.OK);
     }
 
