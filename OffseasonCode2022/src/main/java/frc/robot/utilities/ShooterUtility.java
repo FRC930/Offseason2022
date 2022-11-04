@@ -49,20 +49,23 @@ public class ShooterUtility {
      * Returns the new speed for the top roller to make the shot.
      * 
      * @param distance the distance from the hub in feet
+     * 
      * @return the required speed in percent output
      */
     public static double calculateTopSpeed(double distance) {
+        double adjust = -0.15;
         if (distance >= 0 && distance <= MAX_DISTANCE) {
             if (distance >= 8) {
-                return (SPEED_M * distance + TOP_SPEED_B) / 100;
+                return ((SPEED_M * distance + TOP_SPEED_B) / 100) + adjust;
             } else if (distance >= 5) {
-                return 0.76;
+                return 0.76 + adjust;
             } else if (distance >= 2) {
-                return 0.74;
+                return 0.74 + adjust;
             }
             else{
                 return 1.0;
             }
+
         } else {
             return -1;
         }

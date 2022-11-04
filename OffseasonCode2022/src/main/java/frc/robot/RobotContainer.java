@@ -177,7 +177,7 @@ public class RobotContainer {
                 // m_IndexerEjectCommand = new IndexerEjectCommand(m_IndexerSubsystem, 0.5);
 
                 // //SHOOTER INITS //
-                 m_ShooterCommand = new ShooterCommand(m_ShooterMotorSubsystem, 0.5);
+                 m_ShooterCommand = new ShooterCommand(m_ShooterMotorSubsystem);
                 m_ShooterHoodCommand = new AdjustHoodCommand(m_ShooterHoodSubsystem);
                 m_PhotonAimCommand = new PhotonAimCommand(m_Swerve, m_driverController.getController(),  m_codriverController.getController());
 
@@ -263,6 +263,7 @@ public class RobotContainer {
                                         m_PhotonAimCommand, 
                                         m_ShooterHoodCommand,
                                         m_ShooterCommand),
+                                // TODO: Sequence command with delay in front
                                 new RunIndexerCommand(m_IndexerSubsystem, m_LoadedMotorSubsystem, IndexerMotorSpeed) 
                         )
                         
