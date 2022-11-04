@@ -303,7 +303,7 @@ public class RobotContainer {
         }
 
         public void testExit() {
-                // m_ShooterMotorSubsystem.refollowShooterMotors(); // TODO: Uncomment
+                m_ShooterMotorSubsystem.refollowShooterMotors(); 
                 m_IntakeSubsystem.followIntakeMotors();
         }
 
