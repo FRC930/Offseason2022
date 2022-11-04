@@ -9,7 +9,12 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.utilities.ShuffleboardUtility;
+import frc.robot.utilities.ShuffleboardUtility.ShuffleBoardData;
+import frc.robot.utilities.ShuffleboardUtility.ShuffleboardKeys;
 
 import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -38,6 +43,7 @@ public class ShooterHoodSubsystem extends SubsystemBase {
     // PID values
     private static final double MOTOR_KP = 1;
     private static final double MOTOR_KD = 15;
+    private double finalAngle;
 
     // -------- DECLARATIONS --------\\
     private final WPI_TalonFX hoodMotor;
@@ -76,10 +82,12 @@ public class ShooterHoodSubsystem extends SubsystemBase {
         // hoodMotor.configVoltageCompSaturation(9.0);
 
         // Sets encoder limits so the hood can't break itself by going too far
+
         config.forwardSoftLimitThreshold = ((HOOD_MAX_POSITION / 360.0) * TALON_CPR / GEAR_RATIO);
         config.reverseSoftLimitThreshold = 250;
         config.forwardSoftLimitEnable = true;
         config.reverseSoftLimitEnable = true;
+
         // hoodMotor.configForwardSoftLimitThreshold((HOOD_MAX_POSITION / 360.0) *
         // TALON_CPR / GEAR_RATIO, 0);
         // hoodMotor.configReverseSoftLimitThreshold(250, 0);
@@ -90,7 +98,7 @@ public class ShooterHoodSubsystem extends SubsystemBase {
         hoodMotor.setNeutralMode(NeutralMode.Brake);
 
         // Motor is not inverted
-        hoodMotor.setInverted(InvertType.None);
+        hoodMotor.setInverted(InvertType.InvertMotorOutput);
 
         //Repeats sending the config until successful
         ErrorCode error = ErrorCode.CAN_INVALID_PARAM;
@@ -113,9 +121,10 @@ public class ShooterHoodSubsystem extends SubsystemBase {
         } else if (angle > HOOD_MAX_POSITION) {
             angle = HOOD_MAX_POSITION;
         }
+        finalAngle = (angle / 360.0) * TALON_CPR / GEAR_RATIO;
         // Converts degrees into encoder ticks
-        hoodMotor.set(ControlMode.Position, (-angle / 360.0) * TALON_CPR / GEAR_RATIO,
-                DemandType.ArbitraryFeedForward, 0.06);
+        hoodMotor.set(ControlMode.Position, finalAngle,
+                DemandType.ArbitraryFeedForward, 0.12);//0.06);
     }
 
     /*public void stopHood() {
@@ -139,6 +148,12 @@ public class ShooterHoodSubsystem extends SubsystemBase {
     public double getHoodPosition() {
         // Converts encoder ticks to degrees of the hood
         return (hoodMotor.getSelectedSensorPosition() / TALON_CPR) * GEAR_RATIO * 360.0;
+    }
+
+    @Override
+    public void periodic() {
+        ShuffleboardUtility.getInstance().putToShuffleboard(ShuffleboardUtility.driverTab, ShuffleboardKeys.CALC_HOOD_POS, new ShuffleBoardData<Double>(finalAngle));
+        ShuffleboardUtility.getInstance().putToShuffleboard(ShuffleboardUtility.driverTab, ShuffleboardKeys.ACT_HOOD_POS, new ShuffleBoardData<Double>(hoodMotor.getSelectedSensorPosition()));
     }
 }
 // end of class ShooterHoodSubsystem

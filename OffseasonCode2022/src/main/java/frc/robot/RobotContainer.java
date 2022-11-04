@@ -281,33 +281,23 @@ public class RobotContainer {
 
                 // Tarmac
                 m_codriverController.getPOVLeftTrigger().whileActiveOnce(
-                new ParallelCommandGroup(
                 new AdjustHoodCommand(
                 m_ShooterHoodSubsystem,
-                ShooterUtility.calculateHoodPos(9)),
-                new ShooterCommand(
-                m_ShooterMotorSubsystem,
-                ShooterUtility.calculateTopSpeed(9),
-                IndexerMotorSpeed
-                )).withTimeout(0.1));
+                ShooterUtility.calculateHoodPos(9))
+                );
 
                 // // Launchpad
                 m_codriverController.getPOVUpTrigger().whileActiveOnce(
                         new AdjustHoodCommand(
                                 m_ShooterHoodSubsystem,
-                                ShooterUtility.calculateHoodPos(14.5)).withTimeout(0.1));
+                                ShooterUtility.calculateHoodPos(14.5)));
 
                 // // Fender shot
                 m_codriverController.getPOVDownTrigger().whileActiveOnce(
-                new ParallelCommandGroup(
                 new AdjustHoodCommand(
                 m_ShooterHoodSubsystem,
-                ShooterUtility.calculateHoodPos(19 / 12)),
-                new ShooterCommand(
-                m_ShooterMotorSubsystem,
-                ShooterUtility.calculateTopSpeed(19 / 12),
-                IndexerMotorSpeed
-                )).withTimeout(0.1));
+                ShooterUtility.calculateHoodPos(19 / 12)
+                ));
 
         }
 

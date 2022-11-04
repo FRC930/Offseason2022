@@ -310,6 +310,11 @@ public class ShuffleboardUtility {
         // INDEXER
         BALL_COUNT("Amount of cargo in the system"),
 
+        // HOOD
+        CALC_HOOD_POS("Calculated position of the hood"),
+        ACT_HOOD_POS("Actual position of the hood"),
+
+
         // MISCELLANEOUS
         CAMERA_STREAM("Camera stream"),
         DISTANCE_FROM_GOAL("Distance from goal"),
