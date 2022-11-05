@@ -60,16 +60,6 @@
           "open": true
         }
       },
-      "SPARK MAX [16]": {
-        "header": {
-          "open": true
-        }
-      },
-      "SPARK MAX [4]": {
-        "header": {
-          "open": true
-        }
-      },
       "SPARK MAX [99]": {
         "header": {
           "open": true
@@ -85,27 +75,17 @@
           "open": true
         }
       },
-      "SparkMax[17]": {
-        "header": {
-          "open": true
-        }
-      },
-      "SparkMax[3]": {
-        "header": {
-          "open": true
-        }
-      },
       "SparkMax[4]": {
         "header": {
           "open": true
         }
       },
-      "Talon FX[12]": {
+      "Talon FX[12]/Integrated Sensor": {
         "header": {
           "open": true
         }
       },
-      "Talon FX[12]/Integrated Sensor": {
+      "Talon FX[6]": {
         "header": {
           "open": true
         }
@@ -122,9 +102,7 @@
               "open": true
             }
           }
-        }
-      },
-      "Talon FX[7]/Integrated Sensor": {
+        },
         "header": {
           "open": true
         }

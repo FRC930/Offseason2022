@@ -13,6 +13,7 @@ import frc.robot.AutoCommandManager.subNames;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.autos.*;
 import frc.robot.commands.*;
 import frc.robot.commands.autovisioncommands.PhotonAimCommand;
@@ -101,8 +102,8 @@ public class RobotContainer {
          * NeoIndividualMotorCommand m_loadedMotorCommand;
          * NeoIndividualMotorCommand m_loadedMotorReversedCommand;
          */
-        TalonIndividualMotorCommand m_shootMotorCommandLeft;
-        TalonIndividualMotorCommand m_shootMotorCommandRight;
+        //TalonIndividualMotorCommand m_shootMotorCommandLeft;
+        //TalonIndividualMotorCommand m_shootMotorCommandRight;
 
         /* Utilities */
         private final IndexerSensorUtility m_IndexerSensorUtility;
@@ -115,11 +116,11 @@ public class RobotContainer {
         public RobotContainer() {
 
                 // PORT FORWARDING //
-                PortForwarder.add(5800, "10.99.30.25", 5800);
-                PortForwarder.add(1181, "10.99.30.25", 1181);
-                PortForwarder.add(1182, "10.99.30.25", 1182);
-                PortForwarder.add(1183, "10.99.30.25", 1183);
-                PortForwarder.add(1184, "10.99.30.25", 1184);
+                PortForwarder.add(5800, "10.9.30.25", 5800);
+                PortForwarder.add(1181, "10.9.30.25", 1181);
+                PortForwarder.add(1182, "10.9.30.25", 1182);
+                PortForwarder.add(1183, "10.9.30.25", 1183);
+                PortForwarder.add(1184, "10.9.30.25", 1184);
 
                 /**
                  * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -164,8 +165,8 @@ public class RobotContainer {
                  * m_loadedMotorReversedCommand = new NeoIndividualMotorCommand(m_loadedMotor,
                  * true);
                  */
-                m_shootMotorCommandLeft = new TalonIndividualMotorCommand(m_shooterMotorLeft, false);
-                m_shootMotorCommandRight = new TalonIndividualMotorCommand(m_shooterMotorRight, true);
+                //m_shootMotorCommandLeft = new TalonIndividualMotorCommand(m_shooterMotorLeft, false);
+                //m_shootMotorCommandRight = new TalonIndividualMotorCommand(m_shooterMotorRight, true);
 
                 // // INTAKE INITS //
 
@@ -249,56 +250,58 @@ public class RobotContainer {
                 /* Driver Buttons */
                 // Put back in after testing
 
-                // TODO: make these both into a parrallel command group
-                 m_driverController.getRightBumper().whileActiveOnce(new IndexerCommand(m_IndexerSubsystem, m_IndexerSensorUtility, m_LoadedMotorSubsystem, IndexerMotorSpeed));
-                 m_driverController.getRightBumper().whileActiveOnce(new RunIntakeRollersCommand(m_IntakeSubsystem));
-                //  m_driverController.getRightBumper().whileActiveOnce(new ExtendIntakeCommand(m_IntakeExtention));
-                 m_driverController.getRightBumper().whileActiveOnce(new IntakeStateCommand(m_IntakeVoltage, false));
-
-                 //m_driverController.get
-                 //m_ShooterCommand);
+                m_driverController.getRightBumper().whileActiveOnce(           
+                        new ParallelCommandGroup(
+                                new SequentialCommandGroup(
+                                        new ShooterCommand(m_ShooterMotorSubsystem)
+                                ),
+                                new SequentialCommandGroup(
+                                        //new WaitCommand(0.3),
+                                        // TODO: Loaded motor not running
+                                        new RunIndexerCommand(m_IndexerSubsystem, m_LoadedMotorSubsystem, IndexerMotorSpeed)  
+                                )
+                        )
+                        
+                );
+                
                  m_driverController.getLeftBumper().whileActiveOnce(           
                         new ParallelCommandGroup(
                                 new SequentialCommandGroup(
                                         m_PhotonAimCommand, 
                                         m_ShooterHoodCommand,
                                         m_ShooterCommand),
-                                // TODO: Sequence command with delay in front
-                                new RunIndexerCommand(m_IndexerSubsystem, m_LoadedMotorSubsystem, IndexerMotorSpeed) 
+                                new SequentialCommandGroup(
+                                        //new WaitCommand(0.3),
+                                        // TODO: Loaded not running, Dont run indexer if it cant find target
+                                        new RunIndexerCommand(m_IndexerSubsystem, m_LoadedMotorSubsystem, IndexerMotorSpeed)  
+                                )
                         )
                         
                 );
 
                 /* Co-Driver Buttons */
 
-                /*m_codriverController.getLeftBumper().whileActiveOnce(
-                                new ParallelCommandGroup(
-                                                m_IndexerCommand,
-                                                m_RunIntakeRollersCommand,
-                                                m_ExtendIntakeCommand));
-                */
+                // TODO: make a parallel command
+                m_codriverController.getRightBumper().whileActiveOnce(new IndexerCommand(m_IndexerSubsystem, m_IndexerSensorUtility, m_LoadedMotorSubsystem, IndexerMotorSpeed));
+                m_codriverController.getRightBumper().whileActiveOnce(new RunIntakeRollersCommand(m_IntakeSubsystem));
+                m_codriverController.getRightBumper().whileActiveOnce(new IntakeStateCommand(m_IntakeVoltage, false));
+
                 m_codriverController.getBButton().whileActiveOnce(
-                m_IndexerEjectCommand);
+                        m_IndexerEjectCommand);
 
                 // Tarmac
                 m_codriverController.getPOVLeftTrigger().whileActiveOnce(
-                new AdjustHoodCommand(
-                m_ShooterHoodSubsystem,
-                ShooterUtility.calculateHoodPos(9))
+                        getPovCommand(ShooterUtility.calculateHoodPos(7))
                 );
 
                 // // Launchpad
                 m_codriverController.getPOVUpTrigger().whileActiveOnce(
-                        new AdjustHoodCommand(
-                                m_ShooterHoodSubsystem,
-                                ShooterUtility.calculateHoodPos(14.5)));
+                        getPovCommand(ShooterUtility.calculateHoodPos(14.5)));
 
                 // // Fender shot
                 m_codriverController.getPOVDownTrigger().whileActiveOnce(
-                new AdjustHoodCommand(
-                m_ShooterHoodSubsystem,
-                ShooterUtility.calculateHoodPos(19 / 12)
-                ));
+                        getPovCommand(ShooterUtility.calculateHoodPos(19 / 12))
+                        );
 
         }
 
@@ -315,5 +318,22 @@ public class RobotContainer {
         public Command getAutonomousCommand() {
                 // An ExampleCommand will run in autonomous
                 return m_autoManager.getAutonomousCommand();
+        }
+
+        public Command getPovCommand(double distance){
+                Command cmd;
+                cmd = new AdjustHoodCommand(m_ShooterHoodSubsystem, distance);
+                cmd = new ParallelCommandGroup(
+                        new SequentialCommandGroup( 
+                                new AdjustHoodCommand(m_ShooterHoodSubsystem, ShooterUtility.calculateHoodPos(distance)),
+                                new ShooterCommand(m_ShooterMotorSubsystem,ShooterUtility.calculateTopSpeed(distance))
+                                ),
+                        new SequentialCommandGroup(
+                                // new WaitCommand(0.3),
+                                new RunIndexerCommand(m_IndexerSubsystem, m_LoadedMotorSubsystem, IndexerMotorSpeed)  
+                        )
+                );
+                return cmd;
+                
         }
 }

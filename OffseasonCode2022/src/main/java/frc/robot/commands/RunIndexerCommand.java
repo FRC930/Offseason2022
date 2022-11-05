@@ -3,17 +3,21 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.LoadedMotorSubsystem;
+import frc.robot.utilities.ShuffleboardUtility;
+import frc.robot.utilities.ShuffleboardUtility.ShuffleboardKeys;
 import frc.lib.util.IndexerSensorUtility;
 
 public class RunIndexerCommand extends CommandBase {
 
-    private final int INDEXER_DELAY = 20;
+    private final int INDEXER_DELAY = 5; //20;
 
     private final double motorSpeed;
     private int counter;
 
     private final IndexerSubsystem indexerSubsystem;
     private final LoadedMotorSubsystem loadedMotor;
+
+    private boolean motorsRunning;
 
     /**
      * <h3>RunIndexerCommand</h3>
@@ -29,18 +33,30 @@ public class RunIndexerCommand extends CommandBase {
         indexerSubsystem = m_indexerSubsystem;
         loadedMotor = m_loadedMotor;
         motorSpeed = speed;
+        motorsRunning = false;
 
         this.addRequirements(m_indexerSubsystem);
     }
 
+    // public RunIndexerCommand(IndexerSubsystem m_IndexerSubsystem, LoadedMotorSubsystem m_LoadedMotorSubsystem,
+    //         double indexerMotorSpeed, boolean b) {
+        //TODO   
+    //}
+
     @Override
     public void execute() {
-        counter++;
+        double speed = (double) ShuffleboardUtility.getInstance().getFromShuffleboard(
+            ShuffleboardKeys.SHOOTER_SPEED).getData();
+        if (Math.abs(speed) > 0) {
+            counter++;
+        }
         // Waits for delay before activating indexer system
         if (counter >= INDEXER_DELAY) {
             loadedMotor.setSpeed(motorSpeed);
             indexerSubsystem.setStagedMotorSpeed(motorSpeed); //TODO 1.0);
             indexerSubsystem.setEjectionMotorSpeed(-motorSpeed); //TODO -1.0);
+            motorsRunning = true;
+            counter = 0;
         }
 
     }
@@ -55,6 +71,7 @@ public class RunIndexerCommand extends CommandBase {
     public void end(boolean interrupted) {
         indexerSubsystem.stopMotors();
         loadedMotor.setSpeed(0.0);
+        motorsRunning = false;
         counter = 0;
     }
 
