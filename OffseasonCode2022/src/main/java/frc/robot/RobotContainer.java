@@ -251,31 +251,22 @@ public class RobotContainer {
                 // Put back in after testing
 
                 m_driverController.getRightBumper().whileActiveOnce(           
-                        new ParallelCommandGroup(
-                                new SequentialCommandGroup(
-                                        new ShooterCommand(m_ShooterMotorSubsystem)
-                                ),
-                                new SequentialCommandGroup(
-                                        //new WaitCommand(0.3),
-                                        // TODO: Loaded motor not running
-                                        new RunIndexerCommand(m_IndexerSubsystem, m_LoadedMotorSubsystem, IndexerMotorSpeed)  
-                                )
+                        new SequentialCommandGroup(
+                                new ShooterCommand(m_ShooterMotorSubsystem),
+                                new WaitCommand(0.2),
+                                new RunIndexerCommand(m_IndexerSubsystem, m_LoadedMotorSubsystem, IndexerMotorSpeed)  
                         )
                         
                 );
                 
-                 m_driverController.getLeftBumper().whileActiveOnce(           
-                        new ParallelCommandGroup(
-                                new SequentialCommandGroup(
-                                        m_PhotonAimCommand, 
-                                        m_ShooterHoodCommand,
-                                        m_ShooterCommand),
-                                new SequentialCommandGroup(
-                                        //new WaitCommand(0.3),
-                                        // TODO: Loaded not running, Dont run indexer if it cant find target
-                                        new RunIndexerCommand(m_IndexerSubsystem, m_LoadedMotorSubsystem, IndexerMotorSpeed)  
-                                )
-                        )
+                 m_driverController.getLeftBumper().whileActiveOnce(             
+                        new SequentialCommandGroup(
+                                m_PhotonAimCommand, 
+                                m_ShooterHoodCommand,
+                                m_ShooterCommand,
+                                new WaitCommand(0.2),
+                                new RunIndexerCommand(m_IndexerSubsystem, m_LoadedMotorSubsystem, IndexerMotorSpeed)
+                        )  
                         
                 );
 
@@ -322,16 +313,13 @@ public class RobotContainer {
 
         public Command getPovCommand(double distance){
                 Command cmd;
-                cmd = new AdjustHoodCommand(m_ShooterHoodSubsystem, distance);
+                cmd = new AdjustHoodCommand(m_ShooterHoodSubsystem, ShooterUtility.calculateHoodPos(distance));
                 cmd = new ParallelCommandGroup(
                         new SequentialCommandGroup( 
                                 new AdjustHoodCommand(m_ShooterHoodSubsystem, ShooterUtility.calculateHoodPos(distance)),
                                 new ShooterCommand(m_ShooterMotorSubsystem,ShooterUtility.calculateTopSpeed(distance))
                                 ),
-                        new SequentialCommandGroup(
-                                // new WaitCommand(0.3),
-                                new RunIndexerCommand(m_IndexerSubsystem, m_LoadedMotorSubsystem, IndexerMotorSpeed)  
-                        )
+                        new RunIndexerCommand(m_IndexerSubsystem, m_LoadedMotorSubsystem, IndexerMotorSpeed)  
                 );
                 return cmd;
                 

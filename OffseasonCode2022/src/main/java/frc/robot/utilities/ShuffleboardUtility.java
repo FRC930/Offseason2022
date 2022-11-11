@@ -283,6 +283,7 @@ public class ShuffleboardUtility {
         SHOOTER_SPEED("Shooter Speed"),
         SHOOTER_LOADED_SPEED("Shooter Loaded Speed"),
         SHOOTER_HOOD_POSITION("Hood Position"),
+        
 
         // BALL MANAGEMENT
         LOADED_SENSOR("Loaded Sensor"),

@@ -9,7 +9,7 @@ import frc.lib.util.IndexerSensorUtility;
 
 public class RunIndexerCommand extends CommandBase {
 
-    private final int INDEXER_DELAY = 5; //20;
+    private final int INDEXER_DELAY = 0; //20;
 
     private final double motorSpeed;
     private int counter;
