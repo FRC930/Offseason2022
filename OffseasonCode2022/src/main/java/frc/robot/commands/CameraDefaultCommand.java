@@ -6,6 +6,9 @@ import frc.robot.subsystems.CameraSubsystem;
 import frc.robot.utilities.ShuffleboardUtility;
 import frc.robot.utilities.ShuffleboardUtility.ShuffleboardKeys;
 
+//
+//  this class will be used to testing purposes
+//  -- still needs work.
 public class CameraDefaultCommand extends CommandBase {
     private CameraSubsystem m_cameraSubsystem ;
 

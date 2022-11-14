@@ -19,6 +19,9 @@ import frc.robot.subsystems.Swerve;
 import frc.robot.utilities.ShuffleboardUtility.ShuffleBoardData;
 import frc.robot.utilities.ShuffleboardUtility.ShuffleboardKeys;
 
+//
+//  photon camera class wrapper to manage a single camera
+//  -- in the future we might want more than 1 camera, so making it easy to dublicate this code.
 public class PhotonCameraInstance {
     //
     //  photon camera instance

@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 //  public class interface
+//  -- this class is used to store the possible targets for april tags
+//  -- these tags will be stored in a map for easy reference
 public class CameraTargetUtility {
 
     //--------------------------------------------------------------------------
