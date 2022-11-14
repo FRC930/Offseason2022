@@ -5,7 +5,6 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -15,9 +14,11 @@ import frc.robot.commands.*;
 import frc.robot.commands.shooterCommands.AdjustHoodCommand;
 import frc.robot.commands.shooterCommands.ShooterCommand;
 import frc.robot.subsystems.*;
+import frc.robot.utilities.CameraTargetUtility;
+import frc.robot.utilities.PhotonCameraInstance;
 import frc.robot.utilities.ShooterUtility;
+import frc.robot.utilities.ShuffleboardUtility;
 import frc.lib.util.SwerveModuleConstants;
-import edu.wpi.first.wpilibj.Compressor;
 import frc.lib.util.IndexerSensorUtility;
 
 /**
@@ -29,8 +30,8 @@ import frc.lib.util.IndexerSensorUtility;
 
 public class RobotContainer {
 
-    // Compressor
-    private final Compressor compressor = new Compressor(PneumaticsModuleType.REVPH);
+    /* Shuffleboard */
+    private final ShuffleboardSubsystem m_shuffleboardSubsystem = new ShuffleboardSubsystem() ;
 
     /* Controllers */
     // Driver Controller
@@ -50,10 +51,10 @@ public class RobotContainer {
     private final AutoCommandManager m_autoManager = new AutoCommandManager() ;
 
     /* Modules */
-    public static final SwerveModuleConstants frontLeftModule = new SwerveModuleConstants(8, 9, 9, 259.980);
-    public static final SwerveModuleConstants frontRightModule = new SwerveModuleConstants(11, 10, 10, 233.877);
-    public static final SwerveModuleConstants backLeftModule = new SwerveModuleConstants(1, 0, 0, 71.895);
-    public static final SwerveModuleConstants backRightModule = new SwerveModuleConstants(18, 19, 19, 143.965);
+    private static final SwerveModuleConstants frontLeftModule = new SwerveModuleConstants(8, 9, 9, 259.980);
+    private static final SwerveModuleConstants frontRightModule = new SwerveModuleConstants(11, 10, 10, 233.877);
+    private static final SwerveModuleConstants backLeftModule = new SwerveModuleConstants(1, 0, 0, 71.895);
+    private static final SwerveModuleConstants backRightModule = new SwerveModuleConstants(18, 19, 19, 143.965);
 
     /* Subsystems */
     private final Swerve m_Swerve = new Swerve(frontLeftModule, frontRightModule, backLeftModule, backRightModule);
@@ -63,13 +64,17 @@ public class RobotContainer {
     private final ShooterHoodSubsystem m_ShooterHoodSubsystem = new ShooterHoodSubsystem(6);
     private final IndexerSubsystem m_IndexerSubsystem = new IndexerSubsystem(14, 13, 99);
 
+    /* Camera instance */
+    //  initiate the utility here to instantiate the resource for whole project
+    //  -- create a subsystem to run the camera udate position through periodic of subsystem
+    private final PhotonCameraInstance m_PhotonCamer = new PhotonCameraInstance("PhotonCamera", 0, m_Swerve) ;
+    private final CameraTargetUtility m_CameraTargetUtil = CameraTargetUtility.getInstance() ;
+    private final CameraSubsystem m_CameraSubstem= new CameraSubsystem(m_PhotonCamer) ;
+
     /** RobotContianer
      * The container for the robot. Contains subsystems, OI devices, and commands. 
     */
     public RobotContainer() {
-
-        //  Compressor
-        compressor.enableAnalog(100,115);
 
         //  Auto Command Manager Stuff
         m_autoManager.addSubsystem(subNames.Swerve, m_Swerve);
@@ -79,10 +84,11 @@ public class RobotContainer {
         boolean fieldRelative = true;       
         boolean openLoop = true;
         m_Swerve.setDefaultCommand(new TeleopSwerve(m_Swerve, m_driverController.getController(), translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop));
+        m_CameraSubstem.setDefaultCommand(new CameraDefaultCommand(m_CameraSubstem)) ;
 
         // Configure the button bindings
         configureButtonBindings();
-  }
+    }
 
   /**
    * Use this method to define your button->command mappings. Buttons can be created by
@@ -91,113 +97,161 @@ public class RobotContainer {
    * } or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-  private void configureButtonBindings() {
+    private void configureButtonBindings() {
 
-    //--------------------------------------------------------------------------
-    /* Driver Buttons */
-    m_driverController.getPOVUpTrigger().whileActiveOnce(
-        new EngageEndgamePistonCommand(m_EndgamePistonSubsystem)
-    );
+        //--------------------------------------------------------------------------
+        /* Driver Buttons */
+        m_driverController.getPOVUpTrigger().whileActiveOnce(
+            new EngageEndgamePistonCommand(m_EndgamePistonSubsystem)
+        );
 
-    m_driverController.getPOVDownTrigger().whileActiveOnce(
-        new EngageEndgamePistonCommand(m_EndgamePistonSubsystem)
-    );
-        
-    m_driverController.getPOVDownTrigger().whileActiveOnce(
-        new DisengageEndgamePistonCommand(m_EndgamePistonSubsystem)
-    );
+        m_driverController.getPOVDownTrigger().whileActiveOnce(
+            new EngageEndgamePistonCommand(m_EndgamePistonSubsystem)
+        );
+            
+        m_driverController.getPOVDownTrigger().whileActiveOnce(
+            new DisengageEndgamePistonCommand(m_EndgamePistonSubsystem)
+        );
 
-    m_driverController.getRightBumper().whileActiveOnce(
-        new ShooterCommand(m_ShooterMotorSubsystem, m_IndexerSubsystem, 0.5)
-    );
+        m_driverController.getRightBumper().whileActiveOnce(
+            new ShooterCommand(m_ShooterMotorSubsystem, m_IndexerSubsystem, 0.5)
+        );
 
-    m_driverController.getYButton().whileActiveOnce(
-        new InstantCommand(() -> m_Swerve.zeroGyro())
-    );
+        m_driverController.getYButton().whileActiveOnce(
+            new InstantCommand(() -> m_Swerve.zeroGyro())
+        );
 
-    //Engages motors for intake when left bumper is pressed
-    m_driverController.getLeftBumper().whileActiveOnce(
-        new ParallelCommandGroup(
-            new ExtendIntakeCommand(m_IntakeSubsystem),
-            new RunIntakeRollersCommand(m_IntakeSubsystem)
-        )
-    );
-
-    //  shooter controls
-    m_driverController.getRightBumper().whileActiveOnce(
-        new ShooterCommand(m_ShooterMotorSubsystem, m_IndexerSubsystem, 0.5)
-    );
-
-    //--------------------------------------------------------------------------------
-    /* Co-Driver Buttons */
-    m_codriverController.getLeftBumper().whileActiveOnce(
-        new ParallelCommandGroup(
-            new IndexerCommand(m_IndexerSubsystem, m_IndexerSensorUtility, 0.5),
-            new RunIntakeRollersCommand(m_IntakeSubsystem),
-            new ExtendIntakeCommand(m_IntakeSubsystem)
-        )
-    );
-
-    m_codriverController.getBButton().whileActiveOnce(
-        new IndexerEjectCommand(m_IndexerSubsystem, 0.5)
-    );
-
-    // Tarmac
-    m_codriverController.getPOVLeftTrigger().whileActiveOnce(
-        new ParallelCommandGroup(
-            new AdjustHoodCommand(
-                m_ShooterHoodSubsystem,
-                ShooterUtility.calculateHoodPos(9)
-            ),
-            new ShooterCommand(
-                m_ShooterMotorSubsystem, 
-                m_IndexerSubsystem,
-                ShooterUtility.calculateTopSpeed(9),
-                ShooterUtility.calculateBottomSpeed(9)
+        //Engages motors for intake when left bumper is pressed
+        m_driverController.getLeftBumper().whileActiveOnce(
+            new ParallelCommandGroup(
+                new ExtendIntakeCommand(m_IntakeSubsystem),
+                new RunIntakeRollersCommand(m_IntakeSubsystem)
             )
-        ).withTimeout(0.1)
-    );
+        );
 
-    // Launchpad
-    m_codriverController.getPOVUpTrigger().whileActiveOnce(
-        new ParallelCommandGroup(
-            new AdjustHoodCommand(
-                m_ShooterHoodSubsystem,
-                ShooterUtility.calculateHoodPos(14.5)
-            ),
-            new ShooterCommand(
-                m_ShooterMotorSubsystem, 
-                m_IndexerSubsystem,
-                ShooterUtility.calculateTopSpeed(14.5),
-                ShooterUtility.calculateBottomSpeed(14.5)
-            )
-        ).withTimeout(0.1)
-    );
+        //  shooter controls
+        m_driverController.getRightBumper().whileActiveOnce(
+            new ShooterCommand(m_ShooterMotorSubsystem, m_IndexerSubsystem, 0.5)
+        );
 
-    // Fender shot
-    m_codriverController.getPOVDownTrigger().whileActiveOnce(
-        new ParallelCommandGroup(
-            new AdjustHoodCommand(
-                m_ShooterHoodSubsystem,
-                ShooterUtility.calculateHoodPos(19 / 12)
-            ),
-            new ShooterCommand(
-                m_ShooterMotorSubsystem, 
-                m_IndexerSubsystem,
-                ShooterUtility.calculateTopSpeed(19 / 12),
-                ShooterUtility.calculateBottomSpeed(19 / 12)
+        //--------------------------------------------------------------------------------
+        /* Co-Driver Buttons */
+        m_codriverController.getLeftBumper().whileActiveOnce(
+            new ParallelCommandGroup(
+                new IndexerCommand(m_IndexerSubsystem, m_IndexerSensorUtility, 0.5),
+                new RunIntakeRollersCommand(m_IntakeSubsystem),
+                new ExtendIntakeCommand(m_IntakeSubsystem)
             )
-        ).withTimeout(0.1)
-    );
-  }
+        );
+
+        m_codriverController.getBButton().whileActiveOnce(
+            new IndexerEjectCommand(m_IndexerSubsystem, 0.5)
+        );
+
+        // Tarmac
+        m_codriverController.getPOVLeftTrigger().whileActiveOnce(
+            new ParallelCommandGroup(
+                new AdjustHoodCommand(
+                    m_ShooterHoodSubsystem,
+                    ShooterUtility.calculateHoodPos(9)
+                ),
+                new ShooterCommand(
+                    m_ShooterMotorSubsystem, 
+                    m_IndexerSubsystem,
+                    ShooterUtility.calculateTopSpeed(9),
+                    ShooterUtility.calculateBottomSpeed(9)
+                )
+            ).withTimeout(0.1)
+        );
+
+        // Launchpad
+        m_codriverController.getPOVUpTrigger().whileActiveOnce(
+            new ParallelCommandGroup(
+                new AdjustHoodCommand(
+                    m_ShooterHoodSubsystem,
+                    ShooterUtility.calculateHoodPos(14.5)
+                ),
+                new ShooterCommand(
+                    m_ShooterMotorSubsystem, 
+                    m_IndexerSubsystem,
+                    ShooterUtility.calculateTopSpeed(14.5),
+                    ShooterUtility.calculateBottomSpeed(14.5)
+                )
+            ).withTimeout(0.1)
+        );
+
+        // Fender shot
+        m_codriverController.getPOVDownTrigger().whileActiveOnce(
+            new ParallelCommandGroup(
+                new AdjustHoodCommand(
+                    m_ShooterHoodSubsystem,
+                    ShooterUtility.calculateHoodPos(19 / 12)
+                ),
+                new ShooterCommand(
+                    m_ShooterMotorSubsystem, 
+                    m_IndexerSubsystem,
+                    ShooterUtility.calculateTopSpeed(19 / 12),
+                    ShooterUtility.calculateBottomSpeed(19 / 12)
+                )
+            ).withTimeout(0.1)
+        );
+    }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
    * @return the command to run in autonomous
    */
-  public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
-    return m_autoManager.getAutonomousCommand();
-  }
+    public Command getAutonomousCommand() {
+        // An ExampleCommand will run in autonomous
+        return m_autoManager.getAutonomousCommand();
+    }
+
+  /**
+     * <h3>beginTeleopRunCommands</h3>
+     * 
+     * Runs when the robot is enabled in teleop mode.
+     * 
+     * This gets the command scheduler and sets up buttons
+     */
+    public void beginTeleopRunCommands() {
+        //  initialize stuff for teleop
+    }
+
+ /**
+     * <h3>beginAutoRunCommands</h3>
+     * 
+     * Prepares the robot for autonomous.
+     */
+    public void beginAutoRunCommands() {
+        //  initialize stuff for autonomous
+    }
+
+    /**
+     * <h3>testInit</h3>
+     * 
+     * Initializes the robot for test mode.
+     */
+    public void testInit() {
+        //  initialize test mode
+    }
+
+    /**
+     * <h3>testPeriodic</h3>
+     * 
+     * Test mode periodic.
+     */
+    public void testPeriodic() {
+        // TODO
+        //  show a list of the target and be able to change the representatio for each target
+    }
+
+    /**
+     * <h3>testExit</h3>
+     * 
+     * Runs when robot exits test mode.
+     */
+    public void testExit() {
+        //  exit test mode
+    }
 }

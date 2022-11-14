@@ -1,0 +1,52 @@
+{
+    "tagList": [
+        {
+            "tagLabel": "BluePlayerStation",
+            "tagID": "0",
+            "xPos": "0.0",
+            "yPos": "3.5"
+        },
+        {
+            "tagLabel": "TopField",
+            "tagID": "1",
+            "xPos": "5.0",
+            "yPos": "7.0"
+        },
+        {
+            "tagLabel": "RedPlayerStation",
+            "tagID": "2",
+            "xPos": "10.0",
+            "yPos": "3.5"
+        },
+        {
+            "tagLabel": "BottomField",
+            "tagID": "3",
+            "xPos": "5.0",
+            "yPos": "0.0"
+        },
+        {
+            "tagLabel": "BlueTarget",
+            "tagID": "4",
+            "xPos": "4.0",
+            "yPos": "3.5"
+        },
+        {
+            "tagLabel": "TopTarget",
+            "tagID": "5",
+            "xPos": "5.0",
+            "yPos": "4.5"
+        },
+        {
+            "tagLabel": "RedTarget",
+            "tagID": "6",
+            "xPos": "6.0",
+            "yPos": "3.5"
+        },
+        {
+            "tagLabel": "BottomTarget",
+            "tagID": "7",
+            "xPos": "5.0",
+            "yPos": "2.5"
+        }
+    ]
+}

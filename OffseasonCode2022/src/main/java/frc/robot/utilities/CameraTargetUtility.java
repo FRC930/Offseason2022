@@ -3,47 +3,8 @@ package frc.robot.utilities;
 import java.util.HashMap;
 import java.util.Map;
 
-import edu.wpi.first.math.geometry.Pose2d;
-
 //  public class interface
 public class CameraTargetUtility {
-    //-----------------------------------------------------
-    //  Public objects to use where needed
-    //  Create Static Enum to use for target referencing
-    public static enum Targets {
-        RedSide,
-        BlueSide,
-        LeftField,
-        RightField,
-        RedTarget,
-        BlueTarget,
-        LeftTarget,
-        RightTarget
-    }
-
-    //  private class interface
-    //  -- structure to hold data for each target
-    public class TargetInfo {
-        //  attributes
-        private Targets m_Type ;
-        private Pose2d m_Position ;
-
-        //  constructor
-        TargetInfo (Targets vType, Pose2d vFieldPos) {
-            m_Type = vType ;
-            m_Position = vFieldPos ;
-        }
-
-        //
-        //  getters
-        Targets getTargetType() {
-            return m_Type ;
-        }
-
-        Pose2d getTargetPos() {
-            return m_Position ;
-        }
-    }
 
     //--------------------------------------------------------------------------
     // private instance
@@ -93,5 +54,15 @@ public class CameraTargetUtility {
      */
     public void addTarget(Integer vID, TargetInfo vInfo) {
         m_Targets.put(vID, vInfo) ;
+    }
+
+    /**
+     * <h3>hasTarget</h3>
+     * 
+     * does this target exist in map already
+     * 
+     */
+    public boolean targetExists(Integer vID) {
+        return (null != m_Targets.get(vID)) ;
     }
 }

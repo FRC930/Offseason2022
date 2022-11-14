@@ -2,6 +2,8 @@
 
 package frc.robot.commands.autovisioncommands;
 
+import com.revrobotics.ColorSensorV3.ColorSensorMeasurementRate;
+
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonUtils;
 import org.photonvision.common.hardware.VisionLEDMode;
@@ -13,6 +15,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.CameraSubsystem;
 import frc.robot.subsystems.Swerve;
 import frc.robot.utilities.PhotonVisionUtility;
 import frc.robot.utilities.ShooterUtility;
@@ -55,6 +58,7 @@ public class PhotonAimCommand extends CommandBase {
 
     protected PhotonCamera m_hubCamera = PhotonVisionUtility.getInstance().getHubTrackingCamera();
     private Swerve m_Swerve;
+    private CameraSubsystem m_Camera;
 
     private int cyclesAimed = 0;
 
@@ -72,8 +76,8 @@ public class PhotonAimCommand extends CommandBase {
      * 
      * @param dSwerve
      */
-    public PhotonAimCommand(Swerve dSwerve) {
-        this(dSwerve, null, null);
+    public PhotonAimCommand(Swerve dSwerve, CameraSubsystem dCamera) {
+        this(dSwerve, dCamera, null, null);
     }
 
     /**
@@ -85,16 +89,18 @@ public class PhotonAimCommand extends CommandBase {
      * @param driverController   driver controller (for rumble)
      * @param codriverController driver controller (for rumble)
      */
-    public PhotonAimCommand(Swerve dSwerve, XboxController driverController,
+    public PhotonAimCommand(Swerve dSwerve, CameraSubsystem dCamera, XboxController driverController,
             XboxController codriverController) {
 
         m_Swerve = dSwerve;
+        m_Camera = dCamera;
         m_driverController = driverController;
         m_codriverController = codriverController;
 
         ShuffleboardUtility.getInstance().putToShuffleboard(ShuffleboardUtility.driverTab,
                 ShuffleboardKeys.AIMED, new ShuffleBoardData<Boolean>(false));
 
+        //  not adding camera subsystem as this system is only being read from
         addRequirements(dSwerve);
     }
 

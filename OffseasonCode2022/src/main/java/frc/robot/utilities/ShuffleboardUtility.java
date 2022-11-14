@@ -317,7 +317,10 @@ public class ShuffleboardUtility {
         AIMED("Is Aimed?"),
         PHOTON_YAW("Photon Angle"),
 
-        PRESSURE("Pressure?");
+        PRESSURE("Pressure?"),
+
+        TAG_TARGETED("AprilTag Targeted"),
+        POSITION_TO_APRIL_TAG("Position From Tag");
 
         final String m_name;
 
