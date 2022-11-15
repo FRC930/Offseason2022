@@ -20,28 +20,10 @@ import frc.robot.utilities.TargetInfo;
 public class CameraSubsystem extends SubsystemBase {
   private PhotonCameraInstance m_cameraInstance ;
   private ShuffleboardUtility m_shuffleboardUtil ;
-  private JSONParser m_parser ;
-  JSONArray m_TagList;
-  Iterator<JSONObject> m_Iterator;
 
   public CameraSubsystem(PhotonCameraInstance vCameraInstance) {
       m_cameraInstance = vCameraInstance ;
       m_shuffleboardUtil = ShuffleboardUtility.getInstance() ;
-      m_parser = new JSONParser();
-      try{
-        JSONObject vobj = (JSONObject) m_parser.parse(new FileReader(new File(Filesystem.getDeployDirectory(), "AprilTagInfo/TagLocations.json")));
-        m_TagList = (JSONArray) vobj.get("tagList");
-        m_Iterator = m_TagList.iterator();
-
-        //
-        //  read file
-        while (m_Iterator.hasNext())
-        {
-            CameraTargetUtility.getInstance().addTarget(Integer.parseInt(m_Iterator.next().get("tagID").toString()), new TargetInfo(m_Iterator.next().get("tagLabel").toString(), new Pose2d(Double.parseDouble(m_Iterator.next().get("xPos").toString()), Double.parseDouble(m_Iterator.next().get("yPos").toString()), new Rotation2d(0.0))));
-        }
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
   }
 
   @Override

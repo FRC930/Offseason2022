@@ -15,6 +15,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -37,8 +38,8 @@ public class ShuffleboardUtility {
 
     private static ShuffleboardUtility instance;
 
-    private Map<ShuffleboardKeys, MapData> shuffleboardMap;
-    private Map<ShuffleboardKeys, MapData> pastDataMap;
+    private Map<String, MapData> shuffleboardMap;
+    private Map<String, MapData> pastDataMap;
 
     private SendableChooser<Command> autonChooser;
     private SendableChooser<Integer> pipelineChooser;
@@ -159,15 +160,33 @@ public class ShuffleboardUtility {
      * @param data
      */
     public void putToShuffleboard(ShuffleboardTab tab, ShuffleboardKeys key, ShuffleBoardData<?> data) {
-        if (IS_DEBUGGING || !tab.equals(testingTab)) {
-            // Check to see if we have to add a new widget to the Shuffleboard tab
-            if (shuffleboardMap.containsKey(key)) {
-                // If the widget exists, simply update it to the new value
-                shuffleboardMap.put(key, new MapData(data, shuffleboardMap.get(key).m_entry));
-            } else {
-                // Since the widget doesn't exist, we need to create a new entry for it
-                shuffleboardMap.put(key, new MapData(data, tab.add(key.m_name, data.m_data).getEntry()));
-            }
+        // Check to see if we have to add a new widget to the Shuffleboard tab
+        if (shuffleboardMap.containsKey(key.m_name)) {
+            // If the widget exists, simply update it to the new value
+            shuffleboardMap.put(key.m_name, new MapData(data, shuffleboardMap.get(key).m_entry));
+        } else {
+            // Since the widget doesn't exist, we need to create a new entry for it
+            shuffleboardMap.put(key.m_name, new MapData(data, tab.add(key.m_name, data.m_data).getEntry()));
+        }
+    }
+
+    /**
+     * <h3>putToDriverTab</h3>
+     * 
+     * Receives data then inserts it into storage and the shuffleboard widgets on
+     * driver tab.
+     * 
+     * @param key
+     * @param data
+     */
+    public void putToShuffleboard(ShuffleboardTab tab, String key, ShuffleBoardData<?> data) {
+        // Check to see if we have to add a new widget to the Shuffleboard tab
+        if (shuffleboardMap.containsKey(key)) {
+            // If the widget exists, simply update it to the new value
+            shuffleboardMap.put(key, new MapData(data, shuffleboardMap.get(key).m_entry));
+        } else {
+            // Since the widget doesn't exist, we need to create a new entry for it
+            shuffleboardMap.put(key, new MapData(data, tab.add(key, data.m_data).getEntry()));
         }
     }
 
@@ -196,7 +215,7 @@ public class ShuffleboardUtility {
      */
     public void update() {
         MapData data;
-        for (ShuffleboardKeys currentKey : shuffleboardMap.keySet()) {
+        for (String currentKey : shuffleboardMap.keySet()) {
             if (pastDataMap.containsKey(currentKey)) {
                 if (!pastDataMap.get(currentKey).equals(shuffleboardMap.get(currentKey))) {
                     data = shuffleboardMap.get(currentKey);

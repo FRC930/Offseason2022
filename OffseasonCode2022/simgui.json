@@ -99,11 +99,13 @@
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
+      "/LiveWindow/CameraSubsystem": "Subsystem",
       "/LiveWindow/EndgamePistonSubsystem": "Subsystem",
       "/LiveWindow/IndexerSubsystem": "Subsystem",
       "/LiveWindow/IntakeSubsystem": "Subsystem",
       "/LiveWindow/ShooterHoodSubsystem": "Subsystem",
       "/LiveWindow/ShooterMotorSubsystem": "Subsystem",
+      "/LiveWindow/ShuffleboardSubsystem": "Subsystem",
       "/LiveWindow/Swerve": "Subsystem",
       "/LiveWindow/Ungrouped/DigitalInput[15]": "Digital Input",
       "/LiveWindow/Ungrouped/DigitalInput[16]": "Digital Input",

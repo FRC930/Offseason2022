@@ -15,6 +15,7 @@ import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Timer;
+import frc.robot.Robot;
 import frc.robot.subsystems.Swerve;
 import frc.robot.utilities.ShuffleboardUtility.ShuffleBoardData;
 import frc.robot.utilities.ShuffleboardUtility.ShuffleboardKeys;
@@ -132,6 +133,8 @@ public class PhotonCameraInstance {
 
         //
         //  update the pos estimator
-        m_PoseEstimator.updateWithTime(Timer.getFPGATimestamp(), m_DrivetrainSubsystem.getYaw(), m_DrivetrainSubsystem.getStates()) ;
+        if (Robot.isReal()) {
+            m_PoseEstimator.updateWithTime(Timer.getFPGATimestamp(), m_DrivetrainSubsystem.getYaw(), m_DrivetrainSubsystem.getStates()) ;
+        }
     }
 }
