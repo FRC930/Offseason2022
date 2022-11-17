@@ -26,8 +26,7 @@ public class IndexerEjectCommand extends CommandBase {
 
     @Override
     public void execute() {
-        indexerSubsystem.setLoadedMotorSpeed(0.0); // Loaded motor stopped
-        indexerSubsystem.setStagedMotorSpeed(-motorSpeed); // Staged motor CCW
+        indexerSubsystem.setStagedMotorSpeed(0.9); // Staged motor CW
         indexerSubsystem.setEjectionMotorSpeed(motorSpeed); // Ejection motor CC
     }
 

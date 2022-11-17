@@ -11,12 +11,14 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utilities.ShooterUtility;
+import frc.robot.utilities.SparkMaxWrapper;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FollowerType;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 //-------- SUBSYSTEM CLASS --------\\
 
@@ -54,6 +56,7 @@ public class ShooterMotorSubsystem extends SubsystemBase {
         // Sets motors to coast so that they can move freely when neutral
         RightShooterMaster.setNeutralMode(NeutralMode.Coast);
         LeftShooterFollower.setNeutralMode(NeutralMode.Coast);
+        // TODO determine how on sparkmaxLoaded.setNeutralMode(NeutralMode.Coast);
 
         // All motors are not inverted
         refollowShooterMotors();
@@ -68,7 +71,7 @@ public class ShooterMotorSubsystem extends SubsystemBase {
      */
     public void refollowShooterMotors() {
         LeftShooterFollower.follow(RightShooterMaster, FollowerType.PercentOutput);
-        LeftShooterFollower.setInverted(InvertType.FollowMaster);
+        LeftShooterFollower.setInverted(true);
     }
 
     // -------- METHODS --------\\
@@ -78,9 +81,9 @@ public class ShooterMotorSubsystem extends SubsystemBase {
      *
      * @param speed speed of the bottom wheel in percent output
      */
-    public void setRightSpeed(double speed) {
+    public void setRightSpeed(double rightShooterSpeed, double loadedSpeed) {
         // Sets speed to 0 if speed argument is less than 0
-        RightShooterMaster.set(ControlMode.PercentOutput, Math.max(0.0, speed));
+        RightShooterMaster.set(ControlMode.PercentOutput, Math.max(0.0, rightShooterSpeed));
     }
 
 

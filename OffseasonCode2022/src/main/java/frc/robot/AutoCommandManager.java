@@ -63,11 +63,11 @@ public class AutoCommandManager {
         // Adding auto paths to the Shuffleboard to be used by the get autonomous command
         ShuffleboardUtility.getInstance().setDefaultAutonOptions("(None)", null);
         ShuffleboardUtility.getInstance().addAutonOptions("TaxiTwoBall", TaxiTwoBall);
-        ShuffleboardUtility.getInstance().addAutonOptions("TaxiOneBall", TaxiOneBall);
-        ShuffleboardUtility.getInstance().addAutonOptions("TerminalPickup", TerminalPickup);
-        ShuffleboardUtility.getInstance().addAutonOptions("DefensiveThreeBall", DefensiveThreeBall);
-        ShuffleboardUtility.getInstance().addAutonOptions("DefensiveHangarCleanup", DefensiveHangarCleanup);
-        ShuffleboardUtility.getInstance().addAutonOptions("FiveBallAuto", FiveBallAuto);
+        // ShuffleboardUtility.getInstance().addAutonOptions("TaxiOneBall", TaxiOneBall);
+        // ShuffleboardUtility.getInstance().addAutonOptions("TerminalPickup", TerminalPickup);
+        // ShuffleboardUtility.getInstance().addAutonOptions("DefensiveThreeBall", DefensiveThreeBall);
+        // ShuffleboardUtility.getInstance().addAutonOptions("DefensiveHangarCleanup", DefensiveHangarCleanup);
+        // ShuffleboardUtility.getInstance().addAutonOptions("FiveBallAuto", FiveBallAuto);
     }
 
     /**

@@ -3,8 +3,13 @@ package frc.lib.util;
 import com.playingwithfusion.TimeOfFlight;
 import com.playingwithfusion.TimeOfFlight.RangingMode;
 
+import edu.wpi.first.math.filter.Debouncer;
+import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.wpilibj.DigitalInput;
 import frc.robot.Robot;
+import frc.robot.utilities.ShuffleboardUtility;
+import frc.robot.utilities.ShuffleboardUtility.ShuffleBoardData;
+import frc.robot.utilities.ShuffleboardUtility.ShuffleboardKeys;
 
 public class IndexerSensorUtility {
 
@@ -14,15 +19,14 @@ public class IndexerSensorUtility {
     
     //-------- VARIABLES --------\\
     
-    private DigitalInput intakeSensorSim;
     private DigitalInput loadedSensorSim;
     private DigitalInput stagedSensorSim;
-    private DigitalInput ejectionSensorSim;
 
-    private TimeOfFlight intakeSensor;
     private TimeOfFlight loadedSensor;
     private TimeOfFlight stagedSensor;
-    private TimeOfFlight ejectionSensor;
+
+    private Debouncer m_DebouncerLoaded;
+    private Debouncer m_DebouncerStaged;
 
     //-------- CONSTRUCTOR --------\\
     /**
@@ -30,21 +34,17 @@ public class IndexerSensorUtility {
      * 
      * Creates and returns sensor values the endgame sensors
      */
-    public IndexerSensorUtility(int intakeId, int loadedId, int stagedId, int ejectionId) {
+    public IndexerSensorUtility(int loadedId, int stagedId) {
+        m_DebouncerLoaded = new Debouncer(0.05);
+        m_DebouncerStaged = new Debouncer(0.05);
         if (Robot.isReal()) {
-            intakeSensor = new TimeOfFlight(intakeId);
             loadedSensor = new TimeOfFlight(loadedId);
             stagedSensor = new TimeOfFlight(stagedId);
-            ejectionSensor = new TimeOfFlight(ejectionId);
-            intakeSensor.setRangingMode(RangingMode.Short, 25);
-            loadedSensor.setRangingMode(RangingMode.Short, 25);
-            stagedSensor.setRangingMode(RangingMode.Short, 25);
-            ejectionSensor.setRangingMode(RangingMode.Short, 25);
+            loadedSensor.setRangingMode(RangingMode.Medium, 20);
+            stagedSensor.setRangingMode(RangingMode.Medium, 20);
         } else {
-            intakeSensorSim = new DigitalInput(intakeId);
             loadedSensorSim = new DigitalInput(loadedId);
             stagedSensorSim = new DigitalInput(stagedId);
-            ejectionSensorSim = new DigitalInput(ejectionId);
         }
     }
 
@@ -56,21 +56,6 @@ public class IndexerSensorUtility {
      */
 
     /**
-     * <h3>intakeIsTouching</h3>
-     * 
-     * This method returns the intake sensor's value
-     * 
-     * @return the value of the sensor
-     */
-    public boolean intakeIsTouching() {
-        if (Robot.isReal()) {
-            return intakeSensor.getRange() < TRIGGER_DISTANCE;
-        } else {
-            return intakeSensorSim.get();
-        }
-    }
-
-    /**
      * <h3>loadedIsTouching</h3>
      * 
      * This method returns the loaded sensor's value
@@ -79,7 +64,10 @@ public class IndexerSensorUtility {
      */
     public boolean loadedIsTouching() {
         if (Robot.isReal()) {
-            return loadedSensor.getRange() < TRIGGER_DISTANCE;
+            ShuffleboardUtility.getInstance().putToShuffleboard(ShuffleboardUtility.driverTab, 
+                                                                ShuffleboardKeys.LOADED_SENSOR, 
+                                                                new ShuffleBoardData<Double>(loadedSensor.getRange()));
+            return m_DebouncerLoaded.calculate(loadedSensor.getRange() < TRIGGER_DISTANCE);
         } else {
             return loadedSensorSim.get();
         }
@@ -94,24 +82,12 @@ public class IndexerSensorUtility {
      */
     public boolean stagedIsTouching() {
         if (Robot.isReal()) {
-            return stagedSensor.getRange() < TRIGGER_DISTANCE;
+            ShuffleboardUtility.getInstance().putToShuffleboard(ShuffleboardUtility.driverTab, 
+                                                                ShuffleboardKeys.STAGED_SENSOR, 
+                                                                new ShuffleBoardData<Double>(stagedSensor.getRange()));
+            return m_DebouncerStaged.calculate(stagedSensor.getRange() < TRIGGER_DISTANCE);
         } else {
             return stagedSensorSim.get();
-        }
-    }
-
-    /**
-     * <h3>ejectionIsTouching</h3>
-     * 
-     * This method returns the ejection sensor's value
-     * 
-     * @return the value of the sensor
-     */
-    public boolean ejectionIsTouching() {
-        if (Robot.isReal()) {
-            return ejectionSensor.getRange() < TRIGGER_DISTANCE;
-        } else {
-            return ejectionSensorSim.get();
         }
     }
 

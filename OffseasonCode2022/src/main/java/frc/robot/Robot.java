@@ -91,14 +91,14 @@ public class Robot extends TimedRobot {
     m_robotContainer.testInit();
   }
 
+  @Override
+  public void testExit(){
+      m_robotContainer.testExit();
+  }
+
   /** This function is called periodically during test mode. */
   @Override
   public void testPeriodic() {
     m_robotContainer.testPeriodic();
   }
-
-  @Override
-    public void testExit(){
-        m_robotContainer.testExit();
-    }
 }

@@ -29,10 +29,9 @@ public class ShooterCommand extends CommandBase {
 
     // -----VARIABLES----\\
     private final ShooterMotorSubsystem shooterSubsystem;
-    private final IndexerSubsystem indexerSubsystem;
     private boolean usingShuffleboard;
-    private double bottomSpeed;
-    private double topSpeed;
+    private double loadedSpeed;
+    private double speed;
     private int counter;
 
     /**
@@ -42,12 +41,11 @@ public class ShooterCommand extends CommandBase {
      * @param shooter The ShooterSubsystem to use
      * @param indexer The IndexerMotorSubsystem to use
      */
-    public ShooterCommand(ShooterMotorSubsystem shooter, IndexerSubsystem indexer) {
+    public ShooterCommand(ShooterMotorSubsystem shooter) {
         // ---CANNOT USE this() BECAUSE OF BOOLEAN FLAG---\\
         shooterSubsystem = shooter;
-        indexerSubsystem = indexer;
         usingShuffleboard = true;
-        addRequirements(shooterSubsystem, indexerSubsystem);
+        addRequirements(shooterSubsystem);
     }
 
     /**
@@ -57,9 +55,9 @@ public class ShooterCommand extends CommandBase {
      * @param indexer The IndexerMotorSubsystem to use
      * @param speed   The speed(in PercentOutput) you want both wheels to spin at
      */
-    public ShooterCommand(ShooterMotorSubsystem shooter, IndexerSubsystem indexer, double speed) {
+    public ShooterCommand(ShooterMotorSubsystem shooter,  double speed) {
         // Applies speed to both motors
-        this(shooter, indexer, speed, speed);
+        this(shooter, speed, speed);
     }
 
     /**
@@ -67,49 +65,41 @@ public class ShooterCommand extends CommandBase {
      * 
      * @param shooter     The ShooterSubsystem to use
      * @param indexer     The IndexerMotorSubsystem to use
-     * @param topSpeed    The speed(in PercentOutput) you want the top wheel to spin
+     * @param speed    The speed(in PercentOutput) you want the other wheels to spin
      *                    at
-     * @param bottomSpeed The speed(in PercentOutput) you want the bottom wheel to
+     * @param laodedSpeed The speed(in PercentOutput) you want the loaded wheel to
      *                    spin at
      */
-    public ShooterCommand(ShooterMotorSubsystem shooter, IndexerSubsystem indexer, double topSpeed,
-            double bottomSpeed) {
+    public ShooterCommand(ShooterMotorSubsystem shooter, double speed, double loadedSpeed) {
         shooterSubsystem = shooter;
-        indexerSubsystem = indexer;
         usingShuffleboard = false;
-        this.topSpeed = topSpeed;
-        this.bottomSpeed = bottomSpeed;
-        addRequirements(shooterSubsystem, indexerSubsystem);
+        this.speed = speed;
+        this.loadedSpeed = loadedSpeed;
+        addRequirements(shooterSubsystem);
     }
 
     @Override
     public void initialize() {
         // Gets values from shuffleboard driver tab
         if (usingShuffleboard) {
-            this.bottomSpeed = (double) ShuffleboardUtility.getInstance().getFromShuffleboard(
-                    ShuffleboardKeys.SHOOTER_BOTTOM_SPEED).getData();
-            this.topSpeed = (double) ShuffleboardUtility.getInstance().getFromShuffleboard(
-                    ShuffleboardKeys.SHOOTER_TOP_SPEED).getData();
+            this.loadedSpeed = (double) ShuffleboardUtility.getInstance().getFromShuffleboard(
+                    ShuffleboardKeys.SHOOTER_LOADED_SPEED).getData();
+            this.speed = (double) ShuffleboardUtility.getInstance().getFromShuffleboard(
+                    ShuffleboardKeys.SHOOTER_SPEED).getData();
         } else {
             ShuffleboardUtility.getInstance().putToShuffleboard(ShuffleboardUtility.driverTab,
-                    ShuffleboardKeys.SHOOTER_BOTTOM_SPEED, new ShuffleBoardData<Double>(bottomSpeed));
+                    ShuffleboardKeys.SHOOTER_LOADED_SPEED, new ShuffleBoardData<Double>(loadedSpeed));
             ShuffleboardUtility.getInstance().putToShuffleboard(ShuffleboardUtility.driverTab,
-                    ShuffleboardKeys.SHOOTER_TOP_SPEED, new ShuffleBoardData<Double>(topSpeed));
+                    ShuffleboardKeys.SHOOTER_SPEED, new ShuffleBoardData<Double>(speed));
         }
 
-        shooterSubsystem.setRightSpeed(bottomSpeed);
+        shooterSubsystem.setRightSpeed(speed, loadedSpeed);
         counter = 0;
     }
 
     @Override
-    public void execute() {
-        counter++;
-        // Waits for delay before activating indexer system
-        if (counter == INDEXER_DELAY) {
-            
-            indexerSubsystem.setStagedMotorSpeed(1.0);
-            indexerSubsystem.setLoadedMotorSpeed(1.0);
-        }
+    public void execute() { // TODO: Pull out indexer and see how we did it on last year's bot
+      
     }
 
     @Override
@@ -123,6 +113,5 @@ public class ShooterCommand extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         shooterSubsystem.stopMotors();
-        indexerSubsystem.stopMotors();
     }
 } // End of CLass

@@ -117,8 +117,8 @@ public class PhotonCameraInstance {
             int vTargetID = vTarget.getFiducialId() ;
 
             //  grab transform/rotation from target
-            Translation2d vTargetTranslation = vTarget.getCameraToTarget().getTranslation().toTranslation2d() ;
-            Rotation2d vTargetRotation = vTarget.getCameraToTarget().getRotation().toRotation2d() ;
+            Translation2d vTargetTranslation = vTarget.getBestCameraToTarget().getTranslation().toTranslation2d() ;
+            Rotation2d vTargetRotation = vTarget.getBestCameraToTarget().getRotation().toRotation2d() ;
 
             //  combine into a Transform2D for use in estimater
             Transform2d vTargetTranform = new Transform2d(vTargetTranslation, vTargetRotation) ;

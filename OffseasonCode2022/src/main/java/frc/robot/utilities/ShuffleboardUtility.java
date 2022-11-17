@@ -277,12 +277,14 @@ public class ShuffleboardUtility {
     public static enum ShuffleboardKeys {
 
         // SHOOTER MANAGEMENT
-        SHOOTER_TOP_SPEED("Shooter Top Speed"),
-        SHOOTER_BOTTOM_SPEED("Shooter Bottom Speed"),
+        SHOOTER_SPEED("Shooter Speed"),
+        SHOOTER_LOADED_SPEED("Shooter Loaded Speed"),
         SHOOTER_HOOD_POSITION("Hood Position"),
+        
 
         // BALL MANAGEMENT
         LOADED_SENSOR("Loaded Sensor"),
+        STAGED_SENSOR("Staged Sensor"),
         ALLIANCE_COLOR("Alliance Color"),
         LED_PATTERNS("LED Patterns"),
         AUTONOMOUS_PATH("Autonomous Paths"),
@@ -305,6 +307,11 @@ public class ShuffleboardUtility {
 
         // INDEXER
         BALL_COUNT("Amount of cargo in the system"),
+
+        // HOOD
+        CALC_HOOD_POS("Calculated position of the hood"),
+        ACT_HOOD_POS("Actual position of the hood"),
+
 
         // MISCELLANEOUS
         CAMERA_STREAM("Camera stream"),

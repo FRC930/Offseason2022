@@ -38,7 +38,7 @@ public class PhotonAimCommand extends CommandBase {
     public static final double YAW_DEADBAND = 2;
 
     // The height of the camera
-    private final double CAMERA_HEIGHT_METERS = Units.inchesToMeters(26.8);
+    private final double CAMERA_HEIGHT_METERS = Units.inchesToMeters(34.0);
     // The height of the hub
     private final double HUB_HEIGHT_METERS = Units.inchesToMeters(104);
 
@@ -46,9 +46,10 @@ public class PhotonAimCommand extends CommandBase {
     private final double HEIGHT_DIFFERENCE_METERS = HUB_HEIGHT_METERS - CAMERA_HEIGHT_METERS;
 
     // The pitch of the camera (from ground normal)
-    private final double CAMERA_PITCH_RADIANS = Units.degreesToRadians(34.0);
+    private final double CAMERA_PITCH_RADIANS = Units.degreesToRadians(36.0);
 
-    private final double ANGULAR_P = 0.42;
+    private final double ANGULAR_P = 0.21;
+
     private final double ANGULAR_I = 0.01;
     private final double ANGULAR_D = 0.01;
 
@@ -141,7 +142,8 @@ public class PhotonAimCommand extends CommandBase {
             double range = PhotonUtils.calculateDistanceToTargetMeters(CAMERA_HEIGHT_METERS, HUB_HEIGHT_METERS,
                     CAMERA_PITCH_RADIANS, Units.degreesToRadians(m_smoothingStack.getAveragePitch()))
                     // Offset adjustment for distance math
-                    + Units.inchesToMeters(3.5);
+                    + Units.inchesToMeters(3.5)
+                    - 0.05;
 
             ShuffleboardUtility.getInstance().putToShuffleboard(ShuffleboardUtility.driverTab,
                     ShuffleboardKeys.DISTANCE_FROM_GOAL, new ShuffleBoardData<Double>(range));
@@ -213,6 +215,10 @@ public class PhotonAimCommand extends CommandBase {
         }
 
         m_hubCamera.setLED(VisionLEDMode.kOff);
+
+        m_Swerve.drive(new Translation2d(0,0), 0.0, true, true);
+
+
     }
 
     @Override

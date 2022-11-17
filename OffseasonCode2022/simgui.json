@@ -60,17 +60,32 @@
           "open": true
         }
       },
-      "SPARK MAX [14]": {
-        "header": {
-          "open": true
-        }
-      },
       "SPARK MAX [99]": {
         "header": {
           "open": true
         }
       },
-      "Talon FX[12]": {
+      "SparkMax[15]": {
+        "header": {
+          "open": true
+        }
+      },
+      "SparkMax[16]": {
+        "header": {
+          "open": true
+        }
+      },
+      "SparkMax[4]": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon FX[12]/Integrated Sensor": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon FX[2]/Rev Limit": {
         "header": {
           "open": true
         }
@@ -92,6 +107,9 @@
               "open": true
             }
           }
+        },
+        "header": {
+          "open": true
         }
       }
     }
@@ -102,20 +120,26 @@
       "/LiveWindow/CameraSubsystem": "Subsystem",
       "/LiveWindow/EndgamePistonSubsystem": "Subsystem",
       "/LiveWindow/IndexerSubsystem": "Subsystem",
+      "/LiveWindow/IntakeExtensionSubsystem": "Subsystem",
       "/LiveWindow/IntakeSubsystem": "Subsystem",
+      "/LiveWindow/IntakeVoltageSubsystem": "Subsystem",
+      "/LiveWindow/LoadedMotorSubsystem": "Subsystem",
       "/LiveWindow/ShooterHoodSubsystem": "Subsystem",
       "/LiveWindow/ShooterMotorSubsystem": "Subsystem",
       "/LiveWindow/ShuffleboardSubsystem": "Subsystem",
       "/LiveWindow/Swerve": "Subsystem",
       "/LiveWindow/Ungrouped/DigitalInput[15]": "Digital Input",
       "/LiveWindow/Ungrouped/DigitalInput[16]": "Digital Input",
+      "/LiveWindow/Ungrouped/DigitalInput[25]": "Digital Input",
       "/LiveWindow/Ungrouped/DigitalInput[3]": "Digital Input",
       "/LiveWindow/Ungrouped/DigitalInput[4]": "Digital Input",
       "/LiveWindow/Ungrouped/PIDController[1]": "PIDController",
       "/LiveWindow/Ungrouped/PIDController[2]": "PIDController",
       "/LiveWindow/Ungrouped/PIDController[3]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[4]": "PIDController",
       "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
       "/LiveWindow/Ungrouped/Talon FX [12]": "Motor Controller",
+      "/LiveWindow/Ungrouped/Talon FX [15]": "Motor Controller",
       "/LiveWindow/Ungrouped/Talon FX [2]": "Motor Controller",
       "/LiveWindow/Ungrouped/Talon FX [6]": "Motor Controller",
       "/LiveWindow/Ungrouped/Talon FX [7]": "Motor Controller",
