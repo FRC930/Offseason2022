@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.CameraSubsystem;
 import frc.robot.utilities.ShuffleboardUtility;
+import frc.robot.utilities.ShuffleboardUtility.ShuffleBoardData;
 import frc.robot.utilities.ShuffleboardUtility.ShuffleboardKeys;
 
 //
@@ -24,7 +25,8 @@ public class CameraDefaultCommand extends CommandBase {
 
     @Override
     public void execute() {
-        //ShuffleboardUtility vShuffleboardUtil = ShuffleboardUtility.getInstance().putToShuffleboard(ShuffleboardUtility.driverTab, ShuffleboardKeys.POSITION_TO_APRIL_TAG, new ShuffleBoardData<double>(m_cameraSubsystem.getRobotPosition()));
+        ShuffleboardUtility.getInstance().putToShuffleboard(ShuffleboardUtility.driverTab, "Robot X Position", new ShuffleBoardData<Double>(m_cameraSubsystem.getRobotPosition().getX()));
+        ShuffleboardUtility.getInstance().putToShuffleboard(ShuffleboardUtility.driverTab, "Robot Y Position", new ShuffleBoardData<Double>(m_cameraSubsystem.getRobotPosition().getY()));
     }
 
     @Override 

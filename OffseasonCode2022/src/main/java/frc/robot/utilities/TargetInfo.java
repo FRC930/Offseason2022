@@ -37,11 +37,11 @@ import edu.wpi.first.math.geometry.Pose2d;
 
         //
         //  getters
-        String getTargetType() {
+        public String getTargetType() {
             return m_Type ;
         }
 
-        Pose2d getTargetPos() {
+        public Pose2d getTargetPos() {
             return m_Position ;
         }
     }

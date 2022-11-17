@@ -67,7 +67,7 @@ public class RobotContainer {
     /* Camera instance */
     //  initiate the utility here to instantiate the resource for whole project
     //  -- create a subsystem to run the camera udate position through periodic of subsystem
-    private final PhotonCameraInstance m_PhotonCamer = new PhotonCameraInstance("PhotonCamera", 0, m_Swerve) ;
+    private final PhotonCameraInstance m_PhotonCamer = new PhotonCameraInstance("PiCamera", 0, m_Swerve) ;
     private final CameraTargetUtility m_CameraTargetUtil = CameraTargetUtility.getInstance() ;
     private final CameraSubsystem m_CameraSubstem= new CameraSubsystem(m_PhotonCamer) ;
 

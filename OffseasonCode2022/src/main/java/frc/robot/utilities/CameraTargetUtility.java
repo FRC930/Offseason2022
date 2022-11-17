@@ -60,9 +60,7 @@ public class CameraTargetUtility {
             Double vThisYPos = Double.parseDouble(vThisObj.get("yPos").toString());
             TargetInfo vThisInfo = new TargetInfo(vThisTagLabel, new Pose2d(vThisXPos, vThisYPos, new Rotation2d(0.0)));
             addTarget(vThisTagID, vThisInfo);
-            m_shuffleboardUtil.putToShuffleboard(ShuffleboardUtility.testingTab, vThisTagLabel.concat("_ID"), new ShuffleBoardData<Integer>(vThisTagID));
-            m_shuffleboardUtil.putToShuffleboard(ShuffleboardUtility.testingTab, vThisTagLabel.concat("_XPos"), new ShuffleBoardData<Double>(vThisXPos));
-            m_shuffleboardUtil.putToShuffleboard(ShuffleboardUtility.testingTab, vThisTagLabel.concat("_YPos"), new ShuffleBoardData<Double>(vThisYPos));
+            m_shuffleboardUtil.putToShuffleboard(ShuffleboardUtility.driverTab, vThisTagLabel.concat("_ID"), new ShuffleBoardData<Integer>(vThisTagID));
         }
       } catch (Exception e) {
         e.printStackTrace();

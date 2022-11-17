@@ -4,24 +4,24 @@
             "tagLabel": "BluePlayerStation",
             "tagID": "0",
             "xPos": "0.0",
-            "yPos": "3.5"
+            "yPos": "1.651"
         },
         {
             "tagLabel": "TopField",
             "tagID": "1",
-            "xPos": "5.0",
-            "yPos": "7.0"
+            "xPos": "3.454",
+            "yPos": "3.556"
         },
         {
             "tagLabel": "RedPlayerStation",
             "tagID": "2",
-            "xPos": "10.0",
-            "yPos": "3.5"
+            "xPos": "6.833",
+            "yPos": "1.651"
         },
         {
             "tagLabel": "BottomField",
             "tagID": "3",
-            "xPos": "5.0",
+            "xPos": "3.454",
             "yPos": "0.0"
         },
         {
