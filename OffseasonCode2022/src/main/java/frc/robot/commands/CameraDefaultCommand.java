@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.CameraSubsystem;
@@ -25,8 +26,9 @@ public class CameraDefaultCommand extends CommandBase {
 
     @Override
     public void execute() {
-        ShuffleboardUtility.getInstance().putToShuffleboard(ShuffleboardUtility.driverTab, "Robot X Position", new ShuffleBoardData<Double>(m_cameraSubsystem.getRobotPosition().getX()));
-        ShuffleboardUtility.getInstance().putToShuffleboard(ShuffleboardUtility.driverTab, "Robot Y Position", new ShuffleBoardData<Double>(m_cameraSubsystem.getRobotPosition().getY()));
+        Pose2d vCurrentPos = m_cameraSubsystem.getRobotPosition();
+        ShuffleboardUtility.getInstance().putToShuffleboard(ShuffleboardUtility.driverTab, "Robot X Position", new ShuffleBoardData<Double>(vCurrentPos.getX()));
+        ShuffleboardUtility.getInstance().putToShuffleboard(ShuffleboardUtility.driverTab, "Robot Y Position", new ShuffleBoardData<Double>(vCurrentPos.getY()));
     }
 
     @Override 

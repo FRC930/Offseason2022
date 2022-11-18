@@ -1,6 +1,7 @@
 package frc.robot.utilities;
 
 import org.photonvision.PhotonCamera;
+import org.photonvision.PhotonUtils;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
@@ -48,7 +49,7 @@ public class PhotonCameraInstance {
     //
     //  relative postion of camera to center of bot
     //  -- current example is 10 inch in the x and y direction, with the direction of camer 180 deg -> 3.14159 radians from robot forward
-    private final Transform2d m_CameraPosition = new Transform2d(new Translation2d(Units.inchesToMeters(10), 0.0), new Rotation2d(3.14159)) ;
+    private final Transform2d m_CameraPosition = new Transform2d(new Translation2d(Units.inchesToMeters(6), 0.0), new Rotation2d(3.14159)) ;
 
     //-- Constructor --//
     public PhotonCameraInstance (String vCameraName, int vPipeLineIndex, Swerve vDriveTrainSubsystem) {
@@ -56,6 +57,7 @@ public class PhotonCameraInstance {
         m_PhotonCamera = new PhotonCamera(vCameraName) ;
         m_PhotonCamera.setPipelineIndex(vPipeLineIndex) ;
         m_PhotonCamera.setDriverMode(false) ;
+        PhotonCamera.setVersionCheckEnabled(false);
 
         //
         //  setup the swerve drive subsystem
@@ -66,8 +68,7 @@ public class PhotonCameraInstance {
         m_PoseEstimator = new SwerveDrivePoseEstimator(m_DrivetrainSubsystem.getYaw(), new Pose2d(), m_DrivetrainSubsystem.swerveKinematics, m_StateStdDevs, m_LocalMeasurementStdDevs, m_VisionMeasurementStdDevs) ;
 
         // Set the banner to show the driver that photon isn't ready yet
-        ShuffleboardUtility.getInstance().putToShuffleboard(ShuffleboardUtility.driverTab,
-                ShuffleboardKeys.PHOTON_READY, new ShuffleBoardData<Boolean>(false));
+        ShuffleboardUtility.getInstance().putToShuffleboard(ShuffleboardUtility.driverTab, ShuffleboardKeys.PHOTON_READY, new ShuffleBoardData<Boolean>(false));
     }
 
     public void SetDriveMode(boolean vEnable) {
@@ -78,7 +79,7 @@ public class PhotonCameraInstance {
         //  initialize return
         Pose2d vPose = new Pose2d() ;
         
-        /* ---- Using PhotonUtils to estimate field position
+        //---- Using PhotonUtils to estimate field position
         // grab camera result
         PhotonPipelineResult vResult = m_PhotonCamera.getLatestResult() ;
         
@@ -88,8 +89,8 @@ public class PhotonCameraInstance {
             PhotonTrackedTarget vTarget = vResult.getBestTarget() ;
 
             //  grab transform/rotation from target
-            Translation2d vTargetTranslation = vTarget.getCameraToTarget().getTranslation().toTranslation2d() ;
-            Rotation2d vTargetRotation = vTarget.getCameraToTarget().getRotation().toRotation2d() ;
+            Translation2d vTargetTranslation = vTarget.getBestCameraToTarget().getTranslation().toTranslation2d() ;
+            Rotation2d vTargetRotation = vTarget.getBestCameraToTarget().getRotation().toRotation2d() ;
 
             //  combine into a Transform2D for use in estimater
             Transform2d vTargetTranform = new Transform2d(vTargetTranslation, vTargetRotation) ;
@@ -98,10 +99,10 @@ public class PhotonCameraInstance {
             //  --grab target ID for referencing target absolute position
             //  -- like to see difference in values between this calculation and swervePosEstimator
             vPose = PhotonUtils.estimateFieldToRobot(vTargetTranform, CameraTargetUtility.getInstance().getTarget(vTarget.getFiducialId()).getTargetPos(), m_CameraPosition) ;
-        }*/
+        }
 
         // --- use swerve pose estimator to determine robot position
-        vPose = m_PoseEstimator.getEstimatedPosition() ;
+        //vPose = m_PoseEstimator.getEstimatedPosition() ;
 
         return vPose ;
     }
@@ -116,25 +117,34 @@ public class PhotonCameraInstance {
             PhotonTrackedTarget vTarget = vResult.getBestTarget() ;
             int vTargetID = vTarget.getFiducialId() ;
 
-            //  grab transform/rotation from target
-            Translation2d vTargetTranslation = vTarget.getBestCameraToTarget().getTranslation().toTranslation2d() ;
-            Rotation2d vTargetRotation = vTarget.getBestCameraToTarget().getRotation().toRotation2d() ;
-
-            //  combine into a Transform2D for use in estimater
-            Transform2d vTargetTranform = new Transform2d(vTargetTranslation, vTargetRotation) ;
-
             //
-            //  calculate pose2d from swerve pos estimator
-            Pose2d vInvertCamPose = CameraTargetUtility.getInstance().getTarget(vTargetID).getTargetPos().transformBy(vTargetTranform.inverse()) ;
-            Pose2d vVisionMeasurment = vInvertCamPose.transformBy(m_CameraPosition) ;
-            double vImageCaptureTime = Timer.getFPGATimestamp() - (vResult.getLatencyMillis() / 1000d) ;
-            m_PoseEstimator.addVisionMeasurement(vVisionMeasurment, vImageCaptureTime) ;
-        }
+            //  check if the ID is known
+            if(CameraTargetUtility.getInstance().targetExists(vTargetID))
+            {
+                //  grab transform/rotation from target
+                Translation2d vTargetTranslation = vTarget.getBestCameraToTarget().getTranslation().toTranslation2d() ;
+                Rotation2d vTargetRotation = vTarget.getBestCameraToTarget().getRotation().toRotation2d() ;
 
-        //
-        //  update the pos estimator
-        if (Robot.isReal()) {
-            m_PoseEstimator.updateWithTime(Timer.getFPGATimestamp(), m_DrivetrainSubsystem.getYaw(), m_DrivetrainSubsystem.getStates()) ;
+                //  combine into a Transform2D for use in estimater
+                Transform2d vTargetTranform = new Transform2d(vTargetTranslation, vTargetRotation) ;
+
+                //
+                //  calculate pose2d from swerve pos estimator
+                Pose2d vInvertCamPose = CameraTargetUtility.getInstance().getTarget(vTargetID).getTargetPos().transformBy(vTargetTranform.inverse()) ;
+                Pose2d vVisionMeasurment = vInvertCamPose.transformBy(m_CameraPosition) ;
+                double vImageCaptureTime = Timer.getFPGATimestamp() - (vResult.getLatencyMillis() / 1000d) ;
+                m_PoseEstimator.addVisionMeasurement(vVisionMeasurment, vImageCaptureTime) ;
+
+                //
+                //  update the pos estimator
+                if (Robot.isReal()) {
+                    try {
+                        m_PoseEstimator.updateWithTime(Timer.getFPGATimestamp(), m_DrivetrainSubsystem.getYaw(), m_DrivetrainSubsystem.getStates()) ;
+                    } catch (Exception e) {
+                        //TODO: handle exception
+                    }
+                }
+            }
         }
     }
 }

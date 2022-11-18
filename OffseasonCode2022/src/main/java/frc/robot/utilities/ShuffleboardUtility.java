@@ -141,7 +141,7 @@ public class ShuffleboardUtility {
         // Check to see if we have to add a new widget to the Shuffleboard tab
         if (shuffleboardMap.containsKey(key.m_name)) {
             // If the widget exists, simply update it to the new value
-            shuffleboardMap.put(key.m_name, new MapData(data, shuffleboardMap.get(key).m_entry));
+            shuffleboardMap.put(key.m_name, new MapData(data, shuffleboardMap.get(key.m_name).m_entry));
         } else {
             // Since the widget doesn't exist, we need to create a new entry for it
             shuffleboardMap.put(key.m_name, new MapData(data, tab.add(key.m_name, data.m_data).getEntry()));
