@@ -11,6 +11,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.CameraSubsystem;
 import frc.robot.subsystems.Swerve;
 import frc.robot.utilities.PhotonVisionUtility;
@@ -61,8 +62,8 @@ public class PhotonAimCommand extends CommandBase {
 
     private VisionSmoothingStack m_smoothingStack = new VisionSmoothingStack(3);
 
-    private XboxController m_driverController;
-    private XboxController m_codriverController;
+    private CommandXboxController m_driverController;
+    private CommandXboxController m_codriverController;
 
     // ----- CONSTRUCTORS -----\\
 
@@ -86,8 +87,8 @@ public class PhotonAimCommand extends CommandBase {
      * @param driverController   driver controller (for rumble)
      * @param codriverController driver controller (for rumble)
      */
-    public PhotonAimCommand(Swerve dSwerve, CameraSubsystem dCamera, XboxController driverController,
-            XboxController codriverController) {
+    public PhotonAimCommand(Swerve dSwerve, CameraSubsystem dCamera, CommandXboxController driverController,
+            CommandXboxController codriverController) {
 
         m_Swerve = dSwerve;
         m_Camera = dCamera;
@@ -159,10 +160,10 @@ public class PhotonAimCommand extends CommandBase {
 
                 // Rumble both controllers
                 if (m_driverController != null && m_codriverController != null) {
-                    m_driverController.setRumble(RumbleType.kLeftRumble, 1);
-                    m_driverController.setRumble(RumbleType.kRightRumble, 1);
-                    m_codriverController.setRumble(RumbleType.kLeftRumble, 1);
-                    m_codriverController.setRumble(RumbleType.kRightRumble, 1);
+                    m_driverController.getHID().setRumble(RumbleType.kLeftRumble, 1);
+                    m_driverController.getHID().setRumble(RumbleType.kRightRumble, 1);
+                    m_codriverController.getHID().setRumble(RumbleType.kLeftRumble, 1);
+                    m_codriverController.getHID().setRumble(RumbleType.kRightRumble, 1);
                 }
             } else {
                 ShuffleboardUtility.getInstance().putToShuffleboard(ShuffleboardUtility.driverTab,
@@ -172,10 +173,10 @@ public class PhotonAimCommand extends CommandBase {
 
                 // Turn off rumble for both controllers
                 if (m_driverController != null && m_codriverController != null) {
-                    m_driverController.setRumble(RumbleType.kLeftRumble, 0);
-                    m_driverController.setRumble(RumbleType.kRightRumble, 0);
-                    m_codriverController.setRumble(RumbleType.kLeftRumble, 0);
-                    m_codriverController.setRumble(RumbleType.kRightRumble, 0);
+                    m_driverController.getHID().setRumble(RumbleType.kLeftRumble, 0);
+                    m_driverController.getHID().setRumble(RumbleType.kRightRumble, 0);
+                    m_codriverController.getHID().setRumble(RumbleType.kLeftRumble, 0);
+                    m_codriverController.getHID().setRumble(RumbleType.kRightRumble, 0);
                 }
             }
         } else {
@@ -204,10 +205,10 @@ public class PhotonAimCommand extends CommandBase {
 
         // Turn off rumble for both controllers
         if (m_driverController != null && m_codriverController != null) {
-            m_driverController.setRumble(RumbleType.kLeftRumble, 0);
-            m_driverController.setRumble(RumbleType.kRightRumble, 0);
-            m_codriverController.setRumble(RumbleType.kLeftRumble, 0);
-            m_codriverController.setRumble(RumbleType.kRightRumble, 0);
+            m_driverController.getHID().setRumble(RumbleType.kLeftRumble, 0);
+            m_driverController.getHID().setRumble(RumbleType.kRightRumble, 0);
+            m_codriverController.getHID().setRumble(RumbleType.kLeftRumble, 0);
+            m_codriverController.getHID().setRumble(RumbleType.kRightRumble, 0);
         }
 
         m_hubCamera.setLED(VisionLEDMode.kOff);

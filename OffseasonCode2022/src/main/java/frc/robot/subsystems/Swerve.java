@@ -8,6 +8,7 @@ import frc.robot.SwerveModule;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -55,7 +56,7 @@ public class Swerve extends SubsystemBase {
     public Pigeon2 gyro;
     public PIDController autoXController;
     public PIDController autoYController;
-    public ProfiledPIDController autoThetaController;
+    public PIDController autoThetaController;
 
     public Swerve(SwerveModuleConstants frontLeftModuleConstants, SwerveModuleConstants frontRightModuleConstants, SwerveModuleConstants backLeftModuleConstants, SwerveModuleConstants backRightModuleConstants) {
         gyro = new Pigeon2(pigeonID);
@@ -65,10 +66,7 @@ public class Swerve extends SubsystemBase {
 
         autoXController = new PIDController(kPXController, 0, 0);
         autoYController = new PIDController(kPYController, 0, 0);
-        autoThetaController = new ProfiledPIDController(
-            0.33, 0, 0, kThetaControllerConstraints);
-        
-        swerveOdometry = new SwerveDriveOdometry(swerveKinematics, getYaw());
+        autoThetaController = new PIDController(kPThetaController, 0, 0);
 
         mSwerveMods = new SwerveModule[] {  
             new SwerveModule(0, frontLeftModuleConstants),
@@ -76,6 +74,8 @@ public class Swerve extends SubsystemBase {
             new SwerveModule(2, backLeftModuleConstants),
             new SwerveModule(3, backRightModuleConstants)
         };
+
+        swerveOdometry = new SwerveDriveOdometry(swerveKinematics, getYaw(), getModulePositions());
     }
 
     public void drive(Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {
@@ -112,16 +112,16 @@ public class Swerve extends SubsystemBase {
         return swerveOdometry.getPoseMeters();
     }
 
-    public void resetOdometry(Pose2d pose) {
-        swerveOdometry.resetPosition(pose, getYaw());
+    public SwerveModulePosition[] getModulePositions(){
+        SwerveModulePosition[] positions = new SwerveModulePosition[4];
+        for(SwerveModule mod : mSwerveMods){
+            positions[mod.moduleNumber] = mod.getPosition();
+        }
+        return positions;
     }
 
-    public SwerveModuleState[] getStates(){
-        SwerveModuleState[] states = new SwerveModuleState[4];
-        for(SwerveModule mod : mSwerveMods){
-            states[mod.moduleNumber] = mod.getState();
-        }
-        return states;
+    public void resetOdometry(Pose2d pose) {
+        swerveOdometry.resetPosition(getYaw(), getModulePositions(), pose);
     }
 
     public void zeroGyro(){
@@ -146,13 +146,13 @@ public class Swerve extends SubsystemBase {
         return autoYController;
     }
 
-    public ProfiledPIDController getAutoThetaController() {
+    public PIDController getAutoThetaController() {
         return autoThetaController;
     }
 
     @Override
     public void periodic(){
-        swerveOdometry.update(getYaw(), getStates());  
+        swerveOdometry.update(getYaw(), getModulePositions());  
 
         for(SwerveModule mod : mSwerveMods){
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Cancoder", mod.getCanCoder().getDegrees());

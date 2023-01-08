@@ -15,7 +15,7 @@ public class SparkMaxWrapper extends CANSparkMax {
 
         m_simSparkMax = SimDevice.create("SparkMax",deviceID);
         if (m_simSparkMax != null){
-            m_simSpeed = m_simSparkMax.createDouble("speed", false, 0.0);
+            m_simSpeed = m_simSparkMax.createDouble("speed", SimDevice.Direction.kInput, 0.0);
         }
     }
 

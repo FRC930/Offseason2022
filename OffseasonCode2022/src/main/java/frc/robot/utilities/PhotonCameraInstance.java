@@ -43,8 +43,7 @@ public class PhotonCameraInstance {
     //  -- These matrix's are used to add or subtracka constant deviation from what is read from camer/robot
     //  -- Change the values to tweek data retrieved from pose estimator
     private final Matrix<N3, N1> m_StateStdDevs = VecBuilder.fill(0.0, 0.0, Units.degreesToRadians(0));
-    private final Matrix<N1, N1> m_LocalMeasurementStdDevs = VecBuilder.fill(Units.degreesToRadians(0.0));
-    private final Matrix<N3, N1> m_VisionMeasurementStdDevs = VecBuilder.fill(0.0, 0.0, Units.degreesToRadians(0));
+    private final Matrix<N3, N1> m_LocalMeasurementStdDevs = VecBuilder.fill(0.0, 0.0, Units.degreesToRadians(0.0));
 
     //
     //  relative postion of camera to center of bot
@@ -65,7 +64,7 @@ public class PhotonCameraInstance {
 
         //
         //  setup the serve pose estimator
-        m_PoseEstimator = new SwerveDrivePoseEstimator(m_DrivetrainSubsystem.getYaw(), new Pose2d(), m_DrivetrainSubsystem.swerveKinematics, m_StateStdDevs, m_LocalMeasurementStdDevs, m_VisionMeasurementStdDevs) ;
+        m_PoseEstimator = new SwerveDrivePoseEstimator(Swerve.swerveKinematics, m_DrivetrainSubsystem.getYaw(), m_DrivetrainSubsystem.getModulePositions(), new Pose2d(), m_StateStdDevs, m_LocalMeasurementStdDevs) ; //new SwerveDrivePoseEstimator(m_DrivetrainSubsystem.getYaw(), new Pose2d(), Swerve.swerveKinematics, m_StateStdDevs, m_LocalMeasurementStdDevs, m_VisionMeasurementStdDevs) ;
 
         // Set the banner to show the driver that photon isn't ready yet
         ShuffleboardUtility.getInstance().putToShuffleboard(ShuffleboardUtility.driverTab, ShuffleboardKeys.PHOTON_READY, new ShuffleBoardData<Boolean>(false));
@@ -139,7 +138,7 @@ public class PhotonCameraInstance {
                 //  update the pos estimator
                 if (Robot.isReal()) {
                     try {
-                        m_PoseEstimator.updateWithTime(Timer.getFPGATimestamp(), m_DrivetrainSubsystem.getYaw(), m_DrivetrainSubsystem.getStates()) ;
+                        m_PoseEstimator.updateWithTime(Timer.getFPGATimestamp(), m_DrivetrainSubsystem.getYaw(), m_DrivetrainSubsystem.getModulePositions()) ;
                     } catch (Exception e) {
                         //TODO: handle exception
                     }

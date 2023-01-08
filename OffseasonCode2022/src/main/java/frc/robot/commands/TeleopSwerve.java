@@ -4,6 +4,7 @@ import frc.robot.subsystems.Swerve;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 public class TeleopSwerve extends CommandBase {
 
@@ -19,7 +20,7 @@ public class TeleopSwerve extends CommandBase {
     private boolean openLoop;
     
     private Swerve s_Swerve;
-    private XboxController controller;
+    private CommandXboxController controller;
     private int translationAxis;
     private int strafeAxis;
     private int rotationAxis;
@@ -27,7 +28,7 @@ public class TeleopSwerve extends CommandBase {
     /**
      * Driver control
      */
-    public TeleopSwerve(Swerve s_Swerve, XboxController controller, int translationAxis, int strafeAxis, int rotationAxis, boolean fieldRelative, boolean openLoop) {
+    public TeleopSwerve(Swerve s_Swerve, CommandXboxController controller, int translationAxis, int strafeAxis, int rotationAxis, boolean fieldRelative, boolean openLoop) {
         this.s_Swerve = s_Swerve;
         addRequirements(s_Swerve);
 
