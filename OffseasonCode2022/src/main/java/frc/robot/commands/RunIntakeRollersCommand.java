@@ -25,7 +25,7 @@ public class RunIntakeRollersCommand extends CommandBase{
 
     @Override
     public void end(boolean interrupted) {
-        intakeSubsystem.stopRollerMotor();
+        intakeSubsystem.stopRollerMotor(0);
     }
     
 }

@@ -55,7 +55,6 @@ public class AdjustHoodCommand extends CommandBase {
                     ShuffleboardKeys.SHOOTER_HOOD_POSITION, new ShuffleBoardData<Double>(pos));
         }
         // Sets the position for the hood
-
         shooterHoodSubsystem.setHoodPosition(pos);
     }
 

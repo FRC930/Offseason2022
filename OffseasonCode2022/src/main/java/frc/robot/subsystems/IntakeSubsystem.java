@@ -25,17 +25,15 @@ public class IntakeSubsystem extends SubsystemBase{
 
     public void followIntakeMotors() {
         m_rollerMotor.setInverted(false);
-        //m_centeringMotor.follow(m_rollerMotor, true);
+        m_centeringMotor.follow(m_rollerMotor, true);
     }
 
     public void setRollerMotorSpeed(double speed) {
         m_rollerMotor.set(speed);
-        m_centeringMotor.set(-speed);
     }
 
-    public void stopRollerMotor() {
-        m_rollerMotor.set(0);
-        m_centeringMotor.set(0);
+    public void stopRollerMotor(double speed) {
+        m_rollerMotor.set(speed);
     }
 
     public double getrollerMotorSpeed() {

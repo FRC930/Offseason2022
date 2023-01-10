@@ -13,6 +13,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.Swerve;
 import frc.robot.utilities.PhotonVisionUtility;
 import frc.robot.utilities.ShooterUtility;
@@ -45,8 +46,7 @@ public class PhotonAimCommand extends CommandBase {
     // The pitch of the camera (from ground normal)
     private final double CAMERA_PITCH_RADIANS = Units.degreesToRadians(36.0);
 
-    private final double ANGULAR_P = 0.21;
-
+    private final double ANGULAR_P = 0.42;
     private final double ANGULAR_I = 0.01;
     private final double ANGULAR_D = 0.01;
 
@@ -61,8 +61,8 @@ public class PhotonAimCommand extends CommandBase {
 
     private VisionSmoothingStack m_smoothingStack = new VisionSmoothingStack(3);
 
-    private XboxController m_driverController;
-    private XboxController m_codriverController;
+    private CommandXboxController m_driverController;
+    private CommandXboxController m_codriverController;
 
     // ----- CONSTRUCTORS -----\\
 
@@ -86,8 +86,8 @@ public class PhotonAimCommand extends CommandBase {
      * @param driverController   driver controller (for rumble)
      * @param codriverController driver controller (for rumble)
      */
-    public PhotonAimCommand(Swerve dSwerve, XboxController driverController,
-            XboxController codriverController) {
+    public PhotonAimCommand(Swerve dSwerve, CommandXboxController driverController,
+            CommandXboxController codriverController) {
 
         m_Swerve = dSwerve;
         m_driverController = driverController;
@@ -136,8 +136,7 @@ public class PhotonAimCommand extends CommandBase {
             double range = PhotonUtils.calculateDistanceToTargetMeters(CAMERA_HEIGHT_METERS, HUB_HEIGHT_METERS,
                     CAMERA_PITCH_RADIANS, Units.degreesToRadians(m_smoothingStack.getAveragePitch()))
                     // Offset adjustment for distance math
-                    + Units.inchesToMeters(3.5)
-                    - 0.05;
+                    + Units.inchesToMeters(3.5);
 
             ShuffleboardUtility.getInstance().putToShuffleboard(ShuffleboardUtility.driverTab,
                     ShuffleboardKeys.DISTANCE_FROM_GOAL, new ShuffleBoardData<Double>(range));
@@ -157,10 +156,10 @@ public class PhotonAimCommand extends CommandBase {
 
                 // Rumble both controllers
                 if (m_driverController != null && m_codriverController != null) {
-                    m_driverController.setRumble(RumbleType.kLeftRumble, 1);
-                    m_driverController.setRumble(RumbleType.kRightRumble, 1);
-                    m_codriverController.setRumble(RumbleType.kLeftRumble, 1);
-                    m_codriverController.setRumble(RumbleType.kRightRumble, 1);
+                    m_driverController.getHID().setRumble(RumbleType.kLeftRumble, 1);
+                    m_driverController.getHID().setRumble(RumbleType.kRightRumble, 1);
+                    m_codriverController.getHID().setRumble(RumbleType.kLeftRumble, 1);
+                    m_codriverController.getHID().setRumble(RumbleType.kRightRumble, 1);
                 }
             } else {
                 ShuffleboardUtility.getInstance().putToShuffleboard(ShuffleboardUtility.driverTab,
@@ -170,10 +169,10 @@ public class PhotonAimCommand extends CommandBase {
 
                 // Turn off rumble for both controllers
                 if (m_driverController != null && m_codriverController != null) {
-                    m_driverController.setRumble(RumbleType.kLeftRumble, 0);
-                    m_driverController.setRumble(RumbleType.kRightRumble, 0);
-                    m_codriverController.setRumble(RumbleType.kLeftRumble, 0);
-                    m_codriverController.setRumble(RumbleType.kRightRumble, 0);
+                    m_driverController.getHID().setRumble(RumbleType.kLeftRumble, 0);
+                    m_driverController.getHID().setRumble(RumbleType.kRightRumble, 0);
+                    m_codriverController.getHID().setRumble(RumbleType.kLeftRumble, 0);
+                    m_codriverController.getHID().setRumble(RumbleType.kRightRumble, 0);
                 }
             }
         } else {
@@ -202,17 +201,13 @@ public class PhotonAimCommand extends CommandBase {
 
         // Turn off rumble for both controllers
         if (m_driverController != null && m_codriverController != null) {
-            m_driverController.setRumble(RumbleType.kLeftRumble, 0);
-            m_driverController.setRumble(RumbleType.kRightRumble, 0);
-            m_codriverController.setRumble(RumbleType.kLeftRumble, 0);
-            m_codriverController.setRumble(RumbleType.kRightRumble, 0);
+            m_driverController.getHID().setRumble(RumbleType.kLeftRumble, 0);
+            m_driverController.getHID().setRumble(RumbleType.kRightRumble, 0);
+            m_codriverController.getHID().setRumble(RumbleType.kLeftRumble, 0);
+            m_codriverController.getHID().setRumble(RumbleType.kRightRumble, 0);
         }
 
         m_hubCamera.setLED(VisionLEDMode.kOff);
-
-        m_Swerve.drive(new Translation2d(0,0), 0.0, true, true);
-
-
     }
 
     @Override

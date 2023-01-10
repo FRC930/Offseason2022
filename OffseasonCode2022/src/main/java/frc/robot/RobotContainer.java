@@ -13,7 +13,7 @@ import frc.robot.AutoCommandManager.subNames;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.autos.*;
 import frc.robot.commands.*;
 import frc.robot.commands.autovisioncommands.PhotonAimCommand;
@@ -23,7 +23,7 @@ import frc.robot.subsystems.*;
 import frc.robot.utilities.PhotonVisionUtility;
 import frc.robot.utilities.ShooterUtility;
 import frc.lib.util.SwerveModuleConstants;
-import edu.wpi.first.util.net.PortForwarder;
+import edu.wpi.first.net.PortForwarder;
 import frc.lib.util.IndexerSensorUtility;
 
 /**
@@ -44,9 +44,9 @@ public class RobotContainer {
 
         /* Controllers */
         // Driver Controller
-        private final ControllerManager m_driverController = new ControllerManager(0);
+        private final CommandXboxController m_driverController = new CommandXboxController(0);
         // Codriver Controller
-        private final ControllerManager m_codriverController = new ControllerManager(1);
+        private final CommandXboxController m_codriverController = new CommandXboxController(1);
 
         /* Drive Controls */
         private final int translationAxis = XboxController.Axis.kLeftY.value;
@@ -64,7 +64,7 @@ public class RobotContainer {
 
         /* Subsystems */
         private final Swerve m_Swerve = new Swerve(frontLeftModule, frontRightModule, backLeftModule, backRightModule);
-        //private final IntakeExtensionSubsystem m_IntakeExtention = new IntakeExtensionSubsystem(2);
+        private final IntakeExtensionSubsystem m_IntakeExtention = new IntakeExtensionSubsystem(2);
         private final IntakeVoltageSubsystem m_IntakeVoltage = new IntakeVoltageSubsystem(2);
         private final IntakeSubsystem  m_IntakeSubsystem = new IntakeSubsystem(17, 3);
         private final ShooterMotorSubsystem m_ShooterMotorSubsystem = new ShooterMotorSubsystem(12, 7);
@@ -102,8 +102,8 @@ public class RobotContainer {
          * NeoIndividualMotorCommand m_loadedMotorCommand;
          * NeoIndividualMotorCommand m_loadedMotorReversedCommand;
          */
-        //TalonIndividualMotorCommand m_shootMotorCommandLeft;
-        //TalonIndividualMotorCommand m_shootMotorCommandRight;
+        TalonIndividualMotorCommand m_shootMotorCommandLeft;
+        TalonIndividualMotorCommand m_shootMotorCommandRight;
 
         /* Utilities */
         private final IndexerSensorUtility m_IndexerSensorUtility;
@@ -116,11 +116,11 @@ public class RobotContainer {
         public RobotContainer() {
 
                 // PORT FORWARDING //
-                PortForwarder.add(5800, "10.9.30.25", 5800);
-                PortForwarder.add(1181, "10.9.30.25", 1181);
-                PortForwarder.add(1182, "10.9.30.25", 1182);
-                PortForwarder.add(1183, "10.9.30.25", 1183);
-                PortForwarder.add(1184, "10.9.30.25", 1184);
+                PortForwarder.add(5800, "10.99.30.25", 5800);
+                PortForwarder.add(1181, "10.99.30.25", 1181);
+                PortForwarder.add(1182, "10.99.30.25", 1182);
+                PortForwarder.add(1183, "10.99.30.25", 1183);
+                PortForwarder.add(1184, "10.99.30.25", 1184);
 
                 /**
                  * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -165,8 +165,8 @@ public class RobotContainer {
                  * m_loadedMotorReversedCommand = new NeoIndividualMotorCommand(m_loadedMotor,
                  * true);
                  */
-                //m_shootMotorCommandLeft = new TalonIndividualMotorCommand(m_shooterMotorLeft, false);
-                //m_shootMotorCommandRight = new TalonIndividualMotorCommand(m_shooterMotorRight, true);
+                m_shootMotorCommandLeft = new TalonIndividualMotorCommand(m_shooterMotorLeft, false);
+                m_shootMotorCommandRight = new TalonIndividualMotorCommand(m_shooterMotorRight, true);
 
                 // // INTAKE INITS //
 
@@ -178,13 +178,13 @@ public class RobotContainer {
                 // m_IndexerEjectCommand = new IndexerEjectCommand(m_IndexerSubsystem, 0.5);
 
                 // //SHOOTER INITS //
-                 m_ShooterCommand = new ShooterCommand(m_ShooterMotorSubsystem);
+                 m_ShooterCommand = new ShooterCommand(m_ShooterMotorSubsystem, 0.5);
                 m_ShooterHoodCommand = new AdjustHoodCommand(m_ShooterHoodSubsystem);
-                m_PhotonAimCommand = new PhotonAimCommand(m_Swerve, m_driverController.getController(),  m_codriverController.getController());
+                m_PhotonAimCommand = new PhotonAimCommand(m_Swerve, m_driverController,  m_codriverController);
 
                 boolean fieldRelative = true;
                 boolean openLoop = true;
-                m_Swerve.setDefaultCommand(new TeleopSwerve(m_Swerve, m_driverController.getController(), translationAxis,
+                m_Swerve.setDefaultCommand(new TeleopSwerve(m_Swerve, m_driverController, translationAxis,
                                                 strafeAxis, rotationAxis, fieldRelative, openLoop));
                 m_IntakeVoltage.setDefaultCommand(new IntakeStateCommand(m_IntakeVoltage, true));
         
@@ -250,54 +250,58 @@ public class RobotContainer {
                 /* Driver Buttons */
                 // Put back in after testing
 
-                m_driverController.getRightBumper().whileActiveOnce(           
-                        new SequentialCommandGroup(
-                                new ShooterCommand(m_ShooterMotorSubsystem),
-                                new WaitCommand(0.2),
-                                new RunIndexerCommand(m_IndexerSubsystem, m_LoadedMotorSubsystem, IndexerMotorSpeed)  
+                // TODO: make these both into a parrallel command group
+                 m_driverController.rightBumper().whileTrue(new ExtendIntakeCommand(m_IntakeExtention));
+                 m_driverController.rightBumper().whileTrue(new IntakeStateCommand(m_IntakeVoltage, false));
+
+                 //m_driverController.get
+                 //m_ShooterCommand);
+                 m_driverController.leftBumper().whileTrue(           
+                        new ParallelCommandGroup(
+                                new SequentialCommandGroup(
+                                        m_PhotonAimCommand, 
+                                        m_ShooterHoodCommand,
+                                        m_ShooterCommand),
+                                new RunIndexerCommand(m_IndexerSubsystem, m_LoadedMotorSubsystem, IndexerMotorSpeed) 
                         )
-                        
-                );
-                
-                 m_driverController.getLeftBumper().whileActiveOnce(             
-                        new SequentialCommandGroup(
-                                m_PhotonAimCommand, 
-                                m_ShooterHoodCommand,
-                                m_ShooterCommand,
-                                new WaitCommand(0.2),
-                                new RunIndexerCommand(m_IndexerSubsystem, m_LoadedMotorSubsystem, IndexerMotorSpeed)
-                        )  
                         
                 );
 
                 /* Co-Driver Buttons */
 
-                // TODO: make a parallel command
-                m_codriverController.getRightBumper().whileActiveOnce(new IndexerCommand(m_IndexerSubsystem, m_IndexerSensorUtility, m_LoadedMotorSubsystem, IndexerMotorSpeed));
-                m_codriverController.getRightBumper().whileActiveOnce(new RunIntakeRollersCommand(m_IntakeSubsystem));
-                m_codriverController.getRightBumper().whileActiveOnce(new IntakeStateCommand(m_IntakeVoltage, false));
-
-                m_codriverController.getBButton().whileActiveOnce(
-                        m_IndexerEjectCommand);
+                /*m_codriverController.getLeftBumper().whileActiveOnce(
+                                new ParallelCommandGroup(
+                                                m_IndexerCommand,
+                                                m_RunIntakeRollersCommand,
+                                                m_ExtendIntakeCommand));
+                */
+                m_codriverController.b().whileTrue(
+                m_IndexerEjectCommand);
 
                 // Tarmac
-                m_codriverController.getPOVLeftTrigger().whileActiveOnce(
-                        getPovCommand(ShooterUtility.calculateHoodPos(7))
+                m_codriverController.povLeft().whileTrue(
+                new AdjustHoodCommand(
+                m_ShooterHoodSubsystem,
+                ShooterUtility.calculateHoodPos(9))
                 );
 
                 // // Launchpad
-                m_codriverController.getPOVUpTrigger().whileActiveOnce(
-                        getPovCommand(ShooterUtility.calculateHoodPos(14.5)));
+                m_codriverController.povUp().whileTrue(
+                        new AdjustHoodCommand(
+                                m_ShooterHoodSubsystem,
+                                ShooterUtility.calculateHoodPos(14.5)));
 
                 // // Fender shot
-                m_codriverController.getPOVDownTrigger().whileActiveOnce(
-                        getPovCommand(ShooterUtility.calculateHoodPos(19 / 12))
-                        );
+                m_codriverController.povDown().whileTrue(
+                new AdjustHoodCommand(
+                m_ShooterHoodSubsystem,
+                ShooterUtility.calculateHoodPos(19 / 12)
+                ));
 
         }
 
         public void testExit() {
-                m_ShooterMotorSubsystem.refollowShooterMotors(); 
+                // m_ShooterMotorSubsystem.refollowShooterMotors(); // TODO: Uncomment
                 m_IntakeSubsystem.followIntakeMotors();
         }
 
@@ -309,19 +313,5 @@ public class RobotContainer {
         public Command getAutonomousCommand() {
                 // An ExampleCommand will run in autonomous
                 return m_autoManager.getAutonomousCommand();
-        }
-
-        public Command getPovCommand(double distance){
-                Command cmd;
-                cmd = new AdjustHoodCommand(m_ShooterHoodSubsystem, ShooterUtility.calculateHoodPos(distance));
-                cmd = new ParallelCommandGroup(
-                        new SequentialCommandGroup( 
-                                new AdjustHoodCommand(m_ShooterHoodSubsystem, ShooterUtility.calculateHoodPos(distance)),
-                                new ShooterCommand(m_ShooterMotorSubsystem,ShooterUtility.calculateTopSpeed(distance))
-                                ),
-                        new RunIndexerCommand(m_IndexerSubsystem, m_LoadedMotorSubsystem, IndexerMotorSpeed)  
-                );
-                return cmd;
-                
         }
 }

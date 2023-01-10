@@ -3,14 +3,10 @@
 package frc.robot.utilities;
 
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
 
-import edu.wpi.first.networktables.EntryListenerFlags;
-import edu.wpi.first.networktables.EntryNotification;
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -73,59 +69,13 @@ public class ShuffleboardUtility {
 
             // Check to make sure that the file exists
             if (currentPipeline.exists()) {
-                // Start reading the file
-                // try (Scanner reader = new Scanner(currentPipeline)) {
-                //     String pipelineName = reader.nextLine();
-                //     int pipelineIndex = Integer.parseInt(reader.nextLine());
-                    // Set the default options for the pipeline chooser
+
                     pipelineChooser.setDefaultOption("Milwaukee", 0);
-            //     } catch (IOException e) {
-            //         System.out.println("****** COULDN\'T FIND CURRENT PIPELINE FILE ******");
-            //     }
-            // } else {
-            //     try {
-            //         // Create a new file to write data
-            //         currentPipeline.createNewFile();
 
-            //         // Write the default settings
-            //         FileWriter writer = new FileWriter(currentPipeline);
-            //         writer.write("(Default)\n");
-            //         writer.write("0");
-            //         writer.close();
-            //     } catch (IOException e) {
-            //     }
-
-            //    pipelineChooser.setDefaultOption("(Default)", 0);
             }
         }
 
         // Set up the listener for the network table entry
-        driverTable.getEntry("Driver Tab/Pipeline Selector/selected").addListener((EntryNotification notif) -> {
-            // Get the file in which we stored the current pipeline
-            File currentPipeline = new File(
-                    Filesystem.getOperatingDirectory().getAbsolutePath() + "/currentPipeline.txt");
-
-            // Make sure the file is empty
-            if (currentPipeline.exists()) {
-                currentPipeline.delete();
-                try {
-                    currentPipeline.createNewFile();
-                } catch (IOException e) {
-                }
-            }
-
-            // Set up the file writer
-            FileWriter writer;
-            try {
-                // Write the pipeline that on the Shuffleboard to the file
-                writer = new FileWriter(currentPipeline);
-                String pipelineName = currentChooserValue.getString("(Default)");
-                writer.write(pipelineName + "\n");
-                writer.write(Integer.toString(pipelineMap.get(pipelineName)));
-                writer.close();
-            } catch (IOException e) {
-            }
-        }, EntryListenerFlags.kUpdate);
 
         driverTab.add("Auton Path Selector", autonChooser);
 
@@ -283,7 +233,6 @@ public class ShuffleboardUtility {
         SHOOTER_SPEED("Shooter Speed"),
         SHOOTER_LOADED_SPEED("Shooter Loaded Speed"),
         SHOOTER_HOOD_POSITION("Hood Position"),
-        
 
         // BALL MANAGEMENT
         LOADED_SENSOR("Loaded Sensor"),
@@ -362,11 +311,11 @@ public class ShuffleboardUtility {
         // A generic data entry
         public final ShuffleBoardData<?> m_dataContainer;
         // The network table entry that we will use to
-        public final NetworkTableEntry m_entry;
+        public final GenericEntry m_entry;
 
-        public MapData(ShuffleBoardData<?> data, NetworkTableEntry entry) {
+        public MapData(ShuffleBoardData<?> data, GenericEntry genericEntry) {
             m_dataContainer = data;
-            m_entry = entry;
+            m_entry = genericEntry;
         }
 
         @Override
