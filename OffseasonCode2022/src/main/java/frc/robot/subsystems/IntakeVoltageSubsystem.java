@@ -2,7 +2,6 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
@@ -15,19 +14,6 @@ import frc.robot.utilities.ShuffleboardUtility.ShuffleBoardData;
 import frc.robot.utilities.ShuffleboardUtility.ShuffleboardKeys;
 
 public class IntakeVoltageSubsystem extends SubsystemBase{
-    
-    // -------- CONSTANTS --------\\
-    // Clicks of the TalonFX encoder per rotation of motor shaft
-    private static final double TALON_CPR = 2048.0;
-    // Gear ratio from motor to the hood(if the hood were a full circle)
-    // private static final double GEAR_RATIO = (16.0 / 36.0) * (15.0 / 235.0);
-    // Position when the intake is extended
-    private static final double EXTENDED_POSITION = 0.0;
-    // Position when the intake is retracted
-    private static final double RETRACTED_POSITION = -5050.0;
-    // PID values
-    private static final double MOTOR_KP = 5.0;
-    private static final double MOTOR_KD = 15;
 
     // -------- DECLARATIONS --------\\
     private final WPI_TalonFX intakeMotor;
