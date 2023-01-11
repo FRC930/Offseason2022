@@ -134,6 +134,9 @@ public class RobotContainer {
                 m_shooterMotorRight = new TalonMotorSubsystem(12);
                 */
 
+                //
+                //      for testing purpose...
+
                 // MOTOR COMMANDS //
                 /*
                  * m_stagedMotorCommand = new NeoIndividualMotorCommand(m_stagedMotor, false);
