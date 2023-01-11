@@ -5,16 +5,12 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.AutoCommandManager.subNames;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.autos.*;
 import frc.robot.commands.*;
 import frc.robot.commands.autovisioncommands.PhotonAimCommand;
 import frc.robot.commands.shooterCommands.AdjustHoodCommand;
@@ -90,18 +86,7 @@ public class RobotContainer {
          private final ShooterCommand m_ShooterCommand;
          private final AdjustHoodCommand m_ShooterHoodCommand;
 
-        /*
-         * NeoIndividualMotorCommand m_stagedMotorCommand;
-         * NeoIndividualMotorCommand m_stagedMotorReversedCommand;
-         * NeoIndividualMotorCommand m_ejectionMotorCommand;
-         * NeoIndividualMotorCommand m_ejectionMotorReversedCommand;
-         * NeoIndividualMotorCommand m_cargoCenteringMotorCommand;
-         * NeoIndividualMotorCommand m_cargoCenteringMotorReversedCommand;
-         * NeoIndividualMotorCommand m_intakeRollerMotorCommand;
-         * NeoIndividualMotorCommand m_intakeRollerMotorReversedCommand;
-         * NeoIndividualMotorCommand m_loadedMotorCommand;
-         * NeoIndividualMotorCommand m_loadedMotorReversedCommand;
-         */
+
         TalonIndividualMotorCommand m_shootMotorCommandLeft;
         TalonIndividualMotorCommand m_shootMotorCommandRight;
 
@@ -202,50 +187,6 @@ public class RobotContainer {
          * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
          */
         private void configureButtonBindings() {
-
-                /* Test Buttons */
-
-                /* Test Driver Buttons */
-                /*
-                 * m_driverController.getYButton().whileActiveOnce(
-                 * new InstantCommand(() -> m_Swerve.zeroGyro()));
-                 * 
-                 * m_driverController.getBButton().whileActiveOnce(
-                 * m_ejectionMotorReversedCommand);
-                 * 
-                 * m_driverController.getAButton().whileActiveOnce(
-                 * m_ejectionMotorCommand);
-                 * 
-                 * m_driverController.getRightBumper().whileActiveOnce(
-                 * m_cargoCenteringMotorReversedCommand);
-                 * 
-                 * m_driverController.getYButton().whileActiveOnce(
-                 * m_intakeRollerMotorCommand);
-                 * 
-                 * m_driverController.getPOVUpTrigger().whileActiveOnce(
-                 * m_loadedMotorReversedCommand);
-                 
-                m_driverController.getLeftBumper().whileActiveOnce(
-                                new ParallelRaceGroup(
-                                                m_shootMotorCommandLeft,
-                                                m_shootMotorCommandRight));
-                */
-                // Full shoot path for testing
-                
-                  // m_driverController.getStartButton().whileActiveOnce(
-                  // new ParallelRaceGroup(
-                  // m_intakeRollerMotorCommand,
-                  // m_cargoCenteringMotorReversedCommand,
-                  // m_ejectionMotorReversedCommand,
-                  // m_loadedMotorReversedCommand,
-                  // m_shootMotorCommandLeft,
-                  // m_shootMotorCommandRight
-                  // )
-                  // );
-                 
-                /* Test Co-Driver Buttons */
-
-                /* Actual Buttons */
 
                 /* Driver Buttons */
                 // Put back in after testing

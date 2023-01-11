@@ -31,7 +31,6 @@ public class ShooterCommand extends CommandBase {
     private boolean usingShuffleboard;
     private double loadedSpeed;
     private double speed;
-    private int counter;
 
     /**
      * <h3>ShootCargoCommand</h3>
@@ -93,7 +92,6 @@ public class ShooterCommand extends CommandBase {
         }
 
         shooterSubsystem.setRightSpeed(speed, loadedSpeed);
-        counter = 0;
     }
 
     @Override
