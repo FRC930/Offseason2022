@@ -66,7 +66,6 @@ public class Swerve extends SubsystemBase {
     public Swerve(SwerveModuleConstants frontLeftModuleConstants, SwerveModuleConstants frontRightModuleConstants, SwerveModuleConstants backLeftModuleConstants, SwerveModuleConstants backRightModuleConstants) {
 
         gyro = new Pigeon2(pigeonID);
-        //System.out.println(gyro.getTemp());
         gyro.configFactoryDefault();
         zeroGyro();
 

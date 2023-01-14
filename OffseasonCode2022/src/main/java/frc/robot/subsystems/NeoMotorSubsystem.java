@@ -1,9 +1,10 @@
+//imports
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import frc.robot.utilities.SparkMaxWrapper;
-
+//This command controls motors for the intake
 public class NeoMotorSubsystem {
     
     SparkMaxWrapper neoMotor;

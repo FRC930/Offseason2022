@@ -8,7 +8,6 @@
 package frc.robot.commands.shooterCommands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.ShooterMotorSubsystem;
 import frc.robot.utilities.ShuffleboardUtility;
 import frc.robot.utilities.ShuffleboardUtility.ShuffleBoardData;
@@ -32,7 +31,6 @@ public class ShooterCommand extends CommandBase {
     private boolean usingShuffleboard;
     private double loadedSpeed;
     private double speed;
-    private int counter;
 
     /**
      * <h3>ShootCargoCommand</h3>
@@ -94,7 +92,6 @@ public class ShooterCommand extends CommandBase {
         }
 
         shooterSubsystem.setRightSpeed(speed, loadedSpeed);
-        counter = 0;
     }
 
     @Override

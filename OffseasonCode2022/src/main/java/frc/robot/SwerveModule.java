@@ -67,7 +67,7 @@ public class SwerveModule {
 
     /* Angle Encoder Invert */
     public static final boolean canCoderInvert = false;
-	private static final String absolutePosition = null;    
+  
 
     public int moduleNumber;
     private double angleOffset;
