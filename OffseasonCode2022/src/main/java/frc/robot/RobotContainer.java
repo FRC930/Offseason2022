@@ -21,8 +21,20 @@ import frc.robot.commands.shooterCommands.AdjustHoodCommand;
 import frc.robot.commands.shooterCommands.ShooterCommand;
 import frc.robot.subsystems.*;
 import frc.robot.utilities.PhotonVisionUtility;
+import frc.robot.utilities.AprilVisionUtility;
+import frc.robot.utilities.CameraTargetUtility;
 import frc.robot.utilities.ShooterUtility;
+import frc.robot.utilities.ShuffleboardUtility;
+import frc.robot.utilities.ShuffleboardUtility.ShuffleBoardData;
+import frc.robot.utilities.ShuffleboardUtility.ShuffleboardKeys;
 import frc.lib.util.SwerveModuleConstants;
+
+import org.photonvision.PhotonCamera;
+
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.net.PortForwarder;
 import frc.lib.util.IndexerSensorUtility;
 
@@ -38,6 +50,7 @@ import frc.lib.util.IndexerSensorUtility;
 
 public class RobotContainer {
 
+        private PhotonCamera m_hubCamera;
 
         /* Constants */
         double IndexerMotorSpeed = 0.5; // TODO 0.5;
@@ -116,11 +129,11 @@ public class RobotContainer {
         public RobotContainer() {
 
                 // PORT FORWARDING //
-                PortForwarder.add(5800, "10.99.30.25", 5800);
-                PortForwarder.add(1181, "10.99.30.25", 1181);
-                PortForwarder.add(1182, "10.99.30.25", 1182);
-                PortForwarder.add(1183, "10.99.30.25", 1183);
-                PortForwarder.add(1184, "10.99.30.25", 1184);
+                PortForwarder.add(5800, "10.9.30.25", 5800);
+                PortForwarder.add(1181, "10.9.30.25", 1181);
+                PortForwarder.add(1182, "10.9.30.25", 1182);
+                PortForwarder.add(1183, "10.9.30.25", 1183);
+                PortForwarder.add(1184, "10.9.30.25", 1184);
 
                 /**
                  * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -178,9 +191,9 @@ public class RobotContainer {
                 // m_IndexerEjectCommand = new IndexerEjectCommand(m_IndexerSubsystem, 0.5);
 
                 // //SHOOTER INITS //
-                 m_ShooterCommand = new ShooterCommand(m_ShooterMotorSubsystem, 0.5);
+                m_ShooterCommand = new ShooterCommand(m_ShooterMotorSubsystem, 0.5);
                 m_ShooterHoodCommand = new AdjustHoodCommand(m_ShooterHoodSubsystem);
-                m_PhotonAimCommand = new PhotonAimCommand(m_Swerve, m_driverController,  m_codriverController);
+                m_PhotonAimCommand = new PhotonAimCommand(m_Swerve, m_driverController,  m_codriverController, m_hubCamera);
 
                 boolean fieldRelative = true;
                 boolean openLoop = true;

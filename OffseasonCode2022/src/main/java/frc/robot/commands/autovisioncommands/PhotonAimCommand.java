@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.Swerve;
+import frc.robot.utilities.AprilVisionUtility;
 import frc.robot.utilities.PhotonVisionUtility;
 import frc.robot.utilities.ShooterUtility;
 import frc.robot.utilities.ShuffleboardUtility;
@@ -54,8 +55,10 @@ public class PhotonAimCommand extends CommandBase {
 
     private PIDController m_turnController = new PIDController(ANGULAR_P, ANGULAR_I, ANGULAR_D);
 
-    protected PhotonCamera m_hubCamera = PhotonVisionUtility.getInstance().getHubTrackingCamera();
     private Swerve m_Swerve;
+
+    //protected PhotonCamera m_hubCamera = PhotonVisionUtility.getInstance().getHubTrackingCamera();
+    protected PhotonCamera m_hubCamera;
 
     private int cyclesAimed = 0;
 
@@ -74,7 +77,7 @@ public class PhotonAimCommand extends CommandBase {
      * @param dSwerve
      */
     public PhotonAimCommand(Swerve dSwerve) {
-        this(dSwerve, null, null);
+        this(dSwerve, null, null, null);
     }
 
     /**
@@ -87,8 +90,9 @@ public class PhotonAimCommand extends CommandBase {
      * @param codriverController driver controller (for rumble)
      */
     public PhotonAimCommand(Swerve dSwerve, CommandXboxController driverController,
-            CommandXboxController codriverController) {
-
+            CommandXboxController codriverController, PhotonCamera hubCamera) {
+        
+        m_hubCamera = hubCamera;
         m_Swerve = dSwerve;
         m_driverController = driverController;
         m_codriverController = codriverController;
