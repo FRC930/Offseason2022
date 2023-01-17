@@ -3,7 +3,7 @@ import com.ctre.phoenix.sensors.Pigeon2;
 
 import frc.lib.util.SwerveModuleConstants;
 import frc.robot.SwerveModule;
-
+import frc.robot.utilities.AprilVisionUtility;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
@@ -61,7 +61,10 @@ public class Swerve extends SubsystemBase {
     public SwerveModule swerveModule3;
     public SwerveModule swerveModule4;
 
+    public AprilVisionUtility m_aprilVisionUtility;
+
     public Swerve(SwerveModuleConstants frontLeftModuleConstants, SwerveModuleConstants frontRightModuleConstants, SwerveModuleConstants backLeftModuleConstants, SwerveModuleConstants backRightModuleConstants) {
+
         gyro = new Pigeon2(pigeonID);
         gyro.configFactoryDefault();
         zeroGyro();
@@ -70,8 +73,6 @@ public class Swerve extends SubsystemBase {
         autoYController = new PIDController(kPYController, 0, 0);
         autoThetaController = new PIDController(
             0.33, 0, 0);
-        
-        swerveOdometry = new SwerveDriveOdometry(swerveKinematics, getYaw(), mSwerveModPositions);
 
         swerveModule1 = new SwerveModule(0, frontLeftModuleConstants);
         swerveModule2 = new SwerveModule(1, frontRightModuleConstants);
@@ -91,6 +92,10 @@ public class Swerve extends SubsystemBase {
             swerveModule3.getPosition(),
             swerveModule4.getPosition()
         };
+
+        swerveOdometry = new SwerveDriveOdometry(swerveKinematics, getYaw(), mSwerveModPositions);
+
+        m_aprilVisionUtility = new AprilVisionUtility(swerveKinematics, getYaw(), mSwerveModPositions, getPose());
     }
 
     public void drive(Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {
@@ -165,9 +170,19 @@ public class Swerve extends SubsystemBase {
         return autoThetaController;
     }
 
+    public SwerveModulePosition[] getSwerveModulePositions() {
+        return mSwerveModPositions;
+    }
+
     @Override
     public void periodic(){
+        mSwerveModPositions[0] = swerveModule1.getPosition();
+        mSwerveModPositions[1] = swerveModule2.getPosition();
+        mSwerveModPositions[2] = swerveModule3.getPosition();
+        mSwerveModPositions[3] = swerveModule4.getPosition();
+
         swerveOdometry.update(getYaw(), mSwerveModPositions);  
+        m_aprilVisionUtility.UpdateCameraPos();
 
         for(SwerveModule mod : mSwerveMods){
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Cancoder", mod.getCanCoder().getDegrees());
@@ -176,5 +191,8 @@ public class Swerve extends SubsystemBase {
         }
         SmartDashboard.putNumber("X", swerveOdometry.getPoseMeters().getX());
         SmartDashboard.putNumber("Y", swerveOdometry.getPoseMeters().getY());  
+
+        SmartDashboard.putNumber("Estimated X", m_aprilVisionUtility.getPose().getX());
+        SmartDashboard.putNumber("Estimated Y", m_aprilVisionUtility.getPose().getY());
     }
 }
