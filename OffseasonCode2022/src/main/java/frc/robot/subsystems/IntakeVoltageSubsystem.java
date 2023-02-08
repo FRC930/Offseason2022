@@ -53,7 +53,7 @@ public class IntakeVoltageSubsystem extends SubsystemBase{
 
     public void setSpeed(double speed) {
 
-         intakeMotor.set(ControlMode.PercentOutput, speed / 12.0);
+         intakeMotor.set(0);//ControlMode.PercentOutput, speed / 12.0);
         //  System.out.println("Speed: " + speed);
     }
 
