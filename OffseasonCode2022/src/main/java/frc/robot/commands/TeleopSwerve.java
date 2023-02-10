@@ -13,6 +13,7 @@ public class TeleopSwerve extends CommandBase {
      *
      */
     private static final double SPEED_MULIPLE = 0.90;
+    private static final double ROTATE_SPEED_MULIPLE = 0.70;
     private double stickDeadband = 0.1;
     public static final double maxAngularVelocity = 11.5;
     public static final double maxSpeed = 4.9; //meters per second
@@ -55,7 +56,7 @@ public class TeleopSwerve extends CommandBase {
         rAxis = (Math.abs(rAxis) < stickDeadband) ? 0 : rAxis;
 
         translation = new Translation2d(yAxis * SPEED_MULIPLE, xAxis * SPEED_MULIPLE).times(maxSpeed);
-        rotation = -1 * rAxis * SPEED_MULIPLE * maxAngularVelocity;
+        rotation = -1 * rAxis * ROTATE_SPEED_MULIPLE * maxAngularVelocity;
         s_Swerve.drive(translation, rotation, fieldRelative, openLoop);
     }
 }
